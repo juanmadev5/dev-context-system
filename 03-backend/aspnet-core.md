@@ -147,6 +147,25 @@ Mandatory before considering any task done — see [[coding-standards]].
 ## Request flow
 
 - **MediatR**: endpoints (Minimal API or Vertical Slice feature) dispatch a request/command to a handler via MediatR rather than calling a service directly. This keeps the endpoint thin and makes cross-cutting concerns (logging, validation, authorization) composable as pipeline behaviors instead of being repeated per endpoint.
+- **CQRS is mandatory on top of MediatR in Clean Architecture projects** — every use case in `Application` is either a `Command` (writes) or a `Query` (reads), never a generic `Request`/`Handler` pair that does both. Not mandatory in Vertical Slice — at that size a single `<Feature>Handler.cs` per feature (as already laid out above) is enough, and splitting it into Command/Query folders would be ceremony without payoff.
+  - One folder per use case under `Commands/` or `Queries/`, named after the use case, e.g. `Properties/Commands/CreateProperty/`, `Properties/Queries/GetPropertyById/`:
+
+    ```
+    Properties/
+      Commands/
+        CreateProperty/
+          CreatePropertyCommand.cs          # record : IRequest<PropertyDto>
+          CreatePropertyCommandHandler.cs   # IRequestHandler<CreatePropertyCommand, PropertyDto>
+          CreatePropertyCommandValidator.cs # FluentValidation, per the Validation section above
+      Queries/
+        GetPropertyById/
+          GetPropertyByIdQuery.cs           # record : IRequest<PropertyDto>
+          GetPropertyByIdQueryHandler.cs    # IRequestHandler<GetPropertyByIdQuery, PropertyDto>
+    ```
+
+  - Commands and Queries are free to return the same DTO (e.g. both `CreatePropertyCommand` and `GetPropertyByIdQuery` returning `PropertyDto`) — this is CQRS as an `Application`-layer organizing principle, not full CQRS with a separate read model/store. Don't reach for a dedicated read database or event sourcing unless the project has a concrete, current need for it (per [[architecture-principles]]'s "don't abstract prematurely").
+  - Query handlers read via `AsNoTracking()` (EF Core) — no change tracking overhead on a path that never calls `SaveChanges`. Command handlers omit it since they mutate and save.
+  - Query handlers skip the `Validator` file — request-shape validation belongs on commands; a query's "validation" (e.g. a missing entity) is a `KeyNotFoundException` thrown in the handler, mapped by the `IExceptionHandler` below, not a FluentValidation rule.
 
 ## Error handling
 
