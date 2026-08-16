@@ -72,7 +72,16 @@ src/main/java/com/<company>/<project>/
 **Every endpoint must be documented via OpenAPI/Swagger — no exceptions**, same rule as [[aspnet-core]].
 
 - **springdoc-openapi** (`springdoc-openapi-starter-webmvc-ui` dependency) generates the OpenAPI 3 document and serves Swagger UI at `/swagger-ui.html` — the standard, actively-maintained library for this in Spring Boot. Springfox is legacy/unmaintained and never used on a new project.
-- Every `@RestController` gets `@Tag(name = "...", description = "...")`; every endpoint method gets `@Operation(summary = "...", description = "...")` plus an `@ApiResponse` per possible response status, including error responses mapped by the `@RestControllerAdvice`.
+- Every `@RestController` gets `@Tag(name = "...", description = "...")`; every endpoint method gets `@Operation(summary = "...")` plus an `@ApiResponse` per possible response status the method can actually return — success and error alike, including error responses mapped by the `@RestControllerAdvice`:
+
+  ```java
+  @Operation(summary = "Creates a property owned by the authenticated user.")
+  @ApiResponse(responseCode = "201", description = "Property created",
+      content = @Content(schema = @Schema(implementation = PropertyDto.class)))
+  @ApiResponse(responseCode = "400", description = "Invalid request body")
+  @PostMapping
+  public ResponseEntity<PropertyDto> create(@Valid @RequestBody CreatePropertyRequest request) { ... }
+  ```
 - Add `@Schema(description = "...")` to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every field, same restraint as [[coding-standards]]'s comment guidance.
 - Not optional polish: the generated spec is what a frontend/mobile consumer or an API client generator actually reads — an undocumented endpoint is a broken contract, not a cosmetic gap.
 

@@ -69,7 +69,17 @@ src/
 - **Scalar** (`Scalar.AspNetCore` package, `app.MapScalarApiReference()`) serves the interactive UI at `/scalar/v1` — the default UI for new projects. Swagger UI (`Swashbuckle.AspNetCore.SwaggerUI`) is an acceptable fallback only if a project has a specific reason to keep it, not the default choice going forward.
 - Every endpoint needs a summary/description, and every non-trivial DTO property needs one too — the exact mechanism depends on API style:
   - **Minimal APIs**: `.WithSummary("...")`, `.WithDescription("...")`, and `.Produces<T>(statusCode)` per possible response, chained onto every endpoint alongside the `.WithName(...)` already mandated above.
-  - **Controllers**: XML doc comments (`/// <summary>`) on every action, plus `[ProducesResponseType(typeof(T), StatusCodes.Status200OK)]` for every possible response status. Set `<GenerateDocumentationFile>true</GenerateDocumentationFile>` in the `.csproj` so XML comments actually flow into the generated OpenAPI document.
+  - **Controllers**: XML doc comments (`/// <summary>`) on every action, plus `[ProducesResponseType]` for every possible response status the action can actually return — success and error alike, not just the happy path:
+
+    ```csharp
+    /// <summary>Creates a property owned by the authenticated user.</summary>
+    [HttpPost("")]
+    [ProducesResponseType(typeof(PropertyDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Create(CreatePropertyRequest request) { ... }
+    ```
+
+    Set `<GenerateDocumentationFile>true</GenerateDocumentationFile>` in the `.csproj` so XML comments actually flow into the generated OpenAPI document.
 - Add XML doc comments to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every property, same restraint as [[coding-standards]]'s comment guidance.
 - Not optional polish: the generated spec is what a frontend/mobile consumer or an API client generator (NSwag, openapi-typescript) actually reads — an undocumented endpoint is a broken contract, not a cosmetic gap.
 
