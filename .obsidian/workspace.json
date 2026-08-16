@@ -8,17 +8,13 @@
         "type": "tabs",
         "children": [
           {
-            "id": "5d1eeb9a3ba58cd2",
+            "id": "136ef8a7a9fff513",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "05-templates/how-to-compose-claude-md.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "how-to-compose-claude-md"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -94,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Notes.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Notes"
+              "title": "Backlinks"
             }
           },
           {
@@ -183,43 +178,43 @@
       "bases:Create new base": false
     }
   },
-  "active": "5d1eeb9a3ba58cd2",
+  "active": "136ef8a7a9fff513",
   "lastOpenFiles": [
-    "05-templates/template-web-medium-vue-supabase.md",
+    "Untitled.canvas",
     "Index.md",
+    "03-backend/aspnet-core.md",
+    "00-global/tech-stack-map.md",
     "00-global/architecture-principles.md",
+    "01-mobile/jetpack-compose.md",
+    "03-backend/spring-boot.md",
+    "04-infra/supabase-storage.md",
+    "00-global/coding-standards.md",
+    "00-global/git-conventions.md",
+    "00-global/readme-conventions.md",
+    "00-global/sources-conventions.md",
+    "README.md",
+    "05-templates/how-to-compose-claude-md.md",
+    "05-templates/template-web-medium-vue-supabase.md",
     "02-web/tailwind-css.md",
     "02-web/html-tailwind.md",
-    "00-global/coding-standards.md",
-    "00-global/sources-conventions.md",
     "05-templates/template-web-complex-angular-aspnet.md.tmp.7220.528bdb7032b9",
     "05-templates/how-to-compose-claude-md.md.tmp.7220.dd10ffadb834",
     "04-infra/aws-s3-storage.md",
     "00-global/coding-standards.md.tmp.7220.5d8af3cb40b2",
     "03-backend/aspnet-core.md.tmp.7220.c35eb64e9776",
     "03-backend/spring-boot.md.tmp.7220.75d8cafae58a",
-    "03-backend/aspnet-core.md",
     "03-backend/aspnet-core.md.tmp.6789.e1e5ac48895e",
     "04-infra/docker.md",
     "04-infra/deployments.md",
-    "05-templates/how-to-compose-claude-md.md",
     "05-templates/template-mobile-jetpack-compose.md.tmp.75868.c2b603ca6a2c",
     "05-templates/template-mobile-flutter.md.tmp.75868.f9c1b242c4fd",
     "05-templates/template-landing-html.md.tmp.75868.bc5b271df6e2",
     "05-templates/template-landing-astro.md.tmp.75868.722fb89a5724",
     "00-global/responsive-design.md",
-    "00-global/git-conventions.md",
-    "00-global/tech-stack-map.md",
     "05-templates/template-mobile-jetpack-compose.md",
     "05-templates/template-mobile-flutter.md",
     "05-templates/template-landing-html.md",
     "05-templates/template-landing-astro.md",
-    "05-templates/template-web-complex-angular-aspnet.md",
-    "01-mobile/jetpack-compose.md",
-    "04-infra/supabase-storage.md",
-    "04-infra/local-infrastructure.md",
-    "04-infra/keycloak-auth.md",
-    "04-infra/redis.md",
-    "04-infra/supabase-auth.md"
+    "05-templates/template-web-complex-angular-aspnet.md"
   ]
 }

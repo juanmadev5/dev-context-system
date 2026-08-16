@@ -61,6 +61,18 @@ src/
   - **Minimal APIs**: `.WithName("...")` on every endpoint. Naming clarity (see [[coding-standards]]) doesn't stop at variables/lambdas — an endpoint is an identifier too, and `app.MapGetTasks()` alone in `Program.cs` isn't enough: the name is what shows up in Swagger/OpenAPI as the operation ID, what typed-client generators (NSwag, openapi-typescript, etc.) key off of, what `Results.CreatedAtRoute`/`LinkGenerator` reference by, and what identifies the request in OpenTelemetry traces instead of a raw route template. Match the name to the request/query/command it dispatches (e.g. `GetTasksEndpoint` → `.WithName("GetTasks")`), not a generic or abbreviated label.
   - **Controllers**: every `[HttpGet]`/`[HttpPost]`/`[HttpPut]`/`[HttpDelete]` gets an explicit route template — never left bare relying only on the class-level `[Route("api/[controller]")]` to carry the whole path (e.g. `[HttpGet("{id}")]`, not a parameterless `[HttpGet]` on a method that clearly needs `{id}`). Reference actions via `nameof()` (`CreatedAtAction(nameof(GetById), ...)`), which is compiler-checked, rather than magic strings; add an explicit `Name = "..."` only when using `CreatedAtRoute`/`LinkGenerator` instead of `CreatedAtAction`.
 
+## API documentation
+
+**Every endpoint must be documented via OpenAPI — no exceptions**, same rule as [[spring-boot]].
+
+- **`Microsoft.AspNetCore.OpenApi`** (`AddOpenApi()` / `app.MapOpenApi()`, built into the SDK since .NET 9) generates the OpenAPI document — no Swashbuckle needed just for generation.
+- **Scalar** (`Scalar.AspNetCore` package, `app.MapScalarApiReference()`) serves the interactive UI at `/scalar/v1` — the default UI for new projects. Swagger UI (`Swashbuckle.AspNetCore.SwaggerUI`) is an acceptable fallback only if a project has a specific reason to keep it, not the default choice going forward.
+- Every endpoint needs a summary/description, and every non-trivial DTO property needs one too — the exact mechanism depends on API style:
+  - **Minimal APIs**: `.WithSummary("...")`, `.WithDescription("...")`, and `.Produces<T>(statusCode)` per possible response, chained onto every endpoint alongside the `.WithName(...)` already mandated above.
+  - **Controllers**: XML doc comments (`/// <summary>`) on every action, plus `[ProducesResponseType(typeof(T), StatusCodes.Status200OK)]` for every possible response status. Set `<GenerateDocumentationFile>true</GenerateDocumentationFile>` in the `.csproj` so XML comments actually flow into the generated OpenAPI document.
+- Add XML doc comments to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every property, same restraint as [[coding-standards]]'s comment guidance.
+- Not optional polish: the generated spec is what a frontend/mobile consumer or an API client generator (NSwag, openapi-typescript) actually reads — an undocumented endpoint is a broken contract, not a cosmetic gap.
+
 ## API conventions — pagination & filtering
 
 **Every endpoint that returns a collection must be paginated. No exceptions** — a list that "currently" returns few items is still a list, and unpaginated collections are a scaling and abuse liability from day one, not something to retrofit later.

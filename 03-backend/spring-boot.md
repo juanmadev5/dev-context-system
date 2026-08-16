@@ -67,6 +67,15 @@ src/main/java/com/<company>/<project>/
 - **Every endpoint must be explicitly and clearly identifiable, no exceptions** — every `@GetMapping`/`@PostMapping`/`@PutMapping`/`@DeleteMapping` gets its own explicit path (e.g. `@GetMapping("/{id}")`), never left bare relying only on the class-level `@RequestMapping` to carry the whole path. Naming clarity (see [[coding-standards]]) applies to the controller method name too — match it to what it does (`getCustomerById`, not `get2` or `handle`).
 - Build response location URIs (e.g. after a `POST`) via `ServletUriComponentsBuilder` or a named route helper, not hand-concatenated strings.
 
+## API documentation
+
+**Every endpoint must be documented via OpenAPI/Swagger — no exceptions**, same rule as [[aspnet-core]].
+
+- **springdoc-openapi** (`springdoc-openapi-starter-webmvc-ui` dependency) generates the OpenAPI 3 document and serves Swagger UI at `/swagger-ui.html` — the standard, actively-maintained library for this in Spring Boot. Springfox is legacy/unmaintained and never used on a new project.
+- Every `@RestController` gets `@Tag(name = "...", description = "...")`; every endpoint method gets `@Operation(summary = "...", description = "...")` plus an `@ApiResponse` per possible response status, including error responses mapped by the `@RestControllerAdvice`.
+- Add `@Schema(description = "...")` to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every field, same restraint as [[coding-standards]]'s comment guidance.
+- Not optional polish: the generated spec is what a frontend/mobile consumer or an API client generator actually reads — an undocumented endpoint is a broken contract, not a cosmetic gap.
+
 ## API conventions — pagination & filtering
 
 **Every endpoint that returns a collection must be paginated. No exceptions** — same rule as [[aspnet-core]].
