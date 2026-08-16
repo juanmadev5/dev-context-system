@@ -82,6 +82,7 @@ src/
 - **Controllers**: `[ApiVersion("1.0")]` on the controller class, `[Route("api/v{version:apiVersion}/[controller]")]` instead of the bare `api/[controller]` template.
 - URL path segment only (`/api/v1/...`) — never a query-string (`?api-version=1`) or header-based (`X-Api-Version`) scheme as the primary mechanism; the version needs to be visible in the URL a developer pastes into a browser or shares in a bug report, not hidden in a header.
 - Bump the major segment (`v1` → `v2`) only for a breaking change (removed/renamed field, changed status code, changed semantics) — additive, backward-compatible changes (new optional field, new endpoint) ship on the existing version.
+- **`Asp.Versioning.Mvc.ApiExplorer`** is also required — regardless of API style — with `AddApiExplorer(options => options.SubstituteApiVersionInUrl = true)` in `Program.cs`. Without it, `[ApiVersion]`/`.HasApiVersion(...)` still resolve routes correctly at runtime, but the OpenAPI document generated for Scalar keeps the literal `{version}` placeholder in every path instead of the resolved `v1`/`v2` segment — this is what actually makes the versioned routes show up correctly in the docs, not just work in the browser's address bar.
 
 ## API conventions — pagination & filtering
 
