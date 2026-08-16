@@ -73,6 +73,16 @@ src/
 - Add XML doc comments to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every property, same restraint as [[coding-standards]]'s comment guidance.
 - Not optional polish: the generated spec is what a frontend/mobile consumer or an API client generator (NSwag, openapi-typescript) actually reads — an undocumented endpoint is a broken contract, not a cosmetic gap.
 
+## API versioning
+
+**Every endpoint is versioned via the URL path (`/api/v1/...`) — no exceptions**, same rule as [[spring-boot]]. A "v1 for now, we'll version later if we need to" mindset is how a breaking change ends up shipped straight to every existing client instead of landing behind a new version segment.
+
+- **`Asp.Versioning.Http`** (Minimal APIs) / **`Asp.Versioning.Mvc`** (Controllers) — the maintained successor to the archived `Microsoft.AspNetCore.Mvc.Versioning`, still the standard library for this.
+- **Minimal APIs**: group endpoints under a versioned `ApiVersionSet` (`app.NewApiVersionSet().HasApiVersion(new ApiVersion(1)).Build()`), route template `/api/v{version:apiVersion}/...`, `.MapToApiVersion(1)` per endpoint.
+- **Controllers**: `[ApiVersion("1.0")]` on the controller class, `[Route("api/v{version:apiVersion}/[controller]")]` instead of the bare `api/[controller]` template.
+- URL path segment only (`/api/v1/...`) — never a query-string (`?api-version=1`) or header-based (`X-Api-Version`) scheme as the primary mechanism; the version needs to be visible in the URL a developer pastes into a browser or shares in a bug report, not hidden in a header.
+- Bump the major segment (`v1` → `v2`) only for a breaking change (removed/renamed field, changed status code, changed semantics) — additive, backward-compatible changes (new optional field, new endpoint) ship on the existing version.
+
 ## API conventions — pagination & filtering
 
 **Every endpoint that returns a collection must be paginated. No exceptions** — a list that "currently" returns few items is still a list, and unpaginated collections are a scaling and abuse liability from day one, not something to retrofit later.

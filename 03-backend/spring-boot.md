@@ -76,6 +76,15 @@ src/main/java/com/<company>/<project>/
 - Add `@Schema(description = "...")` to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every field, same restraint as [[coding-standards]]'s comment guidance.
 - Not optional polish: the generated spec is what a frontend/mobile consumer or an API client generator actually reads — an undocumented endpoint is a broken contract, not a cosmetic gap.
 
+## API versioning
+
+**Every endpoint is versioned via the URL path (`/api/v1/...`) — no exceptions**, same rule as [[aspnet-core]].
+
+- Spring has no equivalent to `Asp.Versioning` as an official/standard library — URI path versioning is done directly: the version prefix is baked into the class-level `@RequestMapping("/api/v1/orders")` (or a shared constant, per [[coding-standards]]'s magic-string rule), not added via a third-party versioning framework. This is a deliberate, stack-appropriate difference, not an inconsistency — the Java ecosystem doesn't converge on one versioning library the way .NET does.
+- When a breaking change forces a `v2`, it's a **new controller class** (`OrdersV2Controller` mapped to `/api/v2/orders`), not a version parameter branching inside the same controller — keeps each version's logic independently readable and removable once the old version is retired.
+- URL path segment only — never a query-string or header-based scheme as the primary mechanism, same reasoning as [[aspnet-core]].
+- Bump the major segment (`v1` → `v2`) only for a breaking change (removed/renamed field, changed status code, changed semantics) — additive, backward-compatible changes (new optional field, new endpoint) ship on the existing version.
+
 ## API conventions — pagination & filtering
 
 **Every endpoint that returns a collection must be paginated. No exceptions** — same rule as [[aspnet-core]].
