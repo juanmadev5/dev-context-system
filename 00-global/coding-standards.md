@@ -77,11 +77,16 @@ Apply these pragmatically: they're a guide for keeping code changeable, not a ch
 - Validate and handle errors at system boundaries (user input, external API responses, I/O). Don't add defensive checks for states that are impossible given internal invariants already enforced by the type system or framework.
 - Fail loudly in development; degrade gracefully (with proper logging) in production paths that face end users.
 
-## Static analysis — definition of done
+## Definition of done
 
-- A task is never "done" just because it behaves correctly. Before considering any task/feature finished, **run the project's static analyzer/type-checker and make sure it passes clean** (no new errors or warnings introduced by the change). Code can look fine and still be silently broken — the whole point of this check is to catch that before it ships.
-- Every stack in this vault has a designated command for this — see that stack's own note (`## Static analysis` section) for the exact command(s): [[aspnet-core]], [[spring-boot]], [[angular]], [[vuejs]], [[react]], [[astro]], [[flutter]], [[jetpack-compose]].
-- Never skip this step assuming "it looks fine" or because the change was small — that assumption is exactly the failure mode this rule exists to prevent.
+A task is never "done" just because it behaves correctly or compiles. Code can look fine and still be silently broken, scoped wrong, or undocumented — before considering any task/feature finished, every applicable item below must be checked, not just a feeling that it's "probably fine":
+
+- **Static analysis** — run the project's static analyzer/type-checker and make sure it passes clean (no new errors or warnings introduced by the change). Every stack in this vault has a designated command for this — see that stack's own note (`## Static analysis` section) for the exact command(s): [[aspnet-core]], [[spring-boot]], [[angular]], [[vuejs]], [[react]], [[astro]], [[flutter]], [[jetpack-compose]]. Never skip this assuming "it looks fine" or because the change was small.
+- **Tests** — pass locally; if the change touches logic covered by this note's [[#Testing]] criteria, new tests were written for it.
+- **Self-review** — the full diff was read start to finish before calling the task done, per [[code-review]]'s self-review section.
+- **Docs** — the project's README was updated if the change affects it ([[readme-conventions]]); `docs/SOURCES.md` was updated if external documentation was consulted ([[sources-conventions]]).
+- **Scope check** — the change matches exactly what was asked, with no unrelated edits left in (see [[#Scope discipline]] below).
+- **No residue** — no leftover debug code, commented-out blocks, or unowned TODOs.
 
 ## Testing
 
@@ -95,10 +100,18 @@ Apply these pragmatically: they're a guide for keeping code changeable, not a ch
 - Implement what the task requires. Don't add speculative flexibility, extra config options, or abstractions for hypothetical future needs.
 - No half-finished implementations: either a feature is complete for its intended scope, or it isn't started.
 
+## Ask vs. assume
+
+- **Ask, and don't proceed until answered**, when: the decision is business/domain-specific and not inferable from the existing code or any note in this vault (e.g. what should happen when a field is null in a specific business flow); multiple reasonable interpretations exist with materially different outcomes (breaking vs. additive change, the shape of a data model). Check the vault and the project's `CLAUDE.md` first — don't ask what's already documented there.
+- **Decide and proceed**, when: it's a routine implementation detail with one obviously-correct answer given the codebase's existing patterns (naming a variable, extracting a duplicate); it's already resolved by a vault note or the project's `CLAUDE.md`.
+- **Never guess an API, method, or parameter** that hasn't been verified against real code or official documentation ([[sources-conventions]]) — that's always a case to check, never to fabricate.
+- If proceeding on a judgment call rather than asking, state the assumption explicitly (in the PR description or a note to the developer) instead of deciding silently. Silent, unstated assumptions are exactly what produce a "reasonable but wrong" decision that only surfaces at review.
+
 ## See also
 
 - [[architecture-principles]]
 - [[git-conventions]]
+- [[code-review]]
 - [[tech-stack-map]]
 - [[readme-conventions]]
 - [[sources-conventions]]

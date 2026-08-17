@@ -41,9 +41,30 @@ Cross-reference [[keycloak-auth]] or [[supabase-auth]] when the project uses eit
 
 - God classes/functions doing more than one thing (violates Single Responsibility, see [[coding-standards]]).
 - Domain/business objects leaking into the presentation layer, or any other [[architecture-principles]] boundary violation.
+  ```csharp
+  // Bad — EF Core entity returned straight from the API
+  [HttpGet("{id}")]
+  public async Task<Customer> Get(Guid id) => await _dbContext.Customers.FindAsync(id);
+
+  // Good — a DTO shaped for the API contract, decoupled from the persistence model
+  [HttpGet("{id}")]
+  public async Task<CustomerResponse> Get(Guid id)
+  {
+      var customer = await _dbContext.Customers.FindAsync(id);
+      return new CustomerResponse(customer.Id, customer.Name, customer.Email);
+  }
+  ```
 - Premature abstraction — an interface or split introduced with no real second implementation ([[architecture-principles]]).
 - Non-descriptive lambda/callback parameter names ([[coding-standards]]'s naming rules).
 - Enums persisted or transmitted by ordinal instead of name ([[coding-standards]]).
+  ```csharp
+  // Bad — reordering or inserting a member silently changes stored meaning
+  public enum OrderStatus { Pending, Paid, Shipped }
+  context.SaveJson(new { status = (int)order.Status });
+
+  // Good — stable regardless of member order
+  context.SaveJson(new { status = order.Status.ToString() });
+  ```
 
 ## Comment format
 
