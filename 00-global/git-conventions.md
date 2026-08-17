@@ -39,9 +39,9 @@ tags: [global, git]
 
 ## Code review
 
-- Review for correctness first, then architecture/consistency with existing patterns, then style.
-- Flag magic values, duplicated logic, and architecture-boundary violations (see [[coding-standards]], [[architecture-principles]]) as blocking; pure style nits as non-blocking suggestions.
+See [[code-review]] for review pass order, severity classification, and the security checklist.
 
 ## See also
 
 - [[coding-standards]]
+- [[code-review]]

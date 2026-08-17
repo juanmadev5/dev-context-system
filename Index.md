@@ -13,7 +13,7 @@ This vault is the single source of truth for how AI coding agents (Claude Code a
 
 ## Structure
 
-- `00-global/` — rules that apply to every project regardless of stack: [[coding-standards]], [[architecture-principles]], [[git-conventions]], [[tech-stack-map]], [[responsive-design]], [[sources-conventions]].
+- `00-global/` — rules that apply to every project regardless of stack: [[coding-standards]], [[architecture-principles]], [[git-conventions]], [[code-review]], [[tech-stack-map]], [[responsive-design]], [[sources-conventions]].
 - `01-mobile/` — [[flutter]], [[jetpack-compose]].
 - `02-web/` — [[angular]], [[vuejs]], [[react]], [[astro]], [[html-tailwind]], [[tailwind-css]].
 - `03-backend/` — [[aspnet-core]], [[spring-boot]], [[supabase]].
