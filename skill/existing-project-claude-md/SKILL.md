@@ -14,7 +14,7 @@ what changed.
 
 **Vault path (this machine, hardcoded — update if the vault ever moves):**
 ```
-C:/Users/juan.velazquez/OneDrive - Cabaña los Troncos S.A/Escritorio/notas/dev-context-system
+C:\Users\juan.velazquez\dev-context-system
 ```
 
 Read `Index.md` and `05-templates/how-to-compose-claude-md.md` in that vault first if unfamiliar
