@@ -72,11 +72,10 @@ some other project's repo:
   manifests, folder layout, `docker-compose.yml`) to detect stack/architecture/infra actually in
   use, then reconciles against vault defaults instead of assuming a greenfield choice.
 
-Both hardcode this vault's absolute path in their `SKILL.md` (`C:/Users/juan.velazquez/OneDrive -
-Cabaña los Troncos S.A/Escritorio/notas/dev-context-system`) — **update that path in both files if
-the vault ever moves**, and keep the two skills' descriptions of the vault's structure in sync with
-reality when the structure changes. Both skills only ever write to the *target* project; neither
-edits this vault.
+Both hardcode this vault's absolute path in their `SKILL.md` (`C:\Users\juan.velazquez\dev-context-system`)
+— **update that path in both files (and here) if the vault ever moves**, and keep the two skills'
+descriptions of the vault's structure in sync with reality when the structure changes. Both skills
+only ever write to the *target* project; neither edits this vault.
 
 ## Git
 
