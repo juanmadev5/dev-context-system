@@ -95,7 +95,7 @@ picks a stack from `tech-stack-map.md` and an architecture from that stack's own
 `architecture-principles.md`, builds the import list, writes `CLAUDE.md` at the target project's
 root.
 
-It hardcodes this vault's absolute path in its `SKILL.md` (`C:\Users\juan.velazquez\dev-context-system`)
+It hardcodes this vault's absolute path in its `SKILL.md` (`/home/juanma/dev-context-system`)
 — **update that path (and here) if the vault ever moves**, and keep the skill's description of the
 vault's structure in sync with reality when the structure changes. It only ever writes to the
 *target* project; it never edits this vault.

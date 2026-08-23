@@ -10,9 +10,9 @@ A Jetpack Compose project's `CLAUDE.md` should import this file plus [[00-global
 
 Content imports (in order):
 
-@C:/Users/juan.velazquez/dev-context-system/01-mobile/jetpack-compose/architecture-principles.md
-@C:/Users/juan.velazquez/dev-context-system/01-mobile/jetpack-compose/coding-standards.md
-@C:/Users/juan.velazquez/dev-context-system/01-mobile/jetpack-compose/code-review.md
-@C:/Users/juan.velazquez/dev-context-system/01-mobile/jetpack-compose/responsive-design.md
-@C:/Users/juan.velazquez/dev-context-system/01-mobile/jetpack-compose/sources.md
-@C:/Users/juan.velazquez/dev-context-system/01-mobile/jetpack-compose/jetpack-compose.md
+@/home/juanma/dev-context-system/01-mobile/jetpack-compose/architecture-principles.md
+@/home/juanma/dev-context-system/01-mobile/jetpack-compose/coding-standards.md
+@/home/juanma/dev-context-system/01-mobile/jetpack-compose/code-review.md
+@/home/juanma/dev-context-system/01-mobile/jetpack-compose/responsive-design.md
+@/home/juanma/dev-context-system/01-mobile/jetpack-compose/sources.md
+@/home/juanma/dev-context-system/01-mobile/jetpack-compose/jetpack-compose.md

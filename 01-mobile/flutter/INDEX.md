@@ -10,9 +10,9 @@ A Flutter project's `CLAUDE.md` should import this file plus [[00-global/git-con
 
 Content imports (in order):
 
-@C:/Users/juan.velazquez/dev-context-system/01-mobile/flutter/architecture-principles.md
-@C:/Users/juan.velazquez/dev-context-system/01-mobile/flutter/coding-standards.md
-@C:/Users/juan.velazquez/dev-context-system/01-mobile/flutter/code-review.md
-@C:/Users/juan.velazquez/dev-context-system/01-mobile/flutter/responsive-design.md
-@C:/Users/juan.velazquez/dev-context-system/01-mobile/flutter/sources.md
-@C:/Users/juan.velazquez/dev-context-system/01-mobile/flutter/flutter.md
+@/home/juanma/dev-context-system/01-mobile/flutter/architecture-principles.md
+@/home/juanma/dev-context-system/01-mobile/flutter/coding-standards.md
+@/home/juanma/dev-context-system/01-mobile/flutter/code-review.md
+@/home/juanma/dev-context-system/01-mobile/flutter/responsive-design.md
+@/home/juanma/dev-context-system/01-mobile/flutter/sources.md
+@/home/juanma/dev-context-system/01-mobile/flutter/flutter.md

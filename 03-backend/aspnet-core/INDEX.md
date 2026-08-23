@@ -10,8 +10,8 @@ An ASP.NET Core project's `CLAUDE.md` should also import [[00-global/git-convent
 
 Content imports (in order):
 
-@C:/Users/juan.velazquez/dev-context-system/03-backend/aspnet-core/architecture-principles.md
-@C:/Users/juan.velazquez/dev-context-system/03-backend/aspnet-core/coding-standards.md
-@C:/Users/juan.velazquez/dev-context-system/03-backend/aspnet-core/code-review.md
-@C:/Users/juan.velazquez/dev-context-system/03-backend/aspnet-core/sources.md
-@C:/Users/juan.velazquez/dev-context-system/03-backend/aspnet-core/aspnet-core.md
+@/home/juanma/dev-context-system/03-backend/aspnet-core/architecture-principles.md
+@/home/juanma/dev-context-system/03-backend/aspnet-core/coding-standards.md
+@/home/juanma/dev-context-system/03-backend/aspnet-core/code-review.md
+@/home/juanma/dev-context-system/03-backend/aspnet-core/sources.md
+@/home/juanma/dev-context-system/03-backend/aspnet-core/aspnet-core.md

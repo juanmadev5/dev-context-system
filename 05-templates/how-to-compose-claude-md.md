@@ -9,7 +9,7 @@ This vault is the **single source of truth**. Individual project repos don't dup
 ## The mechanism (verified against Claude Code's current behavior)
 
 - `@path` anywhere in a CLAUDE.md file (inline or on its own line) tells Claude Code to inline that file's content at session start.
-- **Absolute paths work**: `@C:/Users/juan.velazquez/dev-context-system/00-global/git-conventions.md` pulls that exact file in, regardless of where the project lives on disk.
+- **Absolute paths work**: `@/home/juanma/dev-context-system/00-global/git-conventions.md` pulls that exact file in, regardless of where the project lives on disk.
 - Import chains can go up to **4 hops deep**. Vault notes don't `@import` each other — with one deliberate exception: each stack folder's `INDEX.md` (e.g. `01-mobile/flutter/INDEX.md`) uses `@path` to pull in that stack's own copies of its architecture/coding-standards/code-review/(responsive-design)/sources notes plus the stack note itself. Every other cross-reference in the vault stays a `[[wikilink]]`. A project's CLAUDE.md → stack `INDEX.md` → that stack's own notes is 2 hops, well under the limit.
 - The **first time** a project's CLAUDE.md imports a file from outside the project directory (i.e. from this vault), Claude Code shows a one-time approval dialog. Approve it once per project; it won't ask again for that project.
 - `@path` inside a fenced code block or inline code span is **not** expanded — it stays literal text. So when writing a project's CLAUDE.md, the `@import` lines must sit as plain text, not inside triple-backtick blocks.
@@ -33,10 +33,10 @@ This vault is the **single source of truth**. Individual project repos don't dup
 
 ## Context imports
 
-@C:/Users/juan.velazquez/dev-context-system/00-global/git-conventions.md
-@C:/Users/juan.velazquez/dev-context-system/<layer>/<stack>/INDEX.md
-@C:/Users/juan.velazquez/dev-context-system/<layer>/<any-shared-styling-note-e.g.-tailwind-css>.md
-@C:/Users/juan.velazquez/dev-context-system/04-infra/<relevant-infra-notes>.md
+@/home/juanma/dev-context-system/00-global/git-conventions.md
+@/home/juanma/dev-context-system/<layer>/<stack>/INDEX.md
+@/home/juanma/dev-context-system/<layer>/<any-shared-styling-note-e.g.-tailwind-css>.md
+@/home/juanma/dev-context-system/04-infra/<relevant-infra-notes>.md
 
 ## Project-specific context
 

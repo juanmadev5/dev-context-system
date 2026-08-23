@@ -12,7 +12,7 @@ architecture rules, and stack conventions. Never invent rules here; every rule t
 
 **Vault path (this machine, hardcoded — update if the vault ever moves):**
 ```
-C:\Users\juan.velazquez\dev-context-system
+/home/juanma/dev-context-system
 ```
 
 Read `Index.md` and `05-templates/how-to-compose-claude-md.md` in that vault first if unfamiliar
