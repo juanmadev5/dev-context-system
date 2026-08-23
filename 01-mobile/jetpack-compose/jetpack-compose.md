@@ -56,7 +56,7 @@ Strict rule, no exceptions: a Composable never contains a literal UI string or a
 
 ## Navigation
 
-- **Navigation Compose** (Jetpack's official navigation library) for all routing.
+- **Navigation 3** (Jetpack's Compose-first navigation library, successor to Navigation Compose) for all routing — the app owns the back stack directly as a mutable list of routes, instead of the graph-based model Navigation Compose used.
 
 ## Async / reactive
 

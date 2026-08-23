@@ -23,9 +23,9 @@ Every time an agent consults external documentation while working on a Jetpack C
 `docs/SOURCES.md`, grouped by library under a `##` heading, one bullet per source:
 
 ```markdown
-## Navigation Compose
+## Navigation 3
 
-- Nested graphs: https://developer.android.com/guide/navigation/design/nested-graphs
+- Back stack basics (NavDisplay, back stack as state): https://developer.android.com/guide/navigation/navigation-3/basics
 
 ## Coroutines
 
