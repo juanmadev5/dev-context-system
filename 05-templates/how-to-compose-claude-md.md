@@ -9,15 +9,15 @@ This vault is the **single source of truth**. Individual project repos don't dup
 ## The mechanism (verified against Claude Code's current behavior)
 
 - `@path` anywhere in a CLAUDE.md file (inline or on its own line) tells Claude Code to inline that file's content at session start.
-- **Absolute paths work**: `@/home/juanma/Documents/dev-context-system/00-global/coding-standards.md` pulls that exact file in, regardless of where the project lives on disk.
-- Import chains can go up to **4 hops deep**. The notes in this vault don't themselves use `@imports` (only Obsidian `[[wikilinks]]` for cross-references), so a project's CLAUDE.md → vault note is a single hop — no risk of hitting the limit.
+- **Absolute paths work**: `@C:/Users/juan.velazquez/dev-context-system/00-global/git-conventions.md` pulls that exact file in, regardless of where the project lives on disk.
+- Import chains can go up to **4 hops deep**. Vault notes don't `@import` each other — with one deliberate exception: each stack folder's `INDEX.md` (e.g. `01-mobile/flutter/INDEX.md`) uses `@path` to pull in that stack's own copies of its architecture/coding-standards/code-review/(responsive-design)/sources notes plus the stack note itself. Every other cross-reference in the vault stays a `[[wikilink]]`. A project's CLAUDE.md → stack `INDEX.md` → that stack's own notes is 2 hops, well under the limit.
 - The **first time** a project's CLAUDE.md imports a file from outside the project directory (i.e. from this vault), Claude Code shows a one-time approval dialog. Approve it once per project; it won't ask again for that project.
 - `@path` inside a fenced code block or inline code span is **not** expanded — it stays literal text. So when writing a project's CLAUDE.md, the `@import` lines must sit as plain text, not inside triple-backtick blocks.
 - Imported content isn't summarized or trimmed — it loads in full. Keep the *set* of imports scoped to what that project actually uses (don't import every stack note "just in case").
 
 ## Steps to set up a new project
 
-1. Pick the stack from [[tech-stack-map]].
+1. Pick the stack from [[00-global/tech-stack-map|tech-stack-map]].
 2. Copy the closest matching template from this folder (`05-templates/`) — or build the import list from scratch using the pattern below.
 3. Save it as `CLAUDE.md` at the root of the project repo.
 4. Fill in the "Project-specific context" section at the bottom (domain, business rules unique to this project, anything not already covered by the vault).
@@ -33,12 +33,10 @@ This vault is the **single source of truth**. Individual project repos don't dup
 
 ## Context imports
 
-@/home/juanma/Documents/dev-context-system/00-global/coding-standards.md
-@/home/juanma/Documents/dev-context-system/00-global/architecture-principles.md
-@/home/juanma/Documents/dev-context-system/00-global/git-conventions.md
-@/home/juanma/Documents/dev-context-system/00-global/sources-conventions.md
-@/home/juanma/Documents/dev-context-system/<layer>/<stack-note>.md
-@/home/juanma/Documents/dev-context-system/04-infra/<relevant-infra-notes>.md
+@C:/Users/juan.velazquez/dev-context-system/00-global/git-conventions.md
+@C:/Users/juan.velazquez/dev-context-system/<layer>/<stack>/INDEX.md
+@C:/Users/juan.velazquez/dev-context-system/<layer>/<any-shared-styling-note-e.g.-tailwind-css>.md
+@C:/Users/juan.velazquez/dev-context-system/04-infra/<relevant-infra-notes>.md
 
 ## Project-specific context
 
@@ -49,12 +47,9 @@ This vault is the **single source of truth**. Individual project repos don't dup
 
 Ready-made examples for common combos:
 
-- [[template-web-complex-angular-aspnet]]
-- [[template-web-medium-vue-supabase]]
-- [[template-landing-astro]]
-- [[template-landing-html]]
-- [[template-mobile-flutter]]
-- [[template-mobile-jetpack-compose]]
+- [[05-templates/template-web-complex-angular-aspnet|template-web-complex-angular-aspnet]]
+- [[05-templates/template-mobile-flutter|template-mobile-flutter]]
+- [[05-templates/template-mobile-jetpack-compose|template-mobile-jetpack-compose]]
 
 ## Keeping the vault and projects in sync
 
@@ -63,4 +58,4 @@ Ready-made examples for common combos:
 
 ## See also
 
-- [[tech-stack-map]]
+- [[00-global/tech-stack-map|tech-stack-map]]

@@ -4,11 +4,11 @@ tags: [web, css, tailwind]
 
 # Tailwind CSS
 
-Used for styling on **every** web project regardless of framework — [[angular]], [[vuejs]], [[react]], [[astro]], [[html-tailwind]] — see [[tech-stack-map]].
+Used for styling on **every** web project regardless of framework — [[02-web/angular/angular|angular]], [[02-web/vuejs/vuejs|vuejs]], [[02-web/react/react|react]] — see [[00-global/tech-stack-map|tech-stack-map]].
 
 ## Conventions
 
-- Utility classes in markup are the default. Extract a component/partial when the same utility combination repeats across multiple places (DRY — see [[coding-standards]]), not by writing custom CSS classes to "clean up" the markup.
+- Utility classes in markup are the default. Extract a component/partial when the same utility combination repeats across multiple places (DRY — see the project's stack's own coding-standards note), not by writing custom CSS classes to "clean up" the markup.
 - Use Tailwind's `theme` config (colors, spacing, font sizes) as the single source of design tokens — never hardcode raw hex colors or dimensions in markup.
 - **No arbitrary-value utilities** (`w-[323px]`, `text-[#1a2b3c]`, `mt-[17px]`) as a way to sidestep the theme — if the value you need doesn't exist as a token, add it to `theme.extend` in the Tailwind config first, then use the token. Arbitrary values are only acceptable for a genuinely one-off case (e.g. matching an exact third-party asset's pixel dimensions) — never for anything that could plausibly repeat.
 - `@apply` sparingly, only for a handful of truly repeated, non-componentizable utility clusters — prefer extracting a component in the framework layer first.
@@ -16,7 +16,7 @@ Used for styling on **every** web project regardless of framework — [[angular]
 
 ## Responsiveness
 
-- Mobile-first ordering: unprefixed utilities = smallest viewport, then `sm:`/`md:`/`lg:`/`xl:`/`2xl:` add overrides for larger ones. See [[responsive-design]] for the full cross-platform principle and the minimum breakpoint set every layout must be verified against.
+- Mobile-first ordering: unprefixed utilities = smallest viewport, then `sm:`/`md:`/`lg:`/`xl:`/`2xl:` add overrides for larger ones. See the project's stack's own responsive-design note for the full principle and the minimum breakpoint set every layout must be verified against.
 - No fixed pixel widths/heights on layout containers — use `flex`/`grid` with relative sizing, `max-w-*`/`min-w-0`. Media always constrained (`max-w-full h-auto` or `aspect-*`).
 
 ## Color tokens
@@ -28,4 +28,4 @@ Used for styling on **every** web project regardless of framework — [[angular]
 
 ## See also
 
-- [[coding-standards]], [[responsive-design]]
+- [[02-web/angular/angular|angular]], [[02-web/vuejs/vuejs|vuejs]], [[02-web/react/react|react]]

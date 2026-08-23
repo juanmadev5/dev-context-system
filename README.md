@@ -12,11 +12,11 @@ Every project's `CLAUDE.md` pulls its rules directly from here via Claude Code's
 
 ## What it covers
 
-- **Global standards** — coding conventions, architecture principles (Clean Architecture, SOLID), git conventions, responsive design rules, how sources/documentation should be cited, and a decision map for which stack to reach for given a project's shape.
+- **Global standards** — git conventions, README conventions, and a decision map for which stack to reach for given a project's shape. Coding conventions, architecture principles (Clean Architecture, SOLID), code review rules, responsive design, and how sources/documentation should be cited live *inside* each stack's own folder instead — adapted to that stack's language and conventions, so an agent working on one stack is never pointed at rules written around a different one.
 - **Mobile** — Flutter, Jetpack Compose.
-- **Web** — Angular, Vue.js, React, Astro, plain HTML + Tailwind.
-- **Backend** — ASP.NET Core, Spring Boot, Supabase.
-- **Infrastructure** — Docker, deployments, PostgreSQL, Redis, Keycloak, AWS S3, Supabase auth/storage, local dev environments.
+- **Web** — Angular, Vue.js, React.
+- **Backend** — ASP.NET Core, Spring Boot.
+- **Infrastructure** — Docker, deployments, PostgreSQL, Redis, Keycloak, AWS S3, local dev environments.
 - **Templates** — ready-to-use `CLAUDE.md` files for the stack combinations I use most often.
 
 Each note reflects a decision I've actually made and stand behind — not a generic best-practices checklist copied from somewhere else.

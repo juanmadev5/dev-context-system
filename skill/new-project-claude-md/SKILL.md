@@ -30,8 +30,8 @@ wrong place), confirm the target path with the user before writing.
 
 ### 1. Gather the essentials
 
-Ask (don't assume — see the vault's own "Ask vs. assume" rule in `00-global/coding-standards.md`,
-it applies here too):
+Ask (don't assume — see the "Ask vs. assume" rule every stack's coding-standards note carries, it
+applies here too):
 
 - What is this project? One or two sentences: domain, purpose, who uses it.
 - What kind of app: mobile, web, backend API, landing page, or a combination?
@@ -52,10 +52,11 @@ picking a stack or architecture off it would be a guess.
 
 ### 3. Resolve the architecture
 
-Read `00-global/architecture-principles.md`. Apply its decision criteria (project size, how much
-business logic it carries, expected lifespan/team size) to what was described in step 1: Clean
-Architecture, Vertical Slice, or no formal pattern for a small/low-logic project. State the pick
-and the one-line reason.
+Read the chosen stack's own `architecture-principles.md` (e.g. `02-web/react/architecture-principles.md`
+once the stack is picked — every stack folder has one). Apply its decision criteria (project size,
+how much business logic it carries, expected lifespan/team size) to what was described in step 1:
+Clean Architecture, Vertical Slice, or no formal pattern for a small/low-logic project. State the
+pick and the one-line reason.
 
 ### 4. Check for an existing template
 
@@ -67,13 +68,16 @@ guidance instead of building from scratch.
 
 Follow the generic pattern in `05-templates/how-to-compose-claude-md.md`:
 
-- Always: `00-global/coding-standards.md`, `00-global/architecture-principles.md`,
-  `00-global/git-conventions.md`, `00-global/code-review.md`, `00-global/sources-conventions.md`.
-- The chosen stack note(s) from `01-mobile/`, `02-web/`, `03-backend/`.
+- Always: `00-global/git-conventions.md`.
+- The chosen stack's `INDEX.md` from `01-mobile/`, `02-web/`, or `03-backend/` (e.g.
+  `02-web/react/INDEX.md`) — this one file already brings in that stack's architecture,
+  coding-standards, code-review, responsive-design (if applicable), and sources notes, so don't
+  also import those separately.
+- `02-web/tailwind-css.md` for any web stack (it's shared, not part of a stack's own `INDEX.md`).
 - Only the `04-infra/` notes the project actually uses (auth provider, storage, DB, deployment
   target) — never import an infra note "just in case it comes up later."
-- `00-global/responsive-design.md` and `00-global/readme-conventions.md` when relevant (most web
-  and mobile projects; skip for a pure backend API with no UI).
+- `00-global/readme-conventions.md` when relevant (most projects; skip only if the project
+  genuinely won't have a README worth the convention, which is rare).
 
 **Before writing any `@path` line, verify the target file actually exists in the vault** — never
 reference a note by a guessed or remembered name without checking. Use the vault's absolute path
@@ -88,17 +92,90 @@ business rules unique to this project, and any deviation from vault defaults wit
 per the vault's own rule, a deviation only belongs in the vault itself if it's a durable
 preference for *future* projects too, not just this one.
 
-### 7. Write the file and hand off
+### 7. Write the file
 
 - Write `CLAUDE.md` at the project root, following the generic pattern's structure (title,
   one-line description, `## Context imports`, `## Project-specific context`).
-- Tell the user: the first time this `CLAUDE.md` loads in Claude Code, it'll show a one-time
-  approval prompt for importing files from outside the project directory (the vault) — approve it
-  once, it won't ask again for this project.
 - If the user wants to deviate from a vault default currently, still write the deviation in the
   project-specific section — don't edit the vault from inside this flow. Editing the vault is a
   separate, deliberate action the user takes when a project-specific deviation turns out to be a
   standing preference.
+
+### 8. Set up the commit-time static-analysis hook
+
+The vault's rules only take effect if the agent actually reads and follows them — nothing
+mechanically verifies that. Close that gap for the one thing that *is* mechanically checkable:
+whether the project's static analysis command(s) pass before a commit is allowed to happen.
+
+- For each stack chosen in step 2, read that stack's own `## Static analysis` section (e.g.
+  `02-web/react/react.md`) and take only the commands marked mandatory there — skip anything
+  listed as optional/"for deeper checks" (SonarAnalyzer, SpotBugs, etc.). Chain a stack's own
+  mandatory commands with `&&` (all must pass).
+- **Single-service project** (one stack, code at the repo root): write
+  `.claude/hooks/pre-commit-static-analysis.sh` that unconditionally runs that stack's mandatory
+  command(s) and exits non-zero on failure.
+- **Multi-service project** (e.g. a web stack + a backend, each in its own top-level folder per
+  the chosen template): the script only runs a stack's check when a file under that stack's own
+  folder is actually staged — read staged paths with `git diff --cached --name-only`, and only run
+  a service's command block when a staged path starts with that service's folder. Never run every
+  service's check on every commit regardless of what changed. Pattern:
+
+  ```bash
+  #!/usr/bin/env bash
+  staged=$(git diff --cached --name-only)
+  errors=""
+
+  if echo "$staged" | grep -q '^<service-folder>/'; then
+    output=$(cd <service-folder> && <that stack's mandatory command(s)> 2>&1)
+    if [ $? -ne 0 ]; then
+      errors="${errors}## <service-folder> (<command>)\n${output}\n\n"
+    fi
+  fi
+  # ...repeat the block above per service folder in this project...
+
+  if [ -n "$errors" ]; then
+    jq -n --arg reason "$errors" '{hookSpecificOutput:{hookEventName:"PreToolUse","permissionDecision":"deny","permissionDecisionReason":$reason}}'
+  else
+    exit 0
+  fi
+  ```
+- Wire it into `.claude/settings.json` (project-level, so it's team-wide and gets committed) as a
+  `PreToolUse` hook on the `Bash` matcher, filtered with `"if": "Bash(git commit *)"` so it only
+  fires on an actual commit attempt, not on every shell command:
+
+  ```json
+  {
+    "hooks": {
+      "PreToolUse": [
+        {
+          "matcher": "Bash",
+          "hooks": [
+            {
+              "type": "command",
+              "if": "Bash(git commit *)",
+              "command": "bash .claude/hooks/pre-commit-static-analysis.sh",
+              "timeout": 120
+            }
+          ]
+        }
+      ]
+    }
+  }
+  ```
+- Follow the `update-config` skill's own hook-construction workflow to do this safely: read any
+  existing `.claude/settings.json` first and merge (never overwrite existing hooks/permissions),
+  pipe-test the script directly before wiring it into settings, validate the written JSON with
+  `jq -e`, and prove the hook actually fires before considering this step done.
+- Tell the user this hook now blocks `git commit` in this project until the touched stack's static
+  analysis passes, and that the check that failed is what Claude sees when the commit is denied —
+  so a future agent working here can read the failure and fix it before retrying, without the user
+  needing to intervene.
+
+### 9. Hand off
+
+- Tell the user: the first time this `CLAUDE.md` loads in Claude Code, it'll show a one-time
+  approval prompt for importing files from outside the project directory (the vault) — approve it
+  once, it won't ask again for this project.
 
 ## Hard rules
 
@@ -106,5 +183,7 @@ preference for *future* projects too, not just this one.
 - Never guess the stack or architecture without either an explicit user answer or an explicit,
   stated recommendation the user confirmed.
 - Don't over-import: only the notes the project actually needs, not the whole vault.
-- This skill only writes the target project's `CLAUDE.md`. It never edits anything inside the
-  vault itself.
+- This skill only writes the target project's `CLAUDE.md` (and, per step 8, that project's
+  `.claude/settings.json`/`.claude/hooks/`). It never edits anything inside the vault itself.
+- The commit-time hook only ever uses commands already marked mandatory in a stack's own
+  `## Static analysis` section — never invent a check that isn't already documented there.

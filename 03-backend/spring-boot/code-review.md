@@ -1,0 +1,95 @@
+---
+tags: [spring-boot, code-review]
+---
+
+# Code Review — Spring Boot
+
+Universal rules for reviewing Spring Boot code — whether the reviewer is a human or an agent running a review (e.g. via a `/code-review`-style command).
+
+## Review pass order
+
+Review in this order — earlier passes catch the issues that matter most and can make later passes moot:
+
+1. **Correctness** — does it do what it claims to do? Edge cases, null handling, off-by-one errors, incorrect conditionals.
+2. **Security** — see [[#Security checklist]] below.
+3. **Architecture/consistency** — does it respect the layer/slice boundaries in [[03-backend/spring-boot/architecture-principles|architecture-principles]] and the conventions in [[03-backend/spring-boot/spring-boot|spring-boot.md]]?
+4. **Performance** — N+1 queries (Hibernate lazy-loading traps especially), unnecessary loops/allocations, unpaginated large payloads.
+5. **Tests** — is coverage present where [[03-backend/spring-boot/coding-standards|coding-standards]]'s testing criteria call for it?
+6. **Style** — lowest priority, never blocking on its own.
+
+## Severity classification
+
+- **Blocking**: correctness bugs, security vulnerabilities, magic values (see [[03-backend/spring-boot/coding-standards|coding-standards]]), duplicated logic, architecture-boundary violations, broken build/tests, missing error handling at a system boundary.
+- **Non-blocking (nit)**: naming preferences, micro-optimizations, suggested comments, pure style.
+- A PR with only non-blocking comments can be approved; any blocking item requires changes before merge.
+
+## Security checklist
+
+Before flagging or clearing a change on security grounds, check it against the current **[OWASP Top 10](https://owasp.org/Top10/2025/)** — fetch the page rather than relying on a remembered list, since the categories and examples get revised. Record the lookup in `docs/SOURCES.md` per [[03-backend/spring-boot/sources|sources]] if it actually shaped a finding.
+
+At minimum, check for:
+
+- Injection (SQL, command) — unparameterized queries, string-concatenated JPQL/native queries instead of `@Param`-bound queries or `Specification`s.
+- Broken access control — missing or incorrect `@PreAuthorize`/method-security checks per endpoint/resource (authentication alone isn't enough).
+- Sensitive data exposure — secrets, tokens, or credentials hardcoded, logged, or committed in `application.yml` (see [[03-backend/spring-boot/spring-boot|spring-boot.md]]'s Configuration & secrets section).
+- Missing input validation at system boundaries (see [[03-backend/spring-boot/coding-standards|coding-standards]]'s error-handling section) — a request DTO without Bean Validation annotations.
+- CORS misconfiguration on the Spring Security filter chain.
+
+Cross-reference [[04-infra/keycloak-auth|keycloak-auth]] when the project uses it.
+
+## Anti-patterns to always flag
+
+- God classes/methods doing more than one thing (violates Single Responsibility, see [[03-backend/spring-boot/coding-standards|coding-standards]]).
+- Domain/business objects leaking into the presentation layer, or any other [[03-backend/spring-boot/architecture-principles|architecture-principles]] boundary violation.
+  ```java
+  // Bad — the JPA entity returned straight from the controller
+  @GetMapping("/{id}")
+  public Customer get(@PathVariable UUID id) {
+      return customerRepository.findById(id).orElseThrow();
+  }
+
+  // Good — a DTO shaped for the API contract, decoupled from the persistence model
+  @GetMapping("/{id}")
+  public CustomerResponse get(@PathVariable UUID id) {
+      Customer customer = customerRepository.findById(id).orElseThrow();
+      return new CustomerResponse(customer.getId(), customer.getName(), customer.getEmail());
+  }
+  ```
+- Premature abstraction — extra internal splitting or indirection introduced with no real boundary or reason to change ([[03-backend/spring-boot/architecture-principles|architecture-principles]]). This does **not** include interfaces on injected dependencies — those are mandatory from the first implementation; never flag a DI interface as premature just because there's only one concrete implementation today.
+- Non-descriptive lambda parameter names ([[03-backend/spring-boot/coding-standards|coding-standards]]'s naming rules).
+- Enums persisted or transmitted by ordinal instead of name ([[03-backend/spring-boot/coding-standards|coding-standards]]).
+  ```java
+  // Bad — reordering or inserting a member silently changes stored meaning
+  public enum OrderStatus { PENDING, PAID, SHIPPED }
+
+  @Enumerated(EnumType.ORDINAL)
+  private OrderStatus status;
+
+  // Good — stable regardless of member order
+  @Enumerated(EnumType.STRING)
+  private OrderStatus status;
+  ```
+
+## Comment format
+
+- One comment per issue: location, the problem, the concrete fix. Don't narrate the whole diff back to the author.
+- State the fix, don't just point out the problem — "use a parameterized query here" beats "this looks unsafe."
+
+## Self-review before opening a PR
+
+- Read your own full diff before requesting review — don't rely on CI alone to catch what a human eye would.
+- Confirm `mvn compile`, Checkstyle, and the test suite pass locally (see [[00-global/git-conventions|git-conventions]]).
+
+## Approve / request changes
+
+- Any blocking item open → request changes.
+- Only non-blocking comments left → approve, comments optional to address.
+- Nothing outstanding → approve.
+
+## See also
+
+- [[03-backend/spring-boot/spring-boot|spring-boot]]
+- [[03-backend/spring-boot/coding-standards|coding-standards]]
+- [[03-backend/spring-boot/architecture-principles|architecture-principles]]
+- [[00-global/git-conventions|git-conventions]]
+- [[03-backend/spring-boot/sources|sources]]

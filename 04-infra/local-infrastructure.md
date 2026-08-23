@@ -22,14 +22,14 @@ Location: `~/dev/local-infrastructure` (see that repo's `README.md` for the full
 
 ## How a project connects
 
-- **From the host** (an app run directly, not in Docker): `localhost` + the published port for each service. See [[postgresql]], [[redis]], [[keycloak-auth]] for stack-specific conventions on top of this.
+- **From the host** (an app run directly, not in Docker): `localhost` + the published port for each service. See [[04-infra/postgresql|postgresql]], [[04-infra/redis|redis]], [[04-infra/keycloak-auth|keycloak-auth]] for stack-specific conventions on top of this.
 - **From inside another project's own Docker Compose stack**: `localhost` inside that container refers to the container itself, not this stack. Either connect via `host.docker.internal` (with `extra_hosts` on Linux) + published ports, or join a shared external Docker network (`docker network create local-shared`) if that project's compose file is deliberately configured for it. Default to host + published ports unless a project has a specific reason to need the shared-network topology.
 
 ## Lifecycle
 
 - `docker compose up -d` / `down` / `down -v` (the latter wipes all data — Postgres, Keycloak, Redis alike) from within `~/dev/local-infrastructure`.
-- `start-dev` Keycloak mode is dev-only; never used as a production template — see [[keycloak-auth]].
+- `start-dev` Keycloak mode is dev-only; never used as a production template — see [[04-infra/keycloak-auth|keycloak-auth]].
 
 ## See also
 
-- [[docker]], [[postgresql]], [[redis]], [[keycloak-auth]]
+- [[04-infra/docker|docker]], [[04-infra/postgresql|postgresql]], [[04-infra/redis|redis]], [[04-infra/keycloak-auth|keycloak-auth]]

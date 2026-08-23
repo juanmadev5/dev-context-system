@@ -1,0 +1,93 @@
+---
+tags: [flutter, code-review]
+---
+
+# Code Review — Flutter
+
+Universal rules for reviewing Flutter code — whether the reviewer is a human or an agent running a review (e.g. via a `/code-review`-style command).
+
+## Review pass order
+
+Review in this order — earlier passes catch the issues that matter most and can make later passes moot:
+
+1. **Correctness** — does it do what it claims to do? Edge cases, null handling, off-by-one errors, incorrect conditionals.
+2. **Security** — see [[#Security checklist]] below.
+3. **Architecture/consistency** — does it respect the layer/slice boundaries in [[01-mobile/flutter/architecture-principles|architecture-principles]] and the conventions in [[01-mobile/flutter/flutter|flutter.md]]?
+4. **Performance** — unnecessary rebuilds, unbounded lists without pagination/lazy loading, heavy work on the UI thread.
+5. **Tests** — is coverage present where [[01-mobile/flutter/coding-standards|coding-standards]]'s testing criteria call for it?
+6. **Style** — lowest priority, never blocking on its own.
+
+## Severity classification
+
+- **Blocking**: correctness bugs, security vulnerabilities, magic values (see [[01-mobile/flutter/coding-standards|coding-standards]]), duplicated logic, architecture-boundary violations, broken build/tests, missing error handling at a system boundary.
+- **Non-blocking (nit)**: naming preferences, micro-optimizations, suggested comments, pure style.
+- A PR with only non-blocking comments can be approved; any blocking item requires changes before merge.
+
+## Security checklist
+
+Before flagging or clearing a change on security grounds, check it against the current **[OWASP Top 10](https://owasp.org/Top10/2025/)** — fetch the page rather than relying on a remembered list, since the categories and examples get revised. Record the lookup in `docs/SOURCES.md` per [[01-mobile/flutter/sources|sources]] if it actually shaped a finding.
+
+At minimum, check for:
+
+- Broken access control — missing or incorrect authorization checks before a screen/action is reachable (authentication alone isn't enough).
+- Sensitive data exposure — secrets, tokens, or credentials hardcoded, logged, or stored in plain `SharedPreferences` instead of secure storage.
+- Missing input validation at system boundaries (see [[01-mobile/flutter/coding-standards|coding-standards]]'s error-handling section).
+- Insecure network calls — no certificate pinning/TLS validation bypass, no secrets embedded in request URLs.
+
+Cross-reference [[04-infra/keycloak-auth|keycloak-auth]] when the project uses it.
+
+## Anti-patterns to always flag
+
+- God widgets/functions doing more than one thing (violates Single Responsibility, see [[01-mobile/flutter/coding-standards|coding-standards]]).
+- Domain/business objects leaking into the presentation layer, or any other [[01-mobile/flutter/architecture-principles|architecture-principles]] boundary violation.
+  ```dart
+  // Bad — a data-layer model returned straight to the widget tree
+  class CustomerScreen extends StatelessWidget {
+    Widget build(BuildContext context) {
+      final customer = customerDataSource.fetchCustomer(id); // raw DTO
+      return Text(customer.email);
+    }
+  }
+
+  // Good — a view model shaped for the UI, decoupled from the data-layer model
+  class CustomerViewModel {
+    final String displayName;
+    final String maskedEmail;
+    CustomerViewModel({required this.displayName, required this.maskedEmail});
+  }
+  ```
+- Premature abstraction — extra internal splitting or indirection introduced with no real boundary or reason to change ([[01-mobile/flutter/architecture-principles|architecture-principles]]). This does **not** include interfaces on injected dependencies — those are mandatory from the first implementation; never flag a DI interface as premature just because there's only one concrete implementation today.
+- Non-descriptive callback parameter names ([[01-mobile/flutter/coding-standards|coding-standards]]'s naming rules).
+- Enums persisted or transmitted by `.index` instead of `.name` ([[01-mobile/flutter/coding-standards|coding-standards]]).
+  ```dart
+  // Bad — reordering or inserting a member silently changes stored meaning
+  enum OrderStatus { pending, paid, shipped }
+  prefs.setInt('order_status', order.status.index);
+
+  // Good — stable regardless of member order
+  prefs.setString('order_status', order.status.name);
+  ```
+
+## Comment format
+
+- One comment per issue: location, the problem, the concrete fix. Don't narrate the whole diff back to the author.
+- State the fix, don't just point out the problem — "extract this into a named widget" beats "this build method is too big."
+
+## Self-review before opening a PR
+
+- Read your own full diff before requesting review — don't rely on CI alone to catch what a human eye would.
+- Confirm `flutter analyze` and the test suite pass locally (see [[00-global/git-conventions|git-conventions]]).
+
+## Approve / request changes
+
+- Any blocking item open → request changes.
+- Only non-blocking comments left → approve, comments optional to address.
+- Nothing outstanding → approve.
+
+## See also
+
+- [[01-mobile/flutter/flutter|flutter]]
+- [[01-mobile/flutter/coding-standards|coding-standards]]
+- [[01-mobile/flutter/architecture-principles|architecture-principles]]
+- [[00-global/git-conventions|git-conventions]]
+- [[01-mobile/flutter/sources|sources]]
