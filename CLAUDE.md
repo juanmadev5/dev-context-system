@@ -54,8 +54,6 @@ There is no application code, no dependency manifest, and no build/lint/test too
 - `05-templates/` — `how-to-compose-claude-md.md` (defines the `@path` import mechanism and the
   generic pattern) plus ready-made `template-*.md` files for common stack combinations, meant to be
   copied as the starting point for a new project's `CLAUDE.md`.
-- `skill/` — a Claude Code skill that automates consuming this vault from *other* project repos
-  (see below). It is not consumed from inside this repo.
 
 ## Why the global rules are duplicated per stack
 
@@ -86,19 +84,6 @@ written:
   Any note that shows example import lines must keep them outside triple-backtick fences.
 - Imported content is inlined in full, unsummarized — keep individual notes focused so importing
   projects aren't forced to pull in irrelevant bulk.
-
-## The `skill/` agent
-
-`skill/new-project-claude-md` is a Claude Code skill (deployed to `~/.claude/skills/`) that reads
-*this vault* to compose a new project's `CLAUDE.md`: conversational — gathers project intent,
-picks a stack from `tech-stack-map.md` and an architecture from that stack's own
-`architecture-principles.md`, builds the import list, writes `CLAUDE.md` at the target project's
-root.
-
-It hardcodes this vault's absolute path in its `SKILL.md` (`/home/juanma/dev-context-system`)
-— **update that path (and here) if the vault ever moves**, and keep the skill's description of the
-vault's structure in sync with reality when the structure changes. It only ever writes to the
-*target* project; it never edits this vault.
 
 ## Git
 
