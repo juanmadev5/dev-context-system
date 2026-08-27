@@ -59,8 +59,8 @@ Apply these pragmatically: they're a guide for keeping code changeable, not a ch
 
 ## Architecture
 
-- Default to **Clean Architecture** or **Vertical Slice** depending on project size/complexity. See [[01-mobile/flutter/architecture-principles|architecture-principles]] for the decision criteria and layout.
-- **Never create a folder that ends up empty.** The `core/`, `data/`, `presentation/`, `features/<feature>/` tree shown in [[01-mobile/flutter/flutter|flutter.md]] is the *shape* a project converges toward, not a scaffold to stamp out up front — create a folder only at the moment it actually gets its first file.
+- Default to the **UI / Domain / Data** architecture (MVVM) described in [[01-mobile/flutter/architecture-principles|architecture-principles]] for every project — the layers and folder layout are not a per-project choice.
+- **Never create a folder that ends up empty.** The `ui/`, `domain/`, `data/` tree shown in [[01-mobile/flutter/flutter|flutter.md]] is the *shape* a project converges toward, not a scaffold to stamp out up front — create a folder (including a feature's `domain/use_cases/` at all) only at the moment it actually gets its first file.
 - Corollary: don't pre-create the full folder tree for a new feature "so it's ready" — add each folder as the corresponding file is written. An empty folder in the repo is either dead weight (most VCS don't even track it) or, worse, a placeholder someone has to remember to clean up.
 
 ## Comments
@@ -86,7 +86,7 @@ A task is never "done" just because it behaves correctly or compiles. Code can l
 - **Static analysis** — `flutter analyze` (or `dart analyze`) passes clean (no new errors or warnings introduced by the change) — see [[01-mobile/flutter/flutter|flutter.md]]'s `## Static analysis` section. Never skip this assuming "it looks fine" or because the change was small.
 - **Tests** — pass locally; if the change touches logic covered by [[01-mobile/flutter/flutter|flutter.md]]'s `## Testing` criteria, new tests were written for it.
 - **Self-review** — the full diff was read start to finish before calling the task done, per [[01-mobile/flutter/code-review|code-review]]'s self-review section.
-- **Docs** — the project's README was updated if the change affects it ([[00-global/readme-conventions|readme-conventions]]); `docs/SOURCES.md` was updated if external documentation was consulted ([[01-mobile/flutter/sources|sources]]).
+- **Docs** — the project's README was updated if the change affects it ([[00-global/readme-conventions|readme-conventions]]); `docs/SOURCES.md` was updated if a source not already covered by [[01-mobile/flutter/sources|sources]] was consulted.
 - **Scope check** — the change matches exactly what was asked, with no unrelated edits left in (see [[#Scope discipline]] below).
 - **No residue** — no leftover debug code, commented-out blocks, or unowned TODOs.
 

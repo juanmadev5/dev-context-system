@@ -4,37 +4,74 @@ tags: [vuejs, documentation, sources]
 
 # Sources — Vue.js
 
-Every time an agent consults external documentation while working on a Vue project — official docs, API references, package documentation — the source gets recorded in that project's `docs/SOURCES.md`. This is what lets a human (or another agent) later verify *where* a convention or implementation detail actually came from, instead of trusting it blindly or re-deriving it from scratch.
-
-## When to record
-
-- Any time a web lookup (fetching a page, searching, reading a package's official docs) actually informs a decision, an implementation detail, or code written during a task — record it.
-- A lookup that turns out irrelevant to what got written doesn't need an entry — this is about traceability for what actually shaped the work, not a log of every request made.
-- `docs/SOURCES.md` is created the first time it's actually needed, per [[02-web/vuejs/coding-standards|coding-standards]]'s "no empty folders" reasoning applied to documentation — don't scaffold it empty upfront in a new project.
+Curated index of this stack's own official documentation — the vetted entry points to consult first, instead of rediscovering them from scratch on every project. Every link below points to the vendor/maintainer's own official docs.
 
 ## Official documentation only
 
 - **Only the source's own official documentation** — the vendor/maintainer's docs site, the package's own repo (README, wiki, official guide), or a relevant standard/spec.
-- **Never** blogs, Medium/dev.to posts, Stack Overflow, random tutorials, or AI-generated summary/aggregator sites — even if one of those turns up first in a search. If the official docs genuinely don't cover something, that's worth flagging to the developer rather than filling the gap from an unofficial source.
-- For this stack, official means: `vuejs.org` — covers Vue itself as well as its official sub-projects (Vue Router, Pinia) published under the same domain.
+- **Never** blogs, Medium/dev.to posts, Stack Overflow, random tutorials, or AI-generated summary/aggregator sites — even if one of those turns up first in a search.
+- For this stack, official means: `vuejs.org` (Vue itself), `vite.dev`, and each library's own docs domain listed below.
 
-## Format
+## Vue.js
 
-`docs/SOURCES.md`, grouped by library under a `##` heading, one bullet per source:
+- Official docs entry point / introduction: https://vuejs.org/guide/introduction.html
+- Composition API FAQ (what/why, relation to the Options API): https://vuejs.org/guide/extras/composition-api-faq.html
+- `<script setup>` SFC syntax reference: https://vuejs.org/api/sfc-script-setup.html
+- Using Vue with TypeScript: https://vuejs.org/guide/typescript/overview.html
 
-```markdown
+## Vite
+
+- Getting Started guide: https://vite.dev/guide/
+
 ## Pinia
 
-- Store composition: https://pinia.vuejs.org/core-concepts/
+- Official documentation homepage: https://pinia.vuejs.org/
 
 ## Vue Router
 
-- Navigation guards: https://router.vuejs.org/guide/advanced/navigation-guards.html
-```
+- Official documentation homepage: https://router.vuejs.org/
+- Navigation Guards guide: https://router.vuejs.org/guide/advanced/navigation-guards.html
+- Route Meta Fields guide: https://router.vuejs.org/guide/advanced/meta.html
 
-- Group by the library the source belongs to, not by date or by task — the file accumulates over the project's lifetime as a reference index, not a session log.
-- One bullet per distinct source; don't duplicate an entry that's already there for the same URL.
-- The bullet's label is a short, specific description of what the link actually covers, never just "docs" or the bare URL with no label.
+## Vitest
+
+- Getting Started guide: https://vitest.dev/guide/
+
+## Vue Test Utils
+
+- Official documentation homepage: https://test-utils.vuejs.org/
+
+## Playwright
+
+- Installation / getting started: https://playwright.dev/docs/intro
+
+## vue-i18n
+
+- Introduction: https://vue-i18n.intlify.dev/guide/introduction
+- Getting Started guide: https://vue-i18n.intlify.dev/guide/essentials/started
+- Composition API usage guide: https://vue-i18n.intlify.dev/guide/advanced/composition
+
+## vue-tsc
+
+- Official README (usage, `--noEmit`, requirements) in the `vuejs/language-tools` repo: https://github.com/vuejs/language-tools/blob/master/packages/tsc/README.md
+
+## eslint-plugin-vue
+
+- Introduction: https://eslint.vuejs.org/
+- User Guide (installation/configuration): https://eslint.vuejs.org/user-guide/
+
+## If a source isn't listed here
+
+This index covers the libraries/topics this vault's conventions actually name — it isn't exhaustive. If a task needs an official documentation source that isn't listed above:
+
+- Look it up directly — same rule applies: only the vendor/maintainer's own official docs, never a blog/tutorial/Stack Overflow/AI-summary site.
+- Record it in that project's own `docs/SOURCES.md` (created the first time it's actually needed, per [[02-web/vuejs/coding-standards|coding-standards]]'s "no empty folders" reasoning applied to documentation), grouped by library under a `##` heading, one bullet per source:
+
+  ```markdown
+  ## some-new-package
+
+  - What the page covers: https://...
+  ```
 
 ## See also
 

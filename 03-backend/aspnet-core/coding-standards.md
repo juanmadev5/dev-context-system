@@ -84,7 +84,7 @@ A task is never "done" just because it behaves correctly or compiles. Code can l
 - **Static analysis** — `dotnet build` (Roslyn analyzers) and `dotnet format --verify-no-changes` pass clean (no new errors or warnings introduced by the change) — see [[03-backend/aspnet-core/aspnet-core|aspnet-core.md]]'s `## Static analysis` section. Never skip this assuming "it looks fine" or because the change was small.
 - **Tests** — pass locally; if the change touches logic covered by this note's [[#Testing]] criteria, new tests were written for it.
 - **Self-review** — the full diff was read start to finish before calling the task done, per [[03-backend/aspnet-core/code-review|code-review]]'s self-review section.
-- **Docs** — the project's README was updated if the change affects it ([[00-global/readme-conventions|readme-conventions]]); `docs/SOURCES.md` was updated if external documentation was consulted ([[03-backend/aspnet-core/sources|sources]]).
+- **Docs** — the project's README was updated if the change affects it ([[00-global/readme-conventions|readme-conventions]]); `docs/SOURCES.md` was updated if a source not already covered by [[03-backend/aspnet-core/sources|sources]] was consulted.
 - **Scope check** — the change matches exactly what was asked, with no unrelated edits left in (see [[#Scope discipline]] below).
 - **No residue** — no leftover debug code, commented-out blocks, or unowned TODOs.
 
@@ -93,7 +93,7 @@ A task is never "done" just because it behaves correctly or compiles. Code can l
 - Tests are **not a blanket requirement for every project or every piece of logic.** Writing tests for a trivial CRUD wrapper or low-stakes glue code is its own form of over-engineering — see Scope discipline below.
 - Tests **are mandatory** for business logic that's genuinely delicate and error-prone: money/billing calculations, complex state transitions, permission/authorization logic, concurrency-sensitive code, or anything where a silent bug would corrupt data or cause a real incident rather than just a cosmetic glitch.
 - The judgment call: "if this breaks silently, how bad is it?" — if the honest answer involves someone getting paid wrong, a user seeing another user's data, or a state machine landing in an invalid state, it needs tests. If the worst case is "a list renders in the wrong order," it probably doesn't.
-- When tests are warranted, the testing stack is chosen per-project — [[03-backend/aspnet-core/aspnet-core|aspnet-core.md]] doesn't mandate a specific testing library, unlike a frontend/mobile stack note that pins one.
+- Backend testing stack is chosen per-project — [[03-backend/aspnet-core/aspnet-core|aspnet-core.md]] does not mandate one, though its `## Testing` section names xUnit + Moq as the idiomatic default when tests are warranted.
 
 ## Scope discipline
 

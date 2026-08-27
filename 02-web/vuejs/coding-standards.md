@@ -87,7 +87,7 @@ A task is never "done" just because it behaves correctly or compiles. Code can l
 - **Static analysis** — passes clean (no new errors or warnings introduced by the change) — see [[02-web/vuejs/vuejs|vuejs.md]]'s `## Static analysis` section. Never skip this assuming "it looks fine" or because the change was small.
 - **Tests** — pass locally; if the change touches logic covered by [[02-web/vuejs/vuejs|vuejs.md]]'s `## Testing` criteria, new tests were written for it.
 - **Self-review** — the full diff was read start to finish before calling the task done, per [[02-web/vuejs/code-review|code-review]]'s self-review section.
-- **Docs** — the project's README was updated if the change affects it ([[00-global/readme-conventions|readme-conventions]]); `docs/SOURCES.md` was updated if external documentation was consulted ([[02-web/vuejs/sources|sources]]).
+- **Docs** — the project's README was updated if the change affects it ([[00-global/readme-conventions|readme-conventions]]); `docs/SOURCES.md` was updated if a source not already covered by [[02-web/vuejs/sources|sources]] was consulted.
 - **Scope check** — the change matches exactly what was asked, with no unrelated edits left in (see [[#Scope discipline]] below).
 - **No residue** — no leftover debug code, commented-out blocks, or unowned TODOs.
 

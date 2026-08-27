@@ -14,13 +14,11 @@ Alternative default backend to [[03-backend/aspnet-core/aspnet-core|aspnet-core]
 
 ## API style
 
-There's no Minimal-API-style alternative in mainstream Spring — **every** endpoint is a `@RestController`, regardless of project size. The size-based decision from [[03-backend/spring-boot/architecture-principles|architecture-principles]] (Clean Architecture vs. a lighter package-by-feature layout) still applies — it just changes the *package layout* underneath, not the routing style.
+There's no Minimal-API-style alternative in mainstream Spring — **every** endpoint is a `@RestController`. Every project uses [[03-backend/spring-boot/architecture-principles|architecture-principles]]'s Clean Architecture module split — not a per-project choice, and it doesn't change the routing style, only the package layout underneath.
 
 ## Project structure
 
-Follow [[03-backend/spring-boot/architecture-principles|architecture-principles]] to pick between the two layouts below. Both use Controllers.
-
-**Clean Architecture** (default for large apps with real, long-lived business logic):
+Every Spring Boot project follows [[03-backend/spring-boot/architecture-principles|architecture-principles]]'s Clean Architecture layering. Controllers throughout.
 
 - **Mandatory: one Maven module per layer, not packages inside a single module.** A multi-module project (one parent `pom.xml`, four child modules, wired via `<dependency>` between them) enforces [[03-backend/spring-boot/architecture-principles|architecture-principles]]'s dependency-direction rule physically, not just by convention: if `domain`'s `pom.xml` declares no dependency on `infrastructure`, code in `domain` cannot import anything from it — the build fails, it isn't a code-review catch. `domain`/`application` end up with zero Spring/JPA dependency in their classpath, so they're unit-testable with nothing spun up at all.
 
@@ -39,19 +37,6 @@ alquilapy-backend/
 ```
 
 - Not an unusual or Spring-specific stretch — multi-module Maven Clean Architecture is a well-established pattern in the Java ecosystem.
-
-**Package-by-feature** (default when a full layered split adds more ceremony than value):
-
-```
-src/main/java/com/<company>/<project>/
-  feature/
-    <feature>/
-      <Feature>Controller.java
-      <Feature>Service.java
-      <Feature>Request.java / Response.java
-      <Feature>Repository.java
-  common/                        # cross-cutting: exception handling, security config, pagination/filtering primitives
-```
 
 ## Configuration & secrets
 
@@ -112,7 +97,7 @@ src/main/java/com/<company>/<project>/
 
 - Query param names: `page` (1-based — convert to Spring's 0-based `Pageable` internally, don't leak the 0-based convention into the API surface), `pageSize` (project-defined default and hard max, e.g. default `20`, max `100`, never unbounded).
 - Filters are query params named after the field they filter (e.g. `GET /orders?status=Active&createdAfter=2026-01-01`), translated into a Spring Data `Specification`/`Predicate` or a derived query method — applied server-side before pagination, never a single opaque "filter" blob param unless the filtering surface is genuinely generic/dynamic.
-- The envelope DTO, default/max page size constants, and query-param names are defined once (in `common`/`api` per the package-by-feature layout, or in `application` for Clean Architecture) and reused by every paginated endpoint — never redefined per feature, per [[03-backend/spring-boot/coding-standards|coding-standards]]'s DRY rule.
+- The envelope DTO, default/max page size constants, and query-param names are defined once (in `application`, per the module layout above) and reused by every paginated endpoint — never redefined per feature, per [[03-backend/spring-boot/coding-standards|coding-standards]]'s DRY rule.
 
 ## Static analysis
 
@@ -120,7 +105,7 @@ Mandatory before considering any task done — see [[03-backend/spring-boot/codi
 
 - `mvn compile` — must be clean, no new compiler warnings introduced by the change.
 - **Checkstyle** (`mvn checkstyle:check`, via the `maven-checkstyle-plugin`) — style/convention enforcement, the Java equivalent of `dotnet format --verify-no-changes`. Must pass clean.
-- For deeper checks on large/Clean-Architecture projects, add **SpotBugs** or **PMD** as additional Maven plugins — optional, not a substitute for the two commands above.
+- For deeper checks on large projects, add **SpotBugs** or **PMD** as additional Maven plugins — optional, not a substitute for the two commands above.
 
 ## Pairs with
 

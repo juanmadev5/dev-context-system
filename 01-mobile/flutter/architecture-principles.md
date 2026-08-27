@@ -4,34 +4,98 @@ tags: [flutter, architecture]
 
 # Architecture Principles — Flutter
 
-## Clean Architecture vs. Vertical Slice
+## UI / Domain / Data (MVVM)
 
-Both are acceptable defaults. The choice depends on project size and how much business logic it carries — not on personal preference.
+Default architecture for every Flutter project, per [Flutter's official app-architecture guide](https://docs.flutter.dev/app-architecture/case-study). This is not a per-project choice — the layers below and the folder layout they imply are the one default. Three layers, dependencies always pointing downward, never upward:
 
-- **Clean Architecture** (layered: domain / data / presentation, dependencies pointing inward) — default for apps with real, long-lived business logic, or any project expected to grow, be maintained by more than one person, or live for years.
-- **Vertical Slice** (organized by feature/use case, each slice owning its own request→response path) — default for medium-sized apps where features are largely independent of each other, or apps that have enough logic to not be a script but not enough to justify a full layered split.
-- **Neither / plain structure** — for small, low-logic apps. Don't force an architecture pattern where there's no complexity to manage.
+```
+View → ViewModel → (Use-Case →) Repository → Service
+```
 
-When in doubt, pick the simpler option. Escalate to a heavier pattern only when the current structure is visibly causing friction (duplicated logic, tangled dependencies, hard-to-test business rules) — not preemptively.
+- **UI layer** — `View` + `ViewModel`, one ViewModel per View (1:1). Views are dumb widgets: only layout, animation, and simple conditionals — no business logic, no data access except through their ViewModel. ViewModels expose UI state (streams/values) and **Commands** (callback methods for user interactions); they must be unit-testable without pumping a widget tree.
+- **Domain layer** *(optional)* — `Use-Case`s. Add one only when logic is genuinely complex, reused across more than one ViewModel, or combines data from multiple repositories. Skip it otherwise — a ViewModel is allowed to call a Repository directly.
+- **Data layer** — `Repository` + `Service`. A Repository is the single source of truth for one data type: it transforms raw models into domain models and owns caching/retry/refresh logic. A Service is a stateless wrapper around exactly one external data source (a REST endpoint, a platform channel, local storage) — it holds no state and makes no business decisions. UI and Domain depend on Repositories only, never on a Service directly.
 
-## General principles (apply under either style)
+Cardinality: View↔ViewModel is 1:1; ViewModel→Repository/Use-Case is many:1; Repository↔Service is many:many; Repository→Repository never happens — combine data from two repositories in the ViewModel or a Use-Case, not by having one repository call another.
 
-- **Dependency direction**: business/domain logic never depends on Flutter widgets, packages, or infrastructure details. Infrastructure (HTTP clients, local storage, platform channels) implements interfaces defined by the layer/slice that needs them, not the other way around.
+```dart
+// Data layer — Service: stateless wrapper, one external source, no business logic
+class UserApiService {
+  UserApiService(this._httpClient);
+  final http.Client _httpClient;
+
+  Future<UserApiModel> fetchUser(String id) async { /* ... */ }
+}
+
+// Data layer — Repository: source of truth, owns caching/transform, exposed as an interface
+abstract class UserRepository {
+  Stream<User?> get currentUser;
+  Future<void> refresh(String id);
+}
+
+class UserRepositoryRemote implements UserRepository {
+  UserRepositoryRemote(this._service);
+  final UserApiService _service;
+  final _controller = StreamController<User?>.broadcast();
+
+  @override
+  Stream<User?> get currentUser => _controller.stream;
+
+  @override
+  Future<void> refresh(String id) async {
+    final apiModel = await _service.fetchUser(id);
+    _controller.add(User(name: apiModel.name, email: apiModel.email)); // raw -> domain model
+  }
+}
+
+// UI layer — ViewModel: transforms repository data into UI state, exposes Commands
+class UserProfileViewModel {
+  UserProfileViewModel(this._repository);
+  final UserRepository _repository;
+
+  Stream<User?> get user => _repository.currentUser;
+  Future<void> refreshCommand(String id) => _repository.refresh(id);
+}
+```
+
+### Folder organization: hybrid
+
+The UI layer is organized **by feature** (vertical slice); the Domain and Data layers are organized **by type** (layered):
+
+```
+lib/
+  ui/
+    core/                 # shared widgets, theme
+    <feature_name>/
+      view_models/
+      widgets/
+  domain/
+    models/
+    use_cases/             # only the features that actually need one
+  data/
+    repositories/
+    services/
+    models/                 # raw/API models, distinct from domain models
+```
+
+## General principles
+
+- **Dependency direction**: a ViewModel or Use-Case never depends on Flutter widgets, and never depends on a `Service` directly — only on a `Repository`'s abstract interface. Infrastructure (HTTP clients, local storage, platform channels) sits behind that interface, not the other way around.
   ```dart
-  // Bad — domain depends on a concrete infrastructure type
-  class OrderService {
-    final SqlOrderRepository repository; // concrete implementation
-    OrderService(this.repository);
+  // Bad — a ViewModel depends on a concrete infrastructure type
+  class OrderViewModel {
+    final OrderRepositoryRemote repository; // concrete implementation
+    OrderViewModel(this.repository);
   }
 
-  // Good — domain depends on an abstraction it owns; infrastructure implements it
+  // Good — the ViewModel depends on an abstraction; the data layer implements it
   abstract class OrderRepository {
     Future<Order?> getById(String id);
   }
 
-  class OrderService {
+  class OrderViewModel {
     final OrderRepository repository;
-    OrderService(this.repository);
+    OrderViewModel(this.repository);
   }
   ```
 - **Testability drives boundaries**: if a piece of logic can't be unit-tested without spinning up a database, an HTTP server, or the widget tree, the boundary is probably wrong.
@@ -48,7 +112,7 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
   double calculateFinalPrice({required bool isVip, required double basePrice}) =>
       isVip ? basePrice * 0.9 : basePrice;
   ```
-- **Always depend on an interface, from the first implementation — testability alone justifies it.** Don't wait for a second real implementation before introducing the abstraction; needing to substitute a test double when unit-testing a consumer is reason enough on its own. Applies the same way under Clean Architecture and Vertical Slice — no carve-out for "it's simple" or "there's only one implementation today."
+- **Always depend on an interface, from the first implementation — testability alone justifies it.** Don't wait for a second real implementation before introducing the abstraction; needing to substitute a test double when unit-testing a consumer is reason enough on its own. Applies at every layer boundary — Repository, Service, Use-Case alike — no carve-out for "it's simple" or "there's only one implementation today."
   ```dart
   abstract class EmailSender {
     Future<void> send(String to, String body);
@@ -65,7 +129,7 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
     // to verify a confirmation gets sent after an order is placed.
   }
   ```
-- **Consistency within a project beats a "better" pattern mid-stream**: don't mix Clean Architecture in one feature and Vertical Slice in another within the same codebase without a deliberate, documented reason.
+- **Consistency within a project beats a "better" pattern mid-stream**: every feature follows the same UI/Domain/Data split. Add a Domain layer for one feature only when that feature's logic actually warrants a Use-Case — not as an inconsistent house-style variation applied to some features and not others.
 
 ## See also
 

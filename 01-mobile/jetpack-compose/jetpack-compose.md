@@ -8,17 +8,17 @@ Android-native UI toolkit. Use instead of [[01-mobile/flutter/flutter|flutter]] 
 
 ## Architecture pattern: MVVM
 
-The `presentation/` layer always follows **MVVM**, regardless of project size:
+The UI layer always follows **MVVM**, regardless of project size — see [[01-mobile/jetpack-compose/architecture-principles|architecture-principles]] for the full UI/Domain/Data layering, UDF, and SSOT this sits inside:
 
 - **View** — the Composable. Pure function of state, no business logic, no direct data access. Renders UI state and forwards user events upward.
 - **ViewModel** — one per screen (or per cohesive feature). Owns the UI state, exposes it as a single immutable `StateFlow`/`State` (never multiple loosely-related mutable fields), and handles the events the View forwards to it.
-- **Model** — the `domain`/`data` layers below: use cases, repositories, entities. The ViewModel talks to these, never the View directly.
+- **Model** — the domain/data layers below: use cases, repositories, data sources. The ViewModel talks to these, never the View directly.
 
-This is not optional per-project — it's the default for every Compose project, on top of whichever of [[01-mobile/jetpack-compose/architecture-principles|architecture-principles]]'s two structures (Clean Architecture / Vertical Slice) the project's size calls for.
+This is not optional per-project — it's the default for every Compose project.
 
 ## Project structure
 
-A Clean Architecture layout on Android typically looks like:
+Follow [[01-mobile/jetpack-compose/architecture-principles|architecture-principles]]'s UI/Domain/Data layering, packaged per feature. A typical layout:
 
 ```
 app/
@@ -29,7 +29,7 @@ app/
     presentation/        # Composables (View), ViewModels, UI state — MVVM as above
 ```
 
-- Composables are pure functions of state where possible: state flows down, events flow up to the ViewModel.
+- Composables are pure functions of state where possible: state flows down, events flow up to the ViewModel — the UDF cycle from [[01-mobile/jetpack-compose/architecture-principles|architecture-principles]].
 
 ## Conventions
 

@@ -25,7 +25,7 @@ Decision map: given a project's shape, which technology to reach for. This is th
 
 | Project shape | Choice | Notes |
 | --- | --- | --- |
-| Every project that needs a backend | [[03-backend/aspnet-core/aspnet-core|aspnet-core]] or [[03-backend/spring-boot/spring-boot|spring-boot]] | Equivalent defaults, pick per the team/project's existing language ecosystem (.NET vs Java) — neither is a "smaller" choice. Default even for small APIs. Minimal APIs vs. Controllers (ASP.NET Core) or the Clean Architecture vs. package-by-feature call (Spring Boot) is a size call — see that stack's own note. |
+| Every project that needs a backend | [[03-backend/aspnet-core/aspnet-core|aspnet-core]] or [[03-backend/spring-boot/spring-boot|spring-boot]] | Equivalent defaults, pick per the team/project's existing language ecosystem (.NET vs Java) — neither is a "smaller" choice. Default even for small APIs. ASP.NET Core still has a size call (Minimal APIs vs. Controllers, Clean Architecture vs. Vertical Slice — see that stack's own note); Spring Boot always uses Clean Architecture. |
 
 ## Data & infra
 

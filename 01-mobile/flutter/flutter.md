@@ -8,16 +8,22 @@ Cross-platform mobile. Default choice for mobile projects that need to ship on b
 
 ## Project structure
 
-Follow [[01-mobile/flutter/architecture-principles|architecture-principles]]: Clean Architecture for apps with real business logic, Vertical Slice / simple feature-first structure for smaller apps. A Clean Architecture layout in Dart typically looks like:
+Follow [[01-mobile/flutter/architecture-principles|architecture-principles]]: UI / Domain / Data layering (MVVM), UI organized by feature, Domain/Data organized by type. A typical layout:
 
 ```
 lib/
-  core/               # shared utilities, constants, error types, DI setup
-  features/
+  ui/
+    core/               # shared widgets, theme
     <feature_name>/
-      domain/         # entities, repository interfaces, use cases — no Flutter/Dart-package deps
-      data/           # repository implementations, DTOs/models, data sources (remote/local)
-      presentation/   # widgets, screens, state management for this feature
+      view_models/      # ViewModel per View — state management for this feature
+      widgets/
+  domain/
+    models/             # domain entities
+    use_cases/          # only the features that actually need one
+  data/
+    repositories/        # single source of truth per data type, no Flutter deps
+    services/             # stateless wrappers around one external source (remote/local)
+    models/               # raw/API models, distinct from domain models
 ```
 
 ## Conventions
@@ -35,7 +41,7 @@ lib/
 
 - **Bloc** (`flutter_bloc`) for screens/features with genuinely complex state (multiple events, transitions, side effects worth modeling explicitly).
 - **Cubit** for simple state (a handful of straightforward state changes, no need for full event-driven modeling). Don't reach for full Bloc when a Cubit says the same thing with less ceremony.
-- Both live in the `presentation/` layer of a feature — see [[01-mobile/flutter/architecture-principles|architecture-principles]]. States and events are modeled as sealed classes/unions, never raw strings/bools/enum-index checks, per [[01-mobile/flutter/coding-standards|coding-standards]].
+- Both act as the ViewModel for a feature, living in `ui/<feature_name>/view_models/` — see [[01-mobile/flutter/architecture-principles|architecture-principles]]. States and events are modeled as sealed classes/unions, never raw strings/bools/enum-index checks, per [[01-mobile/flutter/coding-standards|coding-standards]].
 
 ## Dependency injection
 

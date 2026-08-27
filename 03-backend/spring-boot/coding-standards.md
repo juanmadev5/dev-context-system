@@ -57,8 +57,8 @@ Apply these pragmatically: they're a guide for keeping code changeable, not a ch
 
 ## Architecture
 
-- Default to **Clean Architecture** or **Vertical Slice** depending on project size/complexity. See [[03-backend/spring-boot/architecture-principles|architecture-principles]] for the decision criteria and layout.
-- **Never create a package/module that ends up empty.** The `domain`/`application`/`infrastructure`/`api` module split (or the `feature/<feature>/` package layout) shown in [[03-backend/spring-boot/spring-boot|spring-boot.md]] is the *shape* a project converges toward, not a scaffold to stamp out up front — create a package or module only at the moment it actually gets its first class.
+- Default to **Clean Architecture** for every project — see [[03-backend/spring-boot/architecture-principles|architecture-principles]] for the layout. Not a per-project choice.
+- **Never create a package/module that ends up empty.** The `domain`/`application`/`infrastructure`/`api` module split shown in [[03-backend/spring-boot/spring-boot|spring-boot.md]] is the *shape* a project converges toward, not a scaffold to stamp out up front — create a package or module only at the moment it actually gets its first class.
 - Corollary: don't pre-create the full module/package tree for a new feature "so it's ready" — add each package as the corresponding class is written. An empty package in the repo is either dead weight or, worse, a placeholder someone has to remember to clean up.
 
 ## Comments
@@ -84,7 +84,7 @@ A task is never "done" just because it behaves correctly or compiles. Code can l
 - **Static analysis** — passes clean (no new errors or warnings introduced by the change) — see [[03-backend/spring-boot/spring-boot|spring-boot.md]]'s `## Static analysis` section. Never skip this assuming "it looks fine" or because the change was small.
 - **Tests** — pass locally; if the change touches logic covered by this note's [[#Testing]] criteria, new tests were written for it.
 - **Self-review** — the full diff was read start to finish before calling the task done, per [[03-backend/spring-boot/code-review|code-review]]'s self-review section.
-- **Docs** — the project's README was updated if the change affects it ([[00-global/readme-conventions|readme-conventions]]); `docs/SOURCES.md` was updated if external documentation was consulted ([[03-backend/spring-boot/sources|sources]]).
+- **Docs** — the project's README was updated if the change affects it ([[00-global/readme-conventions|readme-conventions]]); `docs/SOURCES.md` was updated if a source not already covered by [[03-backend/spring-boot/sources|sources]] was consulted.
 - **Scope check** — the change matches exactly what was asked, with no unrelated edits left in (see [[#Scope discipline]] below).
 - **No residue** — no leftover debug code, commented-out blocks, or unowned TODOs.
 

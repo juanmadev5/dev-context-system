@@ -4,38 +4,84 @@ tags: [aspnet-core, documentation, sources]
 
 # Sources — ASP.NET Core
 
-Every time an agent consults external documentation while working on an ASP.NET Core project — official docs, API references, RFCs/specs, NuGet package documentation — the source gets recorded in that project's `docs/SOURCES.md`. This is what lets a human (or another agent) later verify *where* a convention or implementation detail actually came from, instead of trusting it blindly or re-deriving it from scratch.
-
-## When to record
-
-- Any time a web lookup (fetching a page, searching, reading a library's official docs) actually informs a decision, an implementation detail, or code written during a task — record it.
-- A lookup that turns out irrelevant to what got written doesn't need an entry — this is about traceability for what actually shaped the work, not a log of every request made.
-- `docs/SOURCES.md` is created the first time it's actually needed, per [[03-backend/aspnet-core/coding-standards|coding-standards]]'s "no empty folders" reasoning applied to documentation — don't scaffold it empty upfront in a new project.
+Curated index of this stack's own official documentation — the vetted entry points to consult first, instead of rediscovering them from scratch on every project. Every link below points to the vendor/maintainer's own official docs (or the relevant RFC).
 
 ## Official documentation only
 
-- **Only the source's own official documentation** — the vendor/maintainer's docs site, the package's own repo (README, wiki, official guide), or a relevant standard/spec (an RFC, etc.).
-- **Never** blogs, Medium/dev.to posts, Stack Overflow, random tutorials, or AI-generated summary/aggregator sites — even if one of those turns up first in a search. If the official docs genuinely don't cover something, that's worth flagging to the developer rather than filling the gap from an unofficial source.
-- For this stack, official means: **`learn.microsoft.com`** — covering .NET, ASP.NET Core, and EF Core documentation.
+- **Only the source's own official documentation** — the vendor/maintainer's docs site, the package's own repo (README, wiki, official guide), or a relevant standard/spec.
+- **Never** blogs, Medium/dev.to posts, Stack Overflow, random tutorials, or AI-generated summary/aggregator sites — even if one of those turns up first in a search.
+- For this stack, official means: `learn.microsoft.com` (ASP.NET Core, EF Core, and any other Microsoft-owned library) and each library's own docs domain listed below.
 
-## Format
-
-`docs/SOURCES.md`, grouped by library under a `##` heading, one bullet per source:
-
-```markdown
 ## ASP.NET Core
 
-- EF Core: https://learn.microsoft.com/en-us/ef/core/
-- Minimal APIs: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis
+- Minimal APIs overview and quick reference: https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis
+- Controllers / `[ApiController]` overview: https://learn.microsoft.com/aspnet/core/web-api/
+- Dependency injection overview: https://learn.microsoft.com/aspnet/core/fundamentals/dependency-injection
 
-## PostgreSQL
+## EF Core
 
-- CHECK constraints: https://www.postgresql.org/docs/current/ddl-constraints.html
-```
+- Fluent API model configuration, `IEntityTypeConfiguration<TEntity>` grouping pattern: https://learn.microsoft.com/ef/core/modeling/
+- `IEntityTypeConfiguration<TEntity>` interface reference: https://learn.microsoft.com/dotnet/api/microsoft.entityframeworkcore.ientitytypeconfiguration-1
 
-- Group by the library the source belongs to, not by date or by task — the file accumulates over the project's lifetime as a reference index, not a session log.
-- One bullet per distinct source; don't duplicate an entry that's already there for the same URL.
-- The bullet's label is a short, specific description of what the link actually covers (`EF Core`, `Minimal APIs`, `CHECK constraints`) — never just "docs" or the bare URL with no label.
+## Microsoft.AspNetCore.OpenApi
+
+- OpenAPI support overview in ASP.NET Core: https://learn.microsoft.com/aspnet/core/fundamentals/openapi/overview
+- Generate OpenAPI documents (`AddOpenApi`, `MapOpenApi`): https://learn.microsoft.com/aspnet/core/fundamentals/openapi/aspnetcore-openapi
+
+## Scalar
+
+- ASP.NET Core integration (`Scalar.AspNetCore`, `MapScalarApiReference`): https://guides.scalar.com/scalar/scalar-api-references/net-integration
+
+## Asp.Versioning
+
+- Getting started with `Asp.Versioning.Http`: https://dotnet.github.io/aspnet-api-versioning/getting-started.html
+- URL path/segment versioning for Minimal APIs and MVC controllers: https://dotnet.github.io/aspnet-api-versioning/aspnet-core/how-to/version-by-url.html
+
+## FluentValidation
+
+- Official documentation home: https://docs.fluentvalidation.net/en/latest/
+- Creating your first validator: https://docs.fluentvalidation.net/en/latest/start.html
+
+## xUnit
+
+- Official documentation home: https://xunit.net/
+- Getting Started (v3, .NET SDK command line): https://xunit.net/docs/getting-started/v3/getting-started
+
+## Moq
+
+- Official repository (devlooped/moq, the actively maintained fork): https://github.com/devlooped/moq
+- Quickstart wiki (setup, argument matching, verification): https://github.com/devlooped/moq/wiki/Quickstart
+
+## DbUp
+
+- Official documentation home: https://dbup.readthedocs.io/en/latest/
+- Script providers (`WithScriptsEmbeddedInAssembly`): https://dbup.readthedocs.io/en/latest/more-info/script-providers/
+
+## Serilog
+
+- Official site and documentation home: https://serilog.net/
+
+## OpenTelemetry (.NET)
+
+- .NET language docs landing page: https://opentelemetry.io/docs/languages/dotnet/
+- Getting started guide: https://opentelemetry.io/docs/languages/dotnet/getting-started/
+
+## RFC 7807
+
+- Problem Details for HTTP APIs — note: obsoleted by RFC 9457, worth checking if the newer RFC should be adopted instead: https://www.rfc-editor.org/rfc/rfc7807
+
+## If a source isn't listed here
+
+This index covers the libraries/topics this vault's conventions actually name — it isn't exhaustive. If a task needs an official documentation source that isn't listed above:
+
+- Look it up directly — same rule applies: only the vendor/maintainer's own official docs, never a blog/tutorial/Stack Overflow/AI-summary site.
+- Record it in that project's own `docs/SOURCES.md` (created the first time it's actually needed, per [[03-backend/aspnet-core/coding-standards|coding-standards]]'s "no empty folders" reasoning applied to documentation), grouped by library under a `##` heading, one bullet per source:
+
+  ```markdown
+  ## SomeNewPackage
+
+  - What the page covers: https://...
+  ```
 
 ## See also
 

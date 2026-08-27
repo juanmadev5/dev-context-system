@@ -8,15 +8,15 @@ Default backend for any project that needs a dedicated backend — see [[00-glob
 
 ## API style — Minimal APIs vs Controllers
 
-Same size/complexity threshold as [[03-backend/aspnet-core/architecture-principles|architecture-principles]]'s Clean Architecture vs. Vertical Slice split — this isn't a separate decision, it's the same one applied to routing style.
+Same size/complexity threshold as [[03-backend/aspnet-core/architecture-principles|architecture-principles]]'s three-tier split — this isn't a separate decision, it's the same one applied to routing style.
 
-- **Minimal APIs** — small/medium projects, pairs with **Vertical Slice**. Low ceremony, one endpoint file per feature fits the vertical-slice layout directly.
-- **Controllers** (`[ApiController]` + attribute routing) — large apps with substantial, long-lived business logic, pairs with **Clean Architecture**. At that scale the extra ceremony pays for itself: built-in model binding/validation conventions, filters, API versioning, action-based grouping, and richer OpenAPI generation via `[ProducesResponseType]`.
+- **Minimal APIs** — small, low-logic projects only, pairs with **"Neither / plain structure"** — no architecture pattern. Low ceremony, fits a handful of endpoints with no real business logic to layer.
+- **Controllers** (`[ApiController]` + attribute routing) — everything past that: pairs with **Vertical Slice** (medium projects) just as much as with **Clean Architecture** (large, substantial, long-lived business logic). Once a project has enough logic to warrant a real architecture pattern, Minimal APIs stop being worth it too — the built-in model binding/validation conventions, filters, API versioning, action-based grouping, and richer OpenAPI generation via `[ProducesResponseType]` pay for themselves at that point.
 - Don't mix styles within the same API — pick one per [[03-backend/aspnet-core/architecture-principles|architecture-principles]]'s criteria and stay consistent.
 
 ## Project structure
 
-Follow [[03-backend/aspnet-core/architecture-principles|architecture-principles]] to pick between the two layouts below.
+Follow [[03-backend/aspnet-core/architecture-principles|architecture-principles]] to pick the right layout below.
 
 **Clean Architecture** (default for large apps with real, long-lived business logic):
 
@@ -32,18 +32,20 @@ src/
 
 - This is the same shape as the well-known "Clean Architecture" .NET reference templates (Domain/Application/Infrastructure/Web) — not an unusual choice, the standard one.
 
-**Vertical Slice** (default when a full layered split adds more ceremony than value):
+**Vertical Slice** (default when a full layered split adds more ceremony than value, but there's enough logic to justify real structure — Controllers, not Minimal APIs):
 
 ```
 src/
   Features/
     <Feature>/
-      <Feature>Endpoint.cs   # Minimal API route mapping
-      <Feature>Handler.cs    # logic for this use case
+      <Feature>Controller.cs   # [ApiController] route mapping
+      <Feature>Service.cs      # logic for this use case
       <Feature>Request.cs / Response.cs
       <Feature>Validator.cs
-  Common/                    # cross-cutting: error handling, auth policies, pagination/filtering primitives, shared infrastructure
+  Common/                      # cross-cutting: error handling, auth policies, pagination/filtering primitives, shared infrastructure
 ```
+
+**Minimal APIs / plain structure** (small, low-logic projects — [[03-backend/aspnet-core/architecture-principles|architecture-principles]]'s "Neither" tier): no fixed layout to follow — a handful of endpoint files grouped by feature, or endpoints mapped directly in `Program.cs`, whatever fits the project's actual size. Don't scaffold `Features/`/`Common/` folders for a project this small.
 
 ## Configuration & secrets
 
@@ -146,26 +148,7 @@ Mandatory before considering any task done — see [[03-backend/aspnet-core/codi
 
 ## Request flow
 
-- **MediatR**: endpoints (Minimal API or Vertical Slice feature) dispatch a request/command to a handler via MediatR rather than calling a service directly. This keeps the endpoint thin and makes cross-cutting concerns (logging, validation, authorization) composable as pipeline behaviors instead of being repeated per endpoint.
-- **CQRS is mandatory on top of MediatR in Clean Architecture projects** — every use case in `Application` is either a `Command` (writes) or a `Query` (reads), never a generic `Request`/`Handler` pair that does both. Not mandatory in Vertical Slice — at that size a single `<Feature>Handler.cs` per feature (as already laid out above) is enough, and splitting it into Command/Query folders would be ceremony without payoff.
-  - One folder per use case under `Commands/` or `Queries/`, named after the use case, e.g. `Properties/Commands/CreateProperty/`, `Properties/Queries/GetPropertyById/`:
-
-    ```
-    Properties/
-      Commands/
-        CreateProperty/
-          CreatePropertyCommand.cs          # record : IRequest<PropertyDto>
-          CreatePropertyCommandHandler.cs   # IRequestHandler<CreatePropertyCommand, PropertyDto>
-          CreatePropertyCommandValidator.cs # FluentValidation, per the Validation section above
-      Queries/
-        GetPropertyById/
-          GetPropertyByIdQuery.cs           # record : IRequest<PropertyDto>
-          GetPropertyByIdQueryHandler.cs    # IRequestHandler<GetPropertyByIdQuery, PropertyDto>
-    ```
-
-  - Commands and Queries are free to return the same DTO (e.g. both `CreatePropertyCommand` and `GetPropertyByIdQuery` returning `PropertyDto`) — this is CQRS as an `Application`-layer organizing principle, not full CQRS with a separate read model/store. Don't reach for a dedicated read database or event sourcing unless the project has a concrete, current need for it (per [[03-backend/aspnet-core/architecture-principles|architecture-principles]]'s "don't abstract prematurely").
-  - Query handlers read via `AsNoTracking()` (EF Core) — no change tracking overhead on a path that never calls `SaveChanges`. Command handlers omit it since they mutate and save.
-  - Query handlers skip the `Validator` file — request-shape validation belongs on commands; a query's "validation" (e.g. a missing entity) is a `KeyNotFoundException` thrown in the handler, mapped by the `IExceptionHandler` below, not a FluentValidation rule.
+- No mediator library is used. Endpoints (Minimal API) and Controllers inject `Application` services directly via constructor injection (ASP.NET Core's own DI container — no external library needed here) — the idiomatic pattern for this stack, keeping the codebase approachable.
 
 ## Error handling
 
@@ -176,6 +159,10 @@ Mandatory before considering any task done — see [[03-backend/aspnet-core/codi
 ## Logging & observability
 
 - **Serilog** for structured logging (configurable sinks), **OpenTelemetry** for tracing/metrics. Every service should be able to answer "what happened to this request" without attaching a debugger.
+
+## Testing
+
+- **xUnit + Moq** is the idiomatic default when tests are warranted — see [[03-backend/aspnet-core/coding-standards|coding-standards]]'s Testing section for when they're actually mandatory (backend testing stack, if any, is chosen per-project).
 
 ## See also
 
