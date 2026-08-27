@@ -10,9 +10,9 @@ An Angular project's `CLAUDE.md` should import this file plus [[00-global/git-co
 
 Content imports (in order):
 
-@/home/juanma/dev-context-system/02-web/angular/architecture-principles.md
-@/home/juanma/dev-context-system/02-web/angular/coding-standards.md
-@/home/juanma/dev-context-system/02-web/angular/code-review.md
-@/home/juanma/dev-context-system/02-web/angular/responsive-design.md
-@/home/juanma/dev-context-system/02-web/angular/sources.md
-@/home/juanma/dev-context-system/02-web/angular/angular.md
+@architecture-principles.md
+@coding-standards.md
+@code-review.md
+@responsive-design.md
+@sources.md
+@angular.md

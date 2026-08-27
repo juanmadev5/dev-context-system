@@ -128,7 +128,7 @@ Mandatory before considering any task done — see [[03-backend/aspnet-core/codi
 - Auth: [[04-infra/keycloak-auth|keycloak-auth]].
 - Cache: [[04-infra/redis|redis]].
 - Storage: [[04-infra/aws-s3-storage|aws-s3-storage]].
-- Containerized in Docker for both dev and prod — see [[04-infra/docker|docker]], [[04-infra/deployments|deployments]].
+- Containerized in Docker for both dev and prod — see [[04-infra/docker|docker]].
 
 ## Data access
 

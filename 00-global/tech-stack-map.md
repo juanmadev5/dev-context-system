@@ -37,13 +37,12 @@ Decision map: given a project's shape, which technology to reach for. This is th
 | File storage | [[04-infra/aws-s3-storage|aws-s3-storage]] |
 | Local dev services (Postgres, Redis, Keycloak) | [[04-infra/local-infrastructure|local-infrastructure]] |
 | Containerization | [[04-infra/docker|docker]] — local dev always; backend in production too. |
-| Deployment | [[04-infra/deployments|deployments]] |
+| Deployment | [[04-infra/docker|docker]] — see its "Production" section |
 
 ## Composing a project's context
 
-Once the stack for a given project is picked from the tables above, see [[05-templates/how-to-compose-claude-md|how-to-compose-claude-md]] to generate that project's `CLAUDE.md`. In practice this means importing that stack's own `INDEX.md` (e.g. `01-mobile/flutter/INDEX.md`) — each stack's architecture, coding-standards, code-review, responsive-design (where applicable), and sources conventions live inside that stack's own folder, not as separate global notes.
+Once the stack for a given project is picked from the tables above, compose that project's `CLAUDE.md` by importing that stack's own `INDEX.md` (e.g. `01-mobile/flutter/INDEX.md`) via Claude Code's `@path` syntax, plus [[00-global/git-conventions|git-conventions]] and whichever infra notes the project pairs with. Each stack's architecture, coding-standards, code-review, responsive-design (where applicable), and sources conventions live inside that stack's own folder, not as separate global notes.
 
 ## See also
 
 - [[00-global/git-conventions|git-conventions]]
-- [[05-templates/how-to-compose-claude-md|how-to-compose-claude-md]]

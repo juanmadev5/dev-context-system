@@ -10,9 +10,9 @@ A React project's `CLAUDE.md` should import this file plus [[00-global/git-conve
 
 Content imports (in order):
 
-@/home/juanma/dev-context-system/02-web/react/architecture-principles.md
-@/home/juanma/dev-context-system/02-web/react/coding-standards.md
-@/home/juanma/dev-context-system/02-web/react/code-review.md
-@/home/juanma/dev-context-system/02-web/react/responsive-design.md
-@/home/juanma/dev-context-system/02-web/react/sources.md
-@/home/juanma/dev-context-system/02-web/react/react.md
+@architecture-principles.md
+@coding-standards.md
+@code-review.md
+@responsive-design.md
+@sources.md
+@react.md

@@ -128,7 +128,7 @@ Mandatory before considering any task done — see [[03-backend/spring-boot/codi
 - Auth: [[04-infra/keycloak-auth|keycloak-auth]] — an especially natural pairing (Keycloak integrates directly with Spring Security via `spring-boot-starter-oauth2-resource-server`).
 - Cache: [[04-infra/redis|redis]] via Spring Data Redis / `spring-boot-starter-cache`.
 - Storage: [[04-infra/aws-s3-storage|aws-s3-storage]] via the AWS SDK for Java v2.
-- Containerized in Docker for both dev and prod — see [[04-infra/docker|docker]], [[04-infra/deployments|deployments]].
+- Containerized in Docker for both dev and prod — see [[04-infra/docker|docker]].
 
 ## Data access
 

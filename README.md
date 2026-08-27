@@ -17,7 +17,6 @@ Every project's `CLAUDE.md` pulls its rules directly from here via Claude Code's
 - **Web** — Angular, Vue.js, React.
 - **Backend** — ASP.NET Core, Spring Boot.
 - **Infrastructure** — Docker, deployments, PostgreSQL, Redis, Keycloak, AWS S3, local dev environments.
-- **Templates** — ready-to-use `CLAUDE.md` files for the stack combinations I use most often.
 
 Each note reflects a decision I've actually made and stand behind — not a generic best-practices checklist copied from somewhere else.
 

@@ -24,7 +24,10 @@ There is no application code, no dependency manifest, and no build/lint/test too
   `[[git-conventions]]`. This keeps Obsidian's graph view/backlinks working while letting an
   agent reading the raw Markdown resolve the reference with a direct `Read`, no search needed.
   Follow this pattern for new notes; update the `## See also` list (in both directions) when a
-  note gains a new relevant neighbor.
+  note gains a new relevant neighbor. **Exception: `04-infra/` notes are deliberately
+  self-contained** — no wikilinks, no `## See also`, and no naming of specific stacks (e.g. no
+  "ASP.NET Core" or "Spring Boot" mentions). An agent working on infra shouldn't be pulled toward
+  a particular stack or another infra piece it doesn't need; each `04-infra/` note stands alone.
 - **`Index.md`** is the map of the vault — any new note or renamed file needs a corresponding entry
   there, and in `README.md`'s "What it covers" section if it's a new top-level category.
 - **No empty scaffolding**: don't create a new folder or stub note "for later." A folder/note is
@@ -48,12 +51,9 @@ There is no application code, no dependency manifest, and no build/lint/test too
   also keeps `tailwind-css.md` as a single shared, un-duplicated note (styling used by every web
   stack, never used standalone).
 - `04-infra/` — one note per infrastructure piece (database, cache, auth provider, storage,
-  deployment). These are **not** restructured into folders: infra is always paired with a stack
-  that's already been chosen, never used standalone, so a project imports these directly alongside
-  its stack's `INDEX.md`.
-- `05-templates/` — `how-to-compose-claude-md.md` (defines the `@path` import mechanism and the
-  generic pattern) plus ready-made `template-*.md` files for common stack combinations, meant to be
-  copied as the starting point for a new project's `CLAUDE.md`.
+  containerization). These are **not** restructured into folders: infra is always paired with a
+  stack that's already been chosen, never used standalone, so a project imports these directly
+  alongside its stack's `INDEX.md`.
 
 ## Why the global rules are duplicated per stack
 
@@ -70,16 +70,19 @@ actually applies to.
 
 ## The `@path` import mechanism (critical to understand before editing)
 
-Documented in `05-templates/how-to-compose-claude-md.md`. Key points that affect how notes must be
-written:
+Key points that affect how notes must be written:
 
-- `@path` (absolute path, forward slashes) inlines a file's full content into an importing
-  project's `CLAUDE.md` at session start. Import chains go up to 4 hops.
+- `@path` (forward slashes) inlines a file's full content into an importing project's `CLAUDE.md`
+  at session start. Import chains go up to 4 hops. Relative paths resolve relative to the file
+  containing the import, not to the working directory — a project's `CLAUDE.md` still needs an
+  absolute, machine-specific path to reach into this vault (project repo and vault are different
+  directories on disk), but imports *within* the vault should be relative so they don't hardcode
+  one machine's path.
 - Vault notes never `@import` each other, with one deliberate exception: each stack folder's
-  `INDEX.md` uses `@path` to pull in that stack's own architecture/coding-standards/code-review/
-  (responsive-design)/sources notes plus the stack note itself. Every other cross-reference in the
-  vault stays a `[[wikilink]]`. A project's CLAUDE.md → stack `INDEX.md` → that stack's own notes
-  is 2 hops, well under the limit.
+  `INDEX.md` uses `@path` (relative, e.g. `@architecture-principles.md`) to pull in that stack's own
+  architecture/coding-standards/code-review/(responsive-design)/sources notes plus the stack note
+  itself. Every other cross-reference in the vault stays a `[[wikilink]]`. A project's CLAUDE.md →
+  stack `INDEX.md` → that stack's own notes is 2 hops, well under the limit.
 - `@path` only expands as plain text — **never inside a fenced code block or inline code span**.
   Any note that shows example import lines must keep them outside triple-backtick fences.
 - Imported content is inlined in full, unsummarized — keep individual notes focused so importing

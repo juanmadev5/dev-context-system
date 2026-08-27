@@ -10,8 +10,8 @@ A Spring Boot project's `CLAUDE.md` should import this file plus [[00-global/git
 
 Content imports (in order):
 
-@/home/juanma/dev-context-system/03-backend/spring-boot/architecture-principles.md
-@/home/juanma/dev-context-system/03-backend/spring-boot/coding-standards.md
-@/home/juanma/dev-context-system/03-backend/spring-boot/code-review.md
-@/home/juanma/dev-context-system/03-backend/spring-boot/sources.md
-@/home/juanma/dev-context-system/03-backend/spring-boot/spring-boot.md
+@architecture-principles.md
+@coding-standards.md
+@code-review.md
+@sources.md
+@spring-boot.md

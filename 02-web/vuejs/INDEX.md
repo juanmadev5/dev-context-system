@@ -10,9 +10,9 @@ A Vue project's `CLAUDE.md` should import this file plus [[00-global/git-convent
 
 Content imports (in order):
 
-@/home/juanma/dev-context-system/02-web/vuejs/architecture-principles.md
-@/home/juanma/dev-context-system/02-web/vuejs/coding-standards.md
-@/home/juanma/dev-context-system/02-web/vuejs/code-review.md
-@/home/juanma/dev-context-system/02-web/vuejs/responsive-design.md
-@/home/juanma/dev-context-system/02-web/vuejs/sources.md
-@/home/juanma/dev-context-system/02-web/vuejs/vuejs.md
+@architecture-principles.md
+@coding-standards.md
+@code-review.md
+@responsive-design.md
+@sources.md
+@vuejs.md
