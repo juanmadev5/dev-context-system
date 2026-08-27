@@ -22,7 +22,7 @@ Every Spring Boot project follows [architecture-principles](architecture-princip
 
 - **Mandatory: one Maven module per layer, not packages inside a single module.** A multi-module project (one parent `pom.xml`, four child modules, wired via `<dependency>` between them) enforces [architecture-principles](architecture-principles.md)'s dependency-direction rule physically, not just by convention: if `domain`'s `pom.xml` declares no dependency on `infrastructure`, code in `domain` cannot import anything from it — the build fails, it isn't a code-review catch. `domain`/`application` end up with zero Spring/JPA dependency in their classpath, so they're unit-testable with nothing spun up at all.
 
-```
+``` text
 alquilapy-backend/
   pom.xml                  # parent POM, declares the four modules
   domain/
@@ -59,14 +59,15 @@ alquilapy-backend/
 - **springdoc-openapi** (`springdoc-openapi-starter-webmvc-ui` dependency) generates the OpenAPI 3 document and serves Swagger UI at `/swagger-ui.html` — the standard, actively-maintained library for this in Spring Boot. Springfox is legacy/unmaintained and never used on a new project.
 - Every `@RestController` gets `@Tag(name = "...", description = "...")`; every endpoint method gets `@Operation(summary = "...")` plus an `@ApiResponse` per possible response status the method can actually return — success and error alike, including error responses mapped by the `@RestControllerAdvice`:
 
-  ```java
+```java
   @Operation(summary = "Creates a property owned by the authenticated user.")
   @ApiResponse(responseCode = "201", description = "Property created",
       content = @Content(schema = @Schema(implementation = PropertyDto.class)))
   @ApiResponse(responseCode = "400", description = "Invalid request body")
   @PostMapping
   public ResponseEntity<PropertyDto> create(@Valid @RequestBody CreatePropertyRequest request) { ... }
-  ```
+```
+
 - Add `@Schema(description = "...")` to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every field, same restraint as [coding-standards](coding-standards.md)'s comment guidance.
 - Not optional polish: the generated spec is what a frontend/mobile consumer or an API client generator actually reads — an undocumented endpoint is a broken contract, not a cosmetic gap.
 
@@ -85,7 +86,7 @@ alquilapy-backend/
 
 - Spring Data's own `Pageable`/`Page<T>` are the natural source of pagination (`page`, `size` query params map onto them directly via `@PageableDefault`) — but **map `Page<T>` into the same envelope shape used across every stack in this repository**, not Spring's native `Page` JSON structure, so the API contract stays identical regardless of which backend a given project uses:
 
-  ```json
+```json
   {
     "items": [ ... ],
     "page": 1,
@@ -93,7 +94,7 @@ alquilapy-backend/
     "totalCount": 137,
     "totalPages": 7
   }
-  ```
+```
 
 - Query param names: `page` (1-based — convert to Spring's 0-based `Pageable` internally, don't leak the 0-based convention into the API surface), `pageSize` (project-defined default and hard max, e.g. default `20`, max `100`, never unbounded).
 - Filters are query params named after the field they filter (e.g. `GET /orders?status=Active&createdAfter=2026-01-01`), translated into a Spring Data `Specification`/`Predicate` or a derived query method — applied server-side before pagination, never a single opaque "filter" blob param unless the filtering surface is genuinely generic/dynamic.
@@ -147,4 +148,3 @@ Mandatory before considering any task done — see [coding-standards](coding-sta
 ## Testing
 
 - **JUnit 5 + Mockito** is the idiomatic default when tests are warranted — see [coding-standards](coding-standards.md)'s Testing section for when they're actually mandatory (backend testing stack, if any, is chosen per-project). `spring-boot-starter-test` bundles both plus AssertJ.
-

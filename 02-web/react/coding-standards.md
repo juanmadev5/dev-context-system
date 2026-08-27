@@ -17,14 +17,17 @@ Universal rules that apply to every React project. [react.md](react.md) only add
 - Every identifier must be understandable **at first glance**, with no need to trace back through the code to figure out what it represents. This includes variables, parameters, and — just as strictly — **callback parameters** in `.map`/`.filter`/`.reduce`-style chains.
 - Never name a callback parameter after a generic placeholder letter (`e`, `x`, `el`, `arr`, `i` for anything but a raw loop index) when a descriptive name is one keystroke away.
 - Bad (meaning only recoverable by re-reading the surrounding types):
-  ```typescript
+  
+```typescript
   const errorsByField = validationErrors.reduce((acc, e) => {
     acc[e.field] = [...(acc[e.field] ?? []), e.message];
     return acc;
   }, {} as Record<string, string[]>);
-  ```
+```
+
 - Good (each name says what the item is, no guessing required):
-  ```typescript
+
+```typescript
   const errorsByField = validationErrors.reduce((accumulated, validationError) => {
     accumulated[validationError.field] = [
       ...(accumulated[validationError.field] ?? []),
@@ -32,7 +35,8 @@ Universal rules that apply to every React project. [react.md](react.md) only add
     ];
     return accumulated;
   }, {} as Record<string, string[]>);
-  ```
+```
+
 - The one broadly accepted exception is a raw numeric index in a tight loop (`for (let i = 0; ...)`). Everything else — including nested callback parameters shadowing an outer one — gets a real, descriptive name.
 
 ## No magic values
@@ -109,4 +113,3 @@ A task is never "done" just because it behaves correctly or compiles. Code can l
 - **Decide and proceed**, when: it's a routine implementation detail with one obviously-correct answer given the codebase's existing patterns (naming a variable, extracting a duplicate); it's already resolved by a repository note or the project's `CLAUDE.md`.
 - **Never guess an API, method, or parameter** that hasn't been verified against real code or official documentation ([sources](sources.md)) — that's always a case to check, never to fabricate.
 - If proceeding on a judgment call rather than asking, state the assumption explicitly (in the PR description or a note to the developer) instead of deciding silently. Silent, unstated assumptions are exactly what produce a "reasonable but wrong" decision that only surfaces at review.
-

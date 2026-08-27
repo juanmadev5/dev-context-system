@@ -11,7 +11,7 @@ Location: `~/dev/local-infrastructure` (see that repo's `README.md` for the full
 ## Services
 
 | Service | Image | Default host port | Persistence |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | PostgreSQL | Postgres 16 | `5432` (`POSTGRES_PORT`) | volume `postgres_data` |
 | Keycloak | Keycloak 26.x, `start-dev` mode | `8080` (`KEYCLOAK_PORT`) | volume `keycloak_data` + `keycloak` DB in Postgres |
 | Redis | Redis 8.x | `6379` (`REDIS_PORT`) | volume `redis_data`, AOF persistence |

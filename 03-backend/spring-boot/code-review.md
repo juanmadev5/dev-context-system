@@ -41,7 +41,8 @@ Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the projec
 
 - God classes/methods doing more than one thing (violates Single Responsibility, see [coding-standards](coding-standards.md)).
 - Domain/business objects leaking into the presentation layer, or any other [architecture-principles](architecture-principles.md) boundary violation.
-  ```java
+  
+```java
   // Bad — the JPA entity returned straight from the controller
   @GetMapping("/{id}")
   public Customer get(@PathVariable UUID id) {
@@ -54,11 +55,13 @@ Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the projec
       Customer customer = customerRepository.findById(id).orElseThrow();
       return new CustomerResponse(customer.getId(), customer.getName(), customer.getEmail());
   }
-  ```
+```
+
 - Premature abstraction — extra internal splitting or indirection introduced with no real boundary or reason to change ([architecture-principles](architecture-principles.md)). This does **not** include interfaces on injected dependencies — those are mandatory from the first implementation; never flag a DI interface as premature just because there's only one concrete implementation today.
 - Non-descriptive lambda parameter names ([coding-standards](coding-standards.md)'s naming rules).
 - Enums persisted or transmitted by ordinal instead of name ([coding-standards](coding-standards.md)).
-  ```java
+
+```java
   // Bad — reordering or inserting a member silently changes stored meaning
   public enum OrderStatus { PENDING, PAID, SHIPPED }
 
@@ -85,4 +88,3 @@ Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the projec
 - Any blocking item open → request changes.
 - Only non-blocking comments left → approve, comments optional to address.
 - Nothing outstanding → approve.
-

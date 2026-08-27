@@ -15,4 +15,3 @@ tags: [vuejs, responsive-design]
 - Minimum verification set: **~375px** (mobile), **~768px** (tablet), **~1280px+** (desktop). A layout that only works at one of these isn't finished.
 - Layouts use `flex`/`grid` with relative sizing (`%`, `fr`, `max-w-*`, `min-w-0`) — not fixed pixel widths/heights on containers. Media (`img`, `video`) is always constrained (`max-w-full h-auto` or an aspect-ratio utility) so it can't blow out a narrow viewport.
 - See [tailwind-css](../tailwind-css.md) for the utility-level mechanics (breakpoint prefixes, tokens) that implement this.
-

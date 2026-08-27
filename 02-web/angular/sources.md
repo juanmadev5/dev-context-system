@@ -14,44 +14,44 @@ Curated index of this stack's own official documentation — the vetted entry po
 
 ## Angular
 
-- Official docs entry point / overview: https://angular.dev/overview
-- Signals guide: https://angular.dev/guide/signals
-- Standalone components (anatomy, the `imports` array): https://angular.dev/guide/components
-- Reactive Forms guide: https://angular.dev/guide/forms/reactive-forms
-- Dependency injection guide: https://angular.dev/guide/di
-- `takeUntilDestroyed` (RxJS interop) guide: https://angular.dev/ecosystem/rxjs-interop/take-until-destroyed
+- Official docs entry point / overview: <https://angular.dev/overview>
+- Signals guide: <https://angular.dev/guide/signals>
+- Standalone components (anatomy, the `imports` array): <https://angular.dev/guide/components>
+- Reactive Forms guide: <https://angular.dev/guide/forms/reactive-forms>
+- Dependency injection guide: <https://angular.dev/guide/di>
+- `takeUntilDestroyed` (RxJS interop) guide: <https://angular.dev/ecosystem/rxjs-interop/take-until-destroyed>
 
 ## RxJS
 
-- Introduction / overview: https://rxjs.dev/guide/overview
-- Observable guide: https://rxjs.dev/guide/observable
+- Introduction / overview: <https://rxjs.dev/guide/overview>
+- Observable guide: <https://rxjs.dev/guide/observable>
 
 ## TypeScript
 
-- The TypeScript Handbook: https://www.typescriptlang.org/docs/handbook/intro.html
+- The TypeScript Handbook: <https://www.typescriptlang.org/docs/handbook/intro.html>
 
 ## Jest
 
-- Getting started guide: https://jestjs.io/docs/getting-started
+- Getting started guide: <https://jestjs.io/docs/getting-started>
 
 ## Playwright
 
-- Documentation homepage: https://playwright.dev/
-- Installation / getting started: https://playwright.dev/docs/intro
+- Documentation homepage: <https://playwright.dev/>
+- Installation / getting started: <https://playwright.dev/docs/intro>
 
 ## Transloco
 
-- Official documentation site: https://jsverse.gitbook.io/transloco
-- Quickstart / installation guide: https://jsverse.gitbook.io/transloco/getting-started/installation
+- Official documentation site: <https://jsverse.gitbook.io/transloco>
+- Quickstart / installation guide: <https://jsverse.gitbook.io/transloco/getting-started/installation>
 
 ## ESLint
 
-- Getting Started guide: https://eslint.org/docs/latest/use/getting-started
+- Getting Started guide: <https://eslint.org/docs/latest/use/getting-started>
 
 ## angular-eslint
 
-- Official repository and setup instructions: https://github.com/angular-eslint/angular-eslint
-- Flat config configuration guide: https://github.com/angular-eslint/angular-eslint/blob/main/docs/CONFIGURING_ESLINT.md
+- Official repository and setup instructions: <https://github.com/angular-eslint/angular-eslint>
+- Flat config configuration guide: <https://github.com/angular-eslint/angular-eslint/blob/main/docs/CONFIGURING_ESLINT.md>
 
 ## If a source isn't listed here
 
@@ -60,9 +60,8 @@ This index covers the libraries/topics this repository's conventions actually na
 - Look it up directly — same rule applies: only the vendor/maintainer's own official docs, never a blog/tutorial/Stack Overflow/AI-summary site.
 - Record it in that project's own `docs/SOURCES.md` (created the first time it's actually needed, per [coding-standards](coding-standards.md)'s "no empty folders" reasoning applied to documentation), grouped by library under a `##` heading, one bullet per source:
 
-  ```markdown
+```markdown
   ## some-new-package
 
   - What the page covers: https://...
-  ```
-
+```

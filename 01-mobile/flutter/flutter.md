@@ -10,7 +10,7 @@ Cross-platform mobile. Default choice for mobile projects that need to ship on b
 
 Follow [architecture-principles](architecture-principles.md): UI / Domain / Data layering (MVVM), UI organized by feature, Domain/Data organized by type. A typical layout:
 
-```
+``` text
 lib/
   ui/
     core/               # shared widgets, theme
@@ -74,4 +74,3 @@ lib/
 Mandatory before considering any task done — see [coding-standards](coding-standards.md).
 
 - `flutter analyze` (or `dart analyze`) — must pass clean, no new errors/warnings/lints introduced by the change.
-

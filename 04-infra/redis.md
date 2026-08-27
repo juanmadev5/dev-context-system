@@ -12,4 +12,3 @@ Cache layer for the backend. Locally provided by a shared Redis instance (AOF pe
 - Every cached entry has an explicit TTL appropriate to how stale the data is allowed to be — no un-expiring cache entries unless deliberately intended as a persistent store (which Redis is not the right tool for here; that's Postgres's job).
 - Cache invalidation is explicit at the write path that changes the underlying data — don't rely on TTL alone when correctness matters.
 - Redis here is a cache, not a system of record — don't store data in Redis that doesn't also exist (or can't be rebuilt).
-

@@ -14,7 +14,7 @@ Alternative default to [vuejs](../vuejs/vuejs.md) for medium/small web apps — 
 
 Pairs with **Vertical Slice** or a plain feature-first structure (see [architecture-principles](architecture-principles.md)).
 
-```
+``` text
 src/
   shared/              # reusable components, hooks, utils with no feature-specific logic
   features/
@@ -68,4 +68,3 @@ Mandatory before considering any task done — see [coding-standards](coding-sta
 
 - `tsc --noEmit` — type-checking; plain `tsc` parses `.tsx` directly, no wrapper tool needed.
 - `eslint .` (with `eslint-plugin-react-hooks`) — must pass clean.
-

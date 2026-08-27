@@ -17,7 +17,8 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
 ## General principles (apply under either style)
 
 - **Dependency direction**: business/domain logic never depends on frameworks, UI, or infrastructure details. Infrastructure (DB, HTTP clients, storage SDKs) implements interfaces defined by the layer/slice that needs them, not the other way around.
-  ```csharp
+
+```csharp
   // Bad — domain depends on a concrete infrastructure type
   public class OrderService
   {
@@ -36,9 +37,11 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
       private readonly IOrderRepository _repository;
       public OrderService(IOrderRepository repository) => _repository = repository;
   }
-  ```
+```
+
 - **Testability drives boundaries**: if a piece of logic can't be unit-tested without spinning up a database, an HTTP server, or a UI framework, the boundary is probably wrong.
-  ```csharp
+
+```csharp
   // Bad — the business rule can't be tested without a live DB
   public class PricingService
   {
@@ -55,9 +58,11 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
       public static decimal CalculateFinalPrice(bool isVip, decimal basePrice) =>
           isVip ? basePrice * 0.9m : basePrice;
   }
-  ```
+```
+
 - **Always depend on an interface, from the first implementation — testability alone justifies it.** Don't wait for a second real implementation before introducing the abstraction; needing to substitute a test double when unit-testing a consumer is reason enough on its own. Applies the same way under Clean Architecture and Vertical Slice — no carve-out for "it's simple" or "there's only one implementation today."
-  ```csharp
+
+```csharp
   public interface IEmailSender
   {
       Task SendAsync(string to, string body);
@@ -75,6 +80,6 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
       // Testable in isolation with a fake IEmailSender — no real SMTP call needed
       // to verify a confirmation gets sent after an order is placed.
   }
-  ```
-- **Consistency within a project beats a "better" pattern mid-stream**: don't mix Clean Architecture in one module and Vertical Slice in another within the same codebase without a deliberate, documented reason.
+```
 
+- **Consistency within a project beats a "better" pattern mid-stream**: don't mix Clean Architecture in one module and Vertical Slice in another within the same codebase without a deliberate, documented reason.

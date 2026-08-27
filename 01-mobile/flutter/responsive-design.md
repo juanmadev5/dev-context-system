@@ -13,4 +13,3 @@ tags: [flutter, responsive-design]
 
 - Use `LayoutBuilder` / `MediaQuery` (or a breakpoints abstraction built on top of them) to adapt layout between phone and tablet form factors and to handle orientation changes — never hardcode pixel/logical-pixel dimensions that assume one specific device.
 - Respect safe areas/system insets, and don't assume portrait-only unless the project has explicitly scoped out landscape.
-

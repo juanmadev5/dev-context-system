@@ -8,7 +8,7 @@ tags: [flutter, architecture]
 
 Default architecture for every Flutter project, per [Flutter's official app-architecture guide](https://docs.flutter.dev/app-architecture/case-study). This is not a per-project choice — the layers below and the folder layout they imply are the one default. Three layers, dependencies always pointing downward, never upward:
 
-```
+``` text
 View → ViewModel → (Use-Case →) Repository → Service
 ```
 
@@ -62,7 +62,7 @@ class UserProfileViewModel {
 
 The UI layer is organized **by feature** (vertical slice); the Domain and Data layers are organized **by type** (layered):
 
-```
+``` text
 lib/
   ui/
     core/                 # shared widgets, theme
@@ -81,7 +81,8 @@ lib/
 ## General principles
 
 - **Dependency direction**: a ViewModel or Use-Case never depends on Flutter widgets, and never depends on a `Service` directly — only on a `Repository`'s abstract interface. Infrastructure (HTTP clients, local storage, platform channels) sits behind that interface, not the other way around.
-  ```dart
+
+```dart
   // Bad — a ViewModel depends on a concrete infrastructure type
   class OrderViewModel {
     final OrderRepositoryRemote repository; // concrete implementation
@@ -97,9 +98,11 @@ lib/
     final OrderRepository repository;
     OrderViewModel(this.repository);
   }
-  ```
+```
+
 - **Testability drives boundaries**: if a piece of logic can't be unit-tested without spinning up a database, an HTTP server, or the widget tree, the boundary is probably wrong.
-  ```dart
+
+```dart
   // Bad — the business rule can't be tested without a live data source
   class PricingService {
     double calculateFinalPrice(String customerId) {
@@ -111,9 +114,11 @@ lib/
   // Good — the rule is pure and testable in isolation; data access is separate
   double calculateFinalPrice({required bool isVip, required double basePrice}) =>
       isVip ? basePrice * 0.9 : basePrice;
-  ```
+```
+
 - **Always depend on an interface, from the first implementation — testability alone justifies it.** Don't wait for a second real implementation before introducing the abstraction; needing to substitute a test double when unit-testing a consumer is reason enough on its own. Applies at every layer boundary — Repository, Service, Use-Case alike — no carve-out for "it's simple" or "there's only one implementation today."
-  ```dart
+
+```dart
   abstract class EmailSender {
     Future<void> send(String to, String body);
   }
@@ -128,6 +133,6 @@ lib/
     // Testable in isolation with a fake EmailSender — no real SMTP call needed
     // to verify a confirmation gets sent after an order is placed.
   }
-  ```
-- **Consistency within a project beats a "better" pattern mid-stream**: every feature follows the same UI/Domain/Data split. Add a Domain layer for one feature only when that feature's logic actually warrants a Use-Case — not as an inconsistent house-style variation applied to some features and not others.
+```
 
+- **Consistency within a project beats a "better" pattern mid-stream**: every feature follows the same UI/Domain/Data split. Add a Domain layer for one feature only when that feature's logic actually warrants a Use-Case — not as an inconsistent house-style variation applied to some features and not others.

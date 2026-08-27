@@ -17,7 +17,8 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
 ## General principles (apply under either style)
 
 - **Dependency direction**: business/domain logic never depends on Angular, the DOM, or infrastructure details. Infrastructure (HTTP clients, storage, browser APIs) implements interfaces defined by the layer/slice that needs them, not the other way around.
-  ```typescript
+  
+```typescript
   // Bad — domain depends on a concrete infrastructure type
   @Injectable()
   export class OrderService {
@@ -33,9 +34,11 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
   export class OrderService {
     constructor(private repository: OrderRepository) {}
   }
-  ```
+```
+
 - **Testability drives boundaries**: if a piece of logic can't be unit-tested without spinning up a database, an HTTP server, or the component tree, the boundary is probably wrong.
-  ```typescript
+
+```typescript
   // Bad — the business rule can't be tested without a live data source
   @Injectable()
   export class PricingService {
@@ -52,9 +55,11 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
   export function calculateFinalPrice(isVip: boolean, basePrice: number): number {
     return isVip ? basePrice * 0.9 : basePrice;
   }
-  ```
+```
+
 - **Always depend on an abstraction, from the first implementation — testability alone justifies it.** Don't wait for a second real implementation before introducing it; needing to substitute a test double when unit-testing a consumer is reason enough on its own. Applies the same way under Clean Architecture and Vertical Slice — no carve-out for "it's simple" or "there's only one implementation today."
-  ```typescript
+
+```typescript
   export abstract class EmailSender {
     abstract send(to: string, body: string): Promise<void>;
   }
@@ -70,6 +75,6 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
     // Testable in isolation with a fake EmailSender — no real SMTP call needed
     // to verify a confirmation gets sent after an order is placed.
   }
-  ```
-- **Consistency within a project beats a "better" pattern mid-stream**: don't mix Clean Architecture in one feature and Vertical Slice in another within the same codebase without a deliberate, documented reason.
+```
 
+- **Consistency within a project beats a "better" pattern mid-stream**: don't mix Clean Architecture in one feature and Vertical Slice in another within the same codebase without a deliberate, documented reason.

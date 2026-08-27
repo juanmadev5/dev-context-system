@@ -8,7 +8,7 @@ tags: [jetpack-compose, architecture]
 
 Default architecture for every Jetpack Compose project, per [Android's official app architecture guide](https://developer.android.com/topic/architecture). This is not a per-project choice — the layers below are the one default. Dependencies always point downward, never upward:
 
-```
+``` text
 UI (Composable + ViewModel) → Domain (UseCase, optional) → Data (Repository + DataSource)
 ```
 
@@ -59,7 +59,8 @@ class UserProfileViewModel(
 ## General principles
 
 - **Dependency direction**: a ViewModel or UseCase never depends on Android framework classes, Compose, or a `DataSource` directly — only on a `Repository`'s abstract interface. Infrastructure (Retrofit clients, Room, DataStore) sits behind that interface, not the other way around.
-  ```kotlin
+  
+```kotlin
   // Bad — a ViewModel depends on a concrete infrastructure type
   class OrderViewModel(private val repository: OrderRepositoryImpl) // concrete implementation
 
@@ -69,9 +70,11 @@ class UserProfileViewModel(
   }
 
   class OrderViewModel(private val repository: OrderRepository)
-  ```
+```
+
 - **Testability drives boundaries**: if a piece of logic can't be unit-tested without spinning up a database, an HTTP client, or Compose, the boundary is probably wrong.
-  ```kotlin
+
+```kotlin
   // Bad — the business rule can't be tested without a live data source
   class PricingService(private val dataSource: CustomerDataSource) {
       suspend fun calculateFinalPrice(customerId: String): Double {
@@ -83,9 +86,11 @@ class UserProfileViewModel(
   // Good — the rule is pure and testable in isolation; data access is separate
   fun calculateFinalPrice(isVip: Boolean, basePrice: Double): Double =
       if (isVip) basePrice * 0.9 else basePrice
-  ```
+```
+
 - **Always depend on an interface, from the first implementation — testability alone justifies it.** Don't wait for a second real implementation before introducing the abstraction; needing to substitute a test double when unit-testing a consumer is reason enough on its own. Applies at every layer boundary — Repository, DataSource, UseCase alike — no carve-out for "it's simple" or "there's only one implementation today."
-  ```kotlin
+
+```kotlin
   interface EmailSender {
       suspend fun send(to: String, body: String)
   }
@@ -98,6 +103,6 @@ class UserProfileViewModel(
       // Testable in isolation with a fake EmailSender — no real SMTP call needed
       // to verify a confirmation gets sent after an order is placed.
   }
-  ```
-- **Consistency within a project beats a "better" pattern mid-stream**: every feature follows the same UI/Domain/Data split. Add a Domain layer for one feature only when that feature's logic actually warrants a UseCase — not as an inconsistent house-style variation applied to some features and not others.
+```
 
+- **Consistency within a project beats a "better" pattern mid-stream**: every feature follows the same UI/Domain/Data split. Add a Domain layer for one feature only when that feature's logic actually warrants a UseCase — not as an inconsistent house-style variation applied to some features and not others.

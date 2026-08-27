@@ -40,7 +40,8 @@ Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the projec
 
 - God widgets/functions doing more than one thing (violates Single Responsibility, see [coding-standards](coding-standards.md)).
 - Domain/business objects leaking into the presentation layer, or any other [architecture-principles](architecture-principles.md) boundary violation.
-  ```dart
+
+```dart
   // Bad — a data-layer model returned straight to the widget tree
   class CustomerScreen extends StatelessWidget {
     Widget build(BuildContext context) {
@@ -55,11 +56,13 @@ Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the projec
     final String maskedEmail;
     CustomerViewModel({required this.displayName, required this.maskedEmail});
   }
-  ```
+```
+
 - Premature abstraction — extra internal splitting or indirection introduced with no real boundary or reason to change ([architecture-principles](architecture-principles.md)). This does **not** include interfaces on injected dependencies — those are mandatory from the first implementation; never flag a DI interface as premature just because there's only one concrete implementation today.
 - Non-descriptive callback parameter names ([coding-standards](coding-standards.md)'s naming rules).
 - Enums persisted or transmitted by `.index` instead of `.name` ([coding-standards](coding-standards.md)).
-  ```dart
+
+```dart
   // Bad — reordering or inserting a member silently changes stored meaning
   enum OrderStatus { pending, paid, shipped }
   prefs.setInt('order_status', order.status.index);
@@ -83,4 +86,3 @@ Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the projec
 - Any blocking item open → request changes.
 - Only non-blocking comments left → approve, comments optional to address.
 - Nothing outstanding → approve.
-

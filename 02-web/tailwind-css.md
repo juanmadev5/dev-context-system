@@ -25,4 +25,3 @@ Used for styling on **every** web project regardless of framework — [angular](
 - Semantic tokens are defined once as **CSS custom properties** (e.g. in a `:root` block in the project's global stylesheet) and wired into Tailwind's `theme.extend.colors` so utilities resolve to them. This isn't a workaround — it's Tailwind v4's own native approach (`@theme` blocks are CSS variables under the hood), so it's the idiomatic setup, not an extra layer on top.
 - Naming is by **role**, not by hue: `primary`/`danger`, never `blue`/`red` — a token named after a color breaks the moment the actual color changes (e.g. rebranding `primary` from blue to purple shouldn't leave a token called `blue` pointing at purple).
 - Payoff: rebranding, per-client white-labeling, or adding dark mode becomes a change to the token definitions in one place, never a project-wide find-and-replace across components.
-

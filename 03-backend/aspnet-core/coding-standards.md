@@ -17,19 +17,23 @@ Universal rules that apply to every ASP.NET Core project. [aspnet-core.md](aspne
 - Every identifier must be understandable **at first glance**, with no need to trace back through the code to figure out what it represents. This includes variables, parameters, and — just as strictly — **lambda/callback parameters** in `.Select`/`.Where`/`.GroupBy`-style LINQ chains.
 - Never name a lambda parameter after a generic placeholder letter (`e`, `g`, `x`, `el`, `arr`, `i` for anything but a raw loop index) when a descriptive name is one keystroke away.
 - Bad (meaning only recoverable by re-reading the surrounding types):
-  ```csharp
+
+```csharp
   var errors = validationException.Errors
       .GroupBy(e => e.PropertyName)
       .ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).ToArray());
-  ```
+```
+
 - Good (each name says what the item is, no guessing required):
-  ```csharp
+
+```csharp
   var errors = validationException.Errors
       .GroupBy(validationError => validationError.PropertyName)
       .ToDictionary(
           propertyErrors => propertyErrors.Key,
           propertyErrors => propertyErrors.Select(validationError => validationError.ErrorMessage).ToArray());
-  ```
+```
+
 - The one broadly accepted exception is a raw numeric index in a tight loop (`for (int i = 0; ...)`). Everything else — including nested lambda parameters shadowing an outer one — gets a real, descriptive name.
 
 ## No magic values
@@ -106,4 +110,3 @@ A task is never "done" just because it behaves correctly or compiles. Code can l
 - **Decide and proceed**, when: it's a routine implementation detail with one obviously-correct answer given the codebase's existing patterns (naming a variable, extracting a duplicate); it's already resolved by a repository note or the project's `CLAUDE.md`.
 - **Never guess an API, method, or parameter** that hasn't been verified against real code or official documentation ([sources](sources.md)) — that's always a case to check, never to fabricate.
 - If proceeding on a judgment call rather than asking, state the assumption explicitly (in the PR description or a note to the developer) instead of deciding silently. Silent, unstated assumptions are exactly what produce a "reasonable but wrong" decision that only surfaces at review.
-

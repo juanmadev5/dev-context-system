@@ -14,57 +14,57 @@ Curated index of this stack's own official documentation — the vetted entry po
 
 ## Android app architecture
 
-- Guide to app architecture (overview, UDF, layers): https://developer.android.com/topic/architecture
-- UI layer guide (UI state, state holders, UDF): https://developer.android.com/topic/architecture/ui-layer
-- Data layer guide (repositories, data sources): https://developer.android.com/topic/architecture/data-layer
+- Guide to app architecture (overview, UDF, layers): <https://developer.android.com/topic/architecture>
+- UI layer guide (UI state, state holders, UDF): <https://developer.android.com/topic/architecture/ui-layer>
+- Data layer guide (repositories, data sources): <https://developer.android.com/topic/architecture/data-layer>
 
 ## Jetpack Compose
 
-- Get started with Jetpack Compose: https://developer.android.com/develop/ui/compose/documentation
-- State and Jetpack Compose (state hoisting, `remember`, `rememberSaveable`): https://developer.android.com/develop/ui/compose/state
-- Test your Compose layout (Compose UI Testing APIs): https://developer.android.com/develop/ui/compose/testing
+- Get started with Jetpack Compose: <https://developer.android.com/develop/ui/compose/documentation>
+- State and Jetpack Compose (state hoisting, `remember`, `rememberSaveable`): <https://developer.android.com/develop/ui/compose/state>
+- Test your Compose layout (Compose UI Testing APIs): <https://developer.android.com/develop/ui/compose/testing>
 
 ## Hilt
 
-- Dependency injection with Hilt: https://developer.android.com/training/dependency-injection/hilt-android
+- Dependency injection with Hilt: <https://developer.android.com/training/dependency-injection/hilt-android>
 
 ## Navigation 3
 
-- Navigation 3 overview: https://developer.android.com/guide/navigation/navigation-3
-- Understand and implement the basics (back stack, keys, `NavDisplay`): https://developer.android.com/guide/navigation/navigation-3/basics
+- Navigation 3 overview: <https://developer.android.com/guide/navigation/navigation-3>
+- Understand and implement the basics (back stack, keys, `NavDisplay`): <https://developer.android.com/guide/navigation/navigation-3/basics>
 
 ## Kotlin Coroutines & Flow
 
-- Coroutines guide: https://kotlinlang.org/docs/coroutines-guide.html
-- Asynchronous Flow — StateFlow and SharedFlow: https://kotlinlang.org/docs/coroutines-flow.html
+- Coroutines guide: <https://kotlinlang.org/docs/coroutines-guide.html>
+- Asynchronous Flow — StateFlow and SharedFlow: <https://kotlinlang.org/docs/coroutines-flow.html>
 
 ## Room
 
-- Save data in a local database using Room: https://developer.android.com/training/data-storage/room
+- Save data in a local database using Room: <https://developer.android.com/training/data-storage/room>
 
 ## DataStore
 
-- DataStore guide (Preferences/Proto DataStore): https://developer.android.com/topic/libraries/architecture/datastore
+- DataStore guide (Preferences/Proto DataStore): <https://developer.android.com/topic/libraries/architecture/datastore>
 
 ## Material 3 WindowSizeClass
 
-- Use window size classes (adaptive layouts): https://developer.android.com/develop/ui/compose/layouts/adaptive/window-size-classes
+- Use window size classes (adaptive layouts): <https://developer.android.com/develop/ui/compose/layouts/adaptive/window-size-classes>
 
 ## Timber
 
-- Official README (JakeWharton/timber): https://github.com/JakeWharton/timber
+- Official README (JakeWharton/timber): <https://github.com/JakeWharton/timber>
 
 ## Turbine
 
-- Official README (cashapp/turbine): https://github.com/cashapp/turbine
+- Official README (cashapp/turbine): <https://github.com/cashapp/turbine>
 
 ## detekt
 
-- Official docs site: https://detekt.dev/
+- Official docs site: <https://detekt.dev/>
 
 ## Android Lint
 
-- Improve your code with lint checks: https://developer.android.com/studio/write/lint
+- Improve your code with lint checks: <https://developer.android.com/studio/write/lint>
 
 ## If a source isn't listed here
 
@@ -73,9 +73,8 @@ This index covers the libraries/topics this repository's conventions actually na
 - Look it up directly — same rule applies: only the vendor/maintainer's own official docs, never a blog/tutorial/Stack Overflow/AI-summary site.
 - Record it in that project's own `docs/SOURCES.md` (created the first time it's actually needed, per [coding-standards](coding-standards.md)'s "no empty folders" reasoning applied to documentation), grouped by library under a `##` heading, one bullet per source:
 
-  ```markdown
+```markdown
   ## some_new_library
 
   - What the page covers: https://...
-  ```
-
+```

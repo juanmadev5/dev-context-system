@@ -57,4 +57,3 @@ Mandatory before considering any task done — see [coding-standards](coding-sta
 
 - `vue-tsc --noEmit` — plain `tsc` can't parse `.vue` Single File Components, so `vue-tsc` is the standard type-checker for Vue+TS projects.
 - `eslint .` (with `eslint-plugin-vue`) — must pass clean.
-

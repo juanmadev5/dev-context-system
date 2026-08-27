@@ -13,4 +13,3 @@ tags: [jetpack-compose, responsive-design]
 
 - Use Material 3's `WindowSizeClass` (adaptive layouts) and `BoxWithConstraints` to adapt layout across Android's phone/tablet/foldable range — never a fixed `dp` layout that assumes one screen size.
 - Respect safe areas/system insets, and don't assume portrait-only unless the project has explicitly scoped out landscape.
-

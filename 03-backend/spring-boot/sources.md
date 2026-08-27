@@ -14,60 +14,60 @@ Curated index of this stack's own official documentation — the vetted entry po
 
 ## Spring Boot
 
-- Official reference documentation entry point: https://docs.spring.io/spring-boot/index.html
-- Maven plugin reference (packaging, running, build-info generation): https://docs.spring.io/spring-boot/maven-plugin/
+- Official reference documentation entry point: <https://docs.spring.io/spring-boot/index.html>
+- Maven plugin reference (packaging, running, build-info generation): <https://docs.spring.io/spring-boot/maven-plugin/>
 
 ## Spring Data JPA
 
-- Reference docs for repository interfaces, query methods, and `JpaRepository`: https://docs.spring.io/spring-data/jpa/reference/
+- Reference docs for repository interfaces, query methods, and `JpaRepository`: <https://docs.spring.io/spring-data/jpa/reference/>
 
 ## Spring Security
 
-- OAuth2 Resource Server reference (JWT/opaque bearer token validation, the Keycloak pairing): https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/index.html
+- OAuth2 Resource Server reference (JWT/opaque bearer token validation, the Keycloak pairing): <https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/index.html>
 
 ## Spring Data Redis / Caching
 
-- Spring Data Redis reference docs: https://docs.spring.io/spring-data/redis/reference/
-- Spring Boot caching reference (`@Cacheable`, cache provider auto-detection incl. Redis): https://docs.spring.io/spring-boot/reference/io/caching.html
+- Spring Data Redis reference docs: <https://docs.spring.io/spring-data/redis/reference/>
+- Spring Boot caching reference (`@Cacheable`, cache provider auto-detection incl. Redis): <https://docs.spring.io/spring-boot/reference/io/caching.html>
 
 ## Bean Validation / Jakarta Validation
 
-- Spring Framework's Bean Validation integration guide (`@Valid`, `LocalValidatorFactoryBean`, method validation): https://docs.spring.io/spring-framework/reference/core/validation/beanvalidation.html
-- Jakarta Bean Validation 3.0 specification: https://jakarta.ee/specifications/bean-validation/3.0/
+- Spring Framework's Bean Validation integration guide (`@Valid`, `LocalValidatorFactoryBean`, method validation): <https://docs.spring.io/spring-framework/reference/core/validation/beanvalidation.html>
+- Jakarta Bean Validation 3.0 specification: <https://jakarta.ee/specifications/bean-validation/3.0/>
 
 ## Flyway
 
-- Official Redgate Flyway documentation (migrations, versioned scripts, schema history): https://documentation.red-gate.com/flyway
+- Official Redgate Flyway documentation (migrations, versioned scripts, schema history): <https://documentation.red-gate.com/flyway>
 
 ## springdoc-openapi
 
-- Official documentation (OpenAPI 3 + Swagger UI for Spring Boot): https://springdoc.org/
+- Official documentation (OpenAPI 3 + Swagger UI for Spring Boot): <https://springdoc.org/>
 
 ## JUnit 5
 
-- Official JUnit user guide (Jupiter, Platform, Vintage): https://docs.junit.org/current/user-guide/
+- Official JUnit user guide (Jupiter, Platform, Vintage): <https://docs.junit.org/current/user-guide/>
 
 ## Mockito
 
-- Official Mockito site: https://site.mockito.org/
+- Official Mockito site: <https://site.mockito.org/>
 
 ## SLF4J + Logback
 
-- SLF4J user manual: https://www.slf4j.org/manual.html
-- Logback manual: https://logback.qos.ch/manual/index.html
+- SLF4J user manual: <https://www.slf4j.org/manual.html>
+- Logback manual: <https://logback.qos.ch/manual/index.html>
 
 ## OpenTelemetry (Java)
 
-- Java documentation (traces, metrics, logs): https://opentelemetry.io/docs/languages/java/
+- Java documentation (traces, metrics, logs): <https://opentelemetry.io/docs/languages/java/>
 
 ## Checkstyle
 
-- Official Checkstyle documentation (checks, configuration, rules): https://checkstyle.sourceforge.io/
-- Apache Maven Checkstyle Plugin documentation: https://maven.apache.org/plugins/maven-checkstyle-plugin/
+- Official Checkstyle documentation (checks, configuration, rules): <https://checkstyle.sourceforge.io/>
+- Apache Maven Checkstyle Plugin documentation: <https://maven.apache.org/plugins/maven-checkstyle-plugin/>
 
 ## RFC 7807
 
-- Problem Details for HTTP APIs — note: obsoleted by RFC 9457, worth checking if the newer RFC should be adopted instead: https://www.rfc-editor.org/rfc/rfc7807
+- Problem Details for HTTP APIs — note: obsoleted by RFC 9457, worth checking if the newer RFC should be adopted instead: <https://www.rfc-editor.org/rfc/rfc7807>
 
 ## If a source isn't listed here
 
@@ -76,9 +76,8 @@ This index covers the libraries/topics this repository's conventions actually na
 - Look it up directly — same rule applies: only the vendor/maintainer's own official docs, never a blog/tutorial/Stack Overflow/AI-summary site.
 - Record it in that project's own `docs/SOURCES.md` (created the first time it's actually needed, per [coding-standards](coding-standards.md)'s "no empty folders" reasoning applied to documentation), grouped by library under a `##` heading, one bullet per source:
 
-  ```markdown
+```markdown
   ## SomeNewLibrary
 
   - What the page covers: https://...
-  ```
-
+```

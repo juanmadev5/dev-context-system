@@ -14,51 +14,51 @@ Curated index of this stack's own official documentation — the vetted entry po
 
 ## Vue.js
 
-- Official docs entry point / introduction: https://vuejs.org/guide/introduction.html
-- Composition API FAQ (what/why, relation to the Options API): https://vuejs.org/guide/extras/composition-api-faq.html
-- `<script setup>` SFC syntax reference: https://vuejs.org/api/sfc-script-setup.html
-- Using Vue with TypeScript: https://vuejs.org/guide/typescript/overview.html
+- Official docs entry point / introduction: <https://vuejs.org/guide/introduction.html>
+- Composition API FAQ (what/why, relation to the Options API): <https://vuejs.org/guide/extras/composition-api-faq.html>
+- `<script setup>` SFC syntax reference: <https://vuejs.org/api/sfc-script-setup.html>
+- Using Vue with TypeScript: <https://vuejs.org/guide/typescript/overview.html>
 
 ## Vite
 
-- Getting Started guide: https://vite.dev/guide/
+- Getting Started guide: <https://vite.dev/guide/>
 
 ## Pinia
 
-- Official documentation homepage: https://pinia.vuejs.org/
+- Official documentation homepage: <https://pinia.vuejs.org/>
 
 ## Vue Router
 
-- Official documentation homepage: https://router.vuejs.org/
-- Navigation Guards guide: https://router.vuejs.org/guide/advanced/navigation-guards.html
-- Route Meta Fields guide: https://router.vuejs.org/guide/advanced/meta.html
+- Official documentation homepage: <https://router.vuejs.org/>
+- Navigation Guards guide: <https://router.vuejs.org/guide/advanced/navigation-guards.html>
+- Route Meta Fields guide: <https://router.vuejs.org/guide/advanced/meta.html>
 
 ## Vitest
 
-- Getting Started guide: https://vitest.dev/guide/
+- Getting Started guide: <https://vitest.dev/guide/>
 
 ## Vue Test Utils
 
-- Official documentation homepage: https://test-utils.vuejs.org/
+- Official documentation homepage: <https://test-utils.vuejs.org/>
 
 ## Playwright
 
-- Installation / getting started: https://playwright.dev/docs/intro
+- Installation / getting started: <https://playwright.dev/docs/intro>
 
 ## vue-i18n
 
-- Introduction: https://vue-i18n.intlify.dev/guide/introduction
-- Getting Started guide: https://vue-i18n.intlify.dev/guide/essentials/started
-- Composition API usage guide: https://vue-i18n.intlify.dev/guide/advanced/composition
+- Introduction: <https://vue-i18n.intlify.dev/guide/introduction>
+- Getting Started guide: <https://vue-i18n.intlify.dev/guide/essentials/started>
+- Composition API usage guide: <https://vue-i18n.intlify.dev/guide/advanced/composition>
 
 ## vue-tsc
 
-- Official README (usage, `--noEmit`, requirements) in the `vuejs/language-tools` repo: https://github.com/vuejs/language-tools/blob/master/packages/tsc/README.md
+- Official README (usage, `--noEmit`, requirements) in the `vuejs/language-tools` repo: <https://github.com/vuejs/language-tools/blob/master/packages/tsc/README.md>
 
 ## eslint-plugin-vue
 
-- Introduction: https://eslint.vuejs.org/
-- User Guide (installation/configuration): https://eslint.vuejs.org/user-guide/
+- Introduction: <https://eslint.vuejs.org/>
+- User Guide (installation/configuration): <https://eslint.vuejs.org/user-guide/>
 
 ## If a source isn't listed here
 
@@ -67,9 +67,8 @@ This index covers the libraries/topics this repository's conventions actually na
 - Look it up directly — same rule applies: only the vendor/maintainer's own official docs, never a blog/tutorial/Stack Overflow/AI-summary site.
 - Record it in that project's own `docs/SOURCES.md` (created the first time it's actually needed, per [coding-standards](coding-standards.md)'s "no empty folders" reasoning applied to documentation), grouped by library under a `##` heading, one bullet per source:
 
-  ```markdown
+```markdown
   ## some-new-package
 
   - What the page covers: https://...
-  ```
-
+```

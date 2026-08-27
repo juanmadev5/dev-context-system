@@ -41,7 +41,8 @@ Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the projec
 
 - God classes/functions doing more than one thing (violates Single Responsibility, see [coding-standards](coding-standards.md)).
 - Domain/business objects leaking into the presentation layer, or any other [architecture-principles](architecture-principles.md) boundary violation.
-  ```csharp
+
+```csharp
   // Bad — EF Core entity returned straight from the API
   [HttpGet("{id}")]
   public async Task<Customer> Get(Guid id) => await _dbContext.Customers.FindAsync(id);
@@ -53,11 +54,14 @@ Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the projec
       var customer = await _dbContext.Customers.FindAsync(id);
       return new CustomerResponse(customer.Id, customer.Name, customer.Email);
   }
-  ```
+
+```
+
 - Premature abstraction — extra internal splitting or indirection introduced with no real boundary or reason to change ([architecture-principles](architecture-principles.md)). This does **not** include interfaces on injected dependencies — those are mandatory from the first implementation; never flag a DI interface as premature just because there's only one concrete implementation today.
 - Non-descriptive lambda/callback parameter names ([coding-standards](coding-standards.md)'s naming rules).
 - Enums persisted or transmitted by ordinal instead of name ([coding-standards](coding-standards.md)).
-  ```csharp
+
+```csharp
   // Bad — reordering or inserting a member silently changes stored meaning
   public enum OrderStatus { Pending, Paid, Shipped }
   context.SaveJson(new { status = (int)order.Status });
@@ -81,4 +85,3 @@ Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the projec
 - Any blocking item open → request changes.
 - Only non-blocking comments left → approve, comments optional to address.
 - Nothing outstanding → approve.
-

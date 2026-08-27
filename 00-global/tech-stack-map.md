@@ -42,4 +42,3 @@ Decision map: given a project's shape, which technology to reach for. This is th
 ## Composing a project's context
 
 Once the stack for a given project is picked from the tables above, compose that project's `CLAUDE.md` by importing that stack's own `INDEX.md` (e.g. `01-mobile/flutter/INDEX.md`) via Claude Code's `@path` syntax, plus [git-conventions](git-conventions.md) and whichever infra notes the project pairs with. Each stack's architecture, coding-standards, code-review, responsive-design (where applicable), and sources conventions live inside that stack's own folder, not as separate global notes.
-

@@ -20,7 +20,7 @@ This is not optional per-project — it's the default for every Compose project.
 
 Follow [architecture-principles](architecture-principles.md)'s UI/Domain/Data layering, packaged per feature. A typical layout:
 
-```
+``` text
 app/
   core/                 # shared utilities, DI modules, constants, error types
   feature/<feature>/
@@ -80,4 +80,3 @@ Mandatory before considering any task done — see [coding-standards](coding-sta
 
 - `./gradlew lint` — Android Lint, catches Android-specific issues (resource misuse, manifest problems, performance/API-level warnings).
 - `./gradlew detekt` — Kotlin static analysis (complexity, style, common bug patterns), the de facto standard for Kotlin projects. Both must pass clean.
-

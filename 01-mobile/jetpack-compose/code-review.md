@@ -40,7 +40,8 @@ Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the projec
 
 - God Composables/functions doing more than one thing (violates Single Responsibility, see [coding-standards](coding-standards.md)).
 - Domain/business objects leaking into the presentation layer, or any other [architecture-principles](architecture-principles.md) boundary violation.
-  ```kotlin
+
+```kotlin
   // Bad — a data-layer entity rendered straight in the Composable
   @Composable
   fun CustomerScreen(customerId: String, dataSource: CustomerDataSource) {
@@ -55,18 +56,20 @@ Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the projec
   fun CustomerScreen(uiState: CustomerUiState) {
       Text(uiState.maskedEmail)
   }
-  ```
+```
+
 - Premature abstraction — extra internal splitting or indirection introduced with no real boundary or reason to change ([architecture-principles](architecture-principles.md)). This does **not** include interfaces on injected dependencies — those are mandatory from the first implementation; never flag a DI interface as premature just because there's only one concrete implementation today.
 - Non-descriptive lambda parameter names ([coding-standards](coding-standards.md)'s naming rules).
 - Enums persisted or transmitted by `.ordinal` instead of `.name` ([coding-standards](coding-standards.md)).
-  ```kotlin
+
+```kotlin
   // Bad — reordering or inserting a member silently changes stored meaning
   enum class OrderStatus { PENDING, PAID, SHIPPED }
   sharedPreferences.edit { putInt("order_status", order.status.ordinal) }
 
   // Good — stable regardless of member order
   sharedPreferences.edit { putString("order_status", order.status.name) }
-  ```
+```
 
 ## Comment format
 
@@ -83,4 +86,3 @@ Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the projec
 - Any blocking item open → request changes.
 - Only non-blocking comments left → approve, comments optional to address.
 - Nothing outstanding → approve.
-

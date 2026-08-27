@@ -17,21 +17,25 @@ Universal rules that apply to every Flutter project. [flutter.md](flutter.md) on
 - Every identifier must be understandable **at first glance**, with no need to trace back through the code to figure out what it represents. This includes variables, parameters, and — just as strictly — **callback parameters** in `.map`/`.where`/`.fold`-style chains.
 - Never name a callback parameter after a generic placeholder letter (`e`, `x`, `el`) when a descriptive name is one keystroke away.
 - Bad (meaning only recoverable by re-reading the surrounding types):
-  ```dart
+
+```dart
   final errorsByField = validationErrors
       .fold<Map<String, List<String>>>({}, (acc, e) {
     acc.putIfAbsent(e.field, () => []).add(e.message);
     return acc;
   });
-  ```
+```
+
 - Good (each name says what the item is, no guessing required):
-  ```dart
+
+```dart
   final errorsByField = validationErrors
       .fold<Map<String, List<String>>>({}, (accumulated, validationError) {
     accumulated.putIfAbsent(validationError.field, () => []).add(validationError.message);
     return accumulated;
   });
-  ```
+```
+
 - The one broadly accepted exception is a raw numeric index in a tight loop (`for (var i = 0; ...)`). Everything else — including nested callback parameters shadowing an outer one — gets a real, descriptive name.
 
 ## No magic values
@@ -108,4 +112,3 @@ A task is never "done" just because it behaves correctly or compiles. Code can l
 - **Decide and proceed**, when: it's a routine implementation detail with one obviously-correct answer given the codebase's existing patterns (naming a variable, extracting a duplicate); it's already resolved by a repository note or the project's `CLAUDE.md`.
 - **Never guess an API, method, or parameter** that hasn't been verified against real code or official documentation ([sources](sources.md)) — that's always a case to check, never to fabricate.
 - If proceeding on a judgment call rather than asking, state the assumption explicitly (in the PR description or a note to the developer) instead of deciding silently. Silent, unstated assumptions are exactly what produce a "reasonable but wrong" decision that only surfaces at review.
-

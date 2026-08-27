@@ -8,7 +8,7 @@ Default for complex web apps with heavy business logic — see [tech-stack-map](
 
 ## Project structure
 
-```
+``` text
 src/app/
   core/                 # singletons: auth, http interceptors, app-wide services, DI tokens
   shared/               # reusable, stateless UI (components, pipes, directives) with no feature-specific logic
@@ -62,4 +62,3 @@ Mandatory before considering any task done — see [coding-standards](coding-sta
 
 - `tsc --noEmit` — type-checking. `ng build` also catches type errors, but `tsc --noEmit` is faster when a full build isn't needed.
 - `eslint .` (via `ng lint` if `@angular-eslint` is set up in the project) — must pass clean.
-

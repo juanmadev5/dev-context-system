@@ -22,7 +22,7 @@ Follow [architecture-principles](architecture-principles.md) to pick the right l
 
 - **Mandatory: one `.csproj` per layer, not folders inside a single project.** Physical project separation, wired together via `ProjectReference`, is what actually enforces [architecture-principles](architecture-principles.md)'s dependency-direction rule — with folders alone, nothing stops a file under `Domain/` from importing something from `Infrastructure/` except code review catching it; with separate projects, it doesn't compile. This also means `Domain`/`Application` carry zero reference to ASP.NET Core/EF Core, so they're unit-testable with no framework/database spun up at all.
 
-```
+``` text
 src/
   Domain/                # .csproj — entities, value objects, domain events, repository interfaces. No project references — zero framework deps.
   Application/            # .csproj — use cases/services, DTOs, validation, interfaces for infrastructure. References: Domain.
@@ -34,7 +34,7 @@ src/
 
 **Vertical Slice** (default when a full layered split adds more ceremony than value, but there's enough logic to justify real structure — Controllers, not Minimal APIs):
 
-```
+``` text
 src/
   Features/
     <Feature>/
@@ -163,4 +163,3 @@ Mandatory before considering any task done — see [coding-standards](coding-sta
 ## Testing
 
 - **xUnit + Moq** is the idiomatic default when tests are warranted — see [coding-standards](coding-standards.md)'s Testing section for when they're actually mandatory (backend testing stack, if any, is chosen per-project).
-
