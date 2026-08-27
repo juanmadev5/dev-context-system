@@ -4,7 +4,7 @@ tags: [spring-boot, coding-standards]
 
 # Coding Standards — Spring Boot
 
-Universal rules that apply to every Spring Boot project. [[03-backend/spring-boot/spring-boot|spring-boot.md]] only adds on top of this — it never contradicts it.
+Universal rules that apply to every Spring Boot project. [spring-boot.md](spring-boot.md) only adds on top of this — it never contradicts it.
 
 ## Language
 
@@ -41,24 +41,24 @@ Universal rules that apply to every Spring Boot project. [[03-backend/spring-boo
 ## DRY
 
 - Duplication is a defect, not a style preference. If the same logic (not just similar-looking code) appears more than once, extract it — a method, a shared component, a base class, a utility class, whatever fits.
-- DRY applies to logic and business rules, not to superficial structural similarity. Do not force an abstraction over code that merely looks alike but represents different concerns — that creates false coupling. See [[03-backend/spring-boot/architecture-principles|architecture-principles]] for how this interacts with premature abstraction.
+- DRY applies to logic and business rules, not to superficial structural similarity. Do not force an abstraction over code that merely looks alike but represents different concerns — that creates false coupling. See [architecture-principles](architecture-principles.md) for how this interacts with premature abstraction.
 
 ## SOLID
 
-Applied together with DRY, not instead of it — see [[03-backend/spring-boot/architecture-principles|architecture-principles]] for how these interact with layer/slice boundaries.
+Applied together with DRY, not instead of it — see [architecture-principles](architecture-principles.md) for how these interact with layer/slice boundaries.
 
 - **Single Responsibility**: a class/method has one reason to change. If describing what something does requires "and", it's a candidate to split.
 - **Open/Closed**: extend behavior by adding new code (a new implementation of an interface, a new case), not by modifying working code to special-case a new scenario — especially across module boundaries.
 - **Liskov Substitution**: a subtype/implementation must be usable anywhere its base type/interface is expected, without the caller needing to know which concrete type it got. If a caller has to type-check or special-case a specific implementation, the abstraction is wrong.
 - **Interface Segregation**: don't force a consumer to depend on methods it doesn't use. Prefer several small, focused interfaces over one large one.
-- **Dependency Inversion**: high-level/business logic depends on abstractions, not on concrete infrastructure. Same rule as [[03-backend/spring-boot/architecture-principles|architecture-principles]]'s "dependency direction" — SOLID and the architecture layering reinforce each other, they're not separate concerns.
+- **Dependency Inversion**: high-level/business logic depends on abstractions, not on concrete infrastructure. Same rule as [architecture-principles](architecture-principles.md)'s "dependency direction" — SOLID and the architecture layering reinforce each other, they're not separate concerns.
 
-Apply these pragmatically: they're a guide for keeping code changeable, not a checklist to satisfy for its own sake. This doesn't apply to injected dependencies — those always get an interface, from the first implementation, per [[03-backend/spring-boot/architecture-principles|architecture-principles]]'s dependency rule. It's about internal structure: don't split a class into multiple pieces or add extra indirection with no real boundary or reason to change — that's premature abstraction, which [[03-backend/spring-boot/architecture-principles|architecture-principles]] already warns against.
+Apply these pragmatically: they're a guide for keeping code changeable, not a checklist to satisfy for its own sake. This doesn't apply to injected dependencies — those always get an interface, from the first implementation, per [architecture-principles](architecture-principles.md)'s dependency rule. It's about internal structure: don't split a class into multiple pieces or add extra indirection with no real boundary or reason to change — that's premature abstraction, which [architecture-principles](architecture-principles.md) already warns against.
 
 ## Architecture
 
-- Default to **Clean Architecture** for every project — see [[03-backend/spring-boot/architecture-principles|architecture-principles]] for the layout. Not a per-project choice.
-- **Never create a package/module that ends up empty.** The `domain`/`application`/`infrastructure`/`api` module split shown in [[03-backend/spring-boot/spring-boot|spring-boot.md]] is the *shape* a project converges toward, not a scaffold to stamp out up front — create a package or module only at the moment it actually gets its first class.
+- Default to **Clean Architecture** for every project — see [architecture-principles](architecture-principles.md) for the layout. Not a per-project choice.
+- **Never create a package/module that ends up empty.** The `domain`/`application`/`infrastructure`/`api` module split shown in [spring-boot.md](spring-boot.md) is the *shape* a project converges toward, not a scaffold to stamp out up front — create a package or module only at the moment it actually gets its first class.
 - Corollary: don't pre-create the full module/package tree for a new feature "so it's ready" — add each package as the corresponding class is written. An empty package in the repo is either dead weight or, worse, a placeholder someone has to remember to clean up.
 
 ## Comments
@@ -81,11 +81,11 @@ Apply these pragmatically: they're a guide for keeping code changeable, not a ch
 
 A task is never "done" just because it behaves correctly or compiles. Code can look fine and still be silently broken, scoped wrong, or undocumented — before considering any task/feature finished, every applicable item below must be checked, not just a feeling that it's "probably fine":
 
-- **Static analysis** — passes clean (no new errors or warnings introduced by the change) — see [[03-backend/spring-boot/spring-boot|spring-boot.md]]'s `## Static analysis` section. Never skip this assuming "it looks fine" or because the change was small.
-- **Tests** — pass locally; if the change touches logic covered by this note's [[#Testing]] criteria, new tests were written for it.
-- **Self-review** — the full diff was read start to finish before calling the task done, per [[03-backend/spring-boot/code-review|code-review]]'s self-review section.
-- **Docs** — the project's README was updated if the change affects it ([[00-global/readme-conventions|readme-conventions]]); `docs/SOURCES.md` was updated if a source not already covered by [[03-backend/spring-boot/sources|sources]] was consulted.
-- **Scope check** — the change matches exactly what was asked, with no unrelated edits left in (see [[#Scope discipline]] below).
+- **Static analysis** — passes clean (no new errors or warnings introduced by the change) — see [spring-boot.md](spring-boot.md)'s `## Static analysis` section. Never skip this assuming "it looks fine" or because the change was small.
+- **Tests** — pass locally; if the change touches logic covered by this note's [Testing](#testing) criteria, new tests were written for it.
+- **Self-review** — the full diff was read start to finish before calling the task done, per [code-review](code-review.md)'s self-review section.
+- **Docs** — the project's README was updated if the change affects it ([readme-conventions](../../00-global/readme-conventions.md)); `docs/SOURCES.md` was updated if a source not already covered by [sources](sources.md) was consulted.
+- **Scope check** — the change matches exactly what was asked, with no unrelated edits left in (see [Scope discipline](#scope-discipline) below).
 - **No residue** — no leftover debug code, commented-out blocks, or unowned TODOs.
 
 ## Testing
@@ -93,7 +93,7 @@ A task is never "done" just because it behaves correctly or compiles. Code can l
 - Tests are **not a blanket requirement for every project or every piece of logic.** Writing tests for a trivial CRUD endpoint or low-stakes glue code is its own form of over-engineering — see Scope discipline below.
 - Tests **are mandatory** for business logic that's genuinely delicate and error-prone: money/billing calculations, complex state transitions, permission/authorization logic, concurrency-sensitive code, or anything where a silent bug would corrupt data or cause a real incident rather than just a cosmetic glitch.
 - The judgment call: "if this breaks silently, how bad is it?" — if the honest answer involves someone getting paid wrong, a user seeing another user's data, or a state machine landing in an invalid state, it needs tests. If the worst case is "a list renders in the wrong order," it probably doesn't.
-- Backend testing stack is chosen per-project — [[03-backend/spring-boot/spring-boot|spring-boot.md]] does not mandate one, though its `## Testing` section names JUnit 5 + Mockito as the idiomatic default when tests are warranted.
+- Backend testing stack is chosen per-project — [spring-boot.md](spring-boot.md) does not mandate one, though its `## Testing` section names JUnit 5 + Mockito as the idiomatic default when tests are warranted.
 
 ## Scope discipline
 
@@ -102,16 +102,8 @@ A task is never "done" just because it behaves correctly or compiles. Code can l
 
 ## Ask vs. assume
 
-- **Ask, and don't proceed until answered**, when: the decision is business/domain-specific and not inferable from the existing code or this vault (e.g. what should happen when a field is null in a specific business flow); multiple reasonable interpretations exist with materially different outcomes (breaking vs. additive change, the shape of a data model). Check the project's `CLAUDE.md` first — don't ask what's already documented there.
-- **Decide and proceed**, when: it's a routine implementation detail with one obviously-correct answer given the codebase's existing patterns (naming a variable, extracting a duplicate); it's already resolved by a vault note or the project's `CLAUDE.md`.
-- **Never guess an API, method, or parameter** that hasn't been verified against real code or official documentation ([[03-backend/spring-boot/sources|sources]]) — that's always a case to check, never to fabricate.
+- **Ask, and don't proceed until answered**, when: the decision is business/domain-specific and not inferable from the existing code or this repository (e.g. what should happen when a field is null in a specific business flow); multiple reasonable interpretations exist with materially different outcomes (breaking vs. additive change, the shape of a data model). Check the project's `CLAUDE.md` first — don't ask what's already documented there.
+- **Decide and proceed**, when: it's a routine implementation detail with one obviously-correct answer given the codebase's existing patterns (naming a variable, extracting a duplicate); it's already resolved by a repository note or the project's `CLAUDE.md`.
+- **Never guess an API, method, or parameter** that hasn't been verified against real code or official documentation ([sources](sources.md)) — that's always a case to check, never to fabricate.
 - If proceeding on a judgment call rather than asking, state the assumption explicitly (in the PR description or a note to the developer) instead of deciding silently. Silent, unstated assumptions are exactly what produce a "reasonable but wrong" decision that only surfaces at review.
 
-## See also
-
-- [[03-backend/spring-boot/spring-boot|spring-boot]]
-- [[03-backend/spring-boot/architecture-principles|architecture-principles]]
-- [[03-backend/spring-boot/code-review|code-review]]
-- [[03-backend/spring-boot/sources|sources]]
-- [[00-global/git-conventions|git-conventions]]
-- [[00-global/readme-conventions|readme-conventions]]

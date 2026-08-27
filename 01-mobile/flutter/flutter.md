@@ -4,11 +4,11 @@ tags: [mobile, flutter, dart]
 
 # Flutter
 
-Cross-platform mobile. Default choice for mobile projects that need to ship on both iOS and Android from one codebase — see [[00-global/tech-stack-map|tech-stack-map]]. Use [[01-mobile/jetpack-compose/jetpack-compose|jetpack-compose]] instead when the project is Android-only and needs deep platform integration.
+Cross-platform mobile. Default choice for mobile projects that need to ship on both iOS and Android from one codebase — see [tech-stack-map](../../00-global/tech-stack-map.md). Use [jetpack-compose](../jetpack-compose/jetpack-compose.md) instead when the project is Android-only and needs deep platform integration.
 
 ## Project structure
 
-Follow [[01-mobile/flutter/architecture-principles|architecture-principles]]: UI / Domain / Data layering (MVVM), UI organized by feature, Domain/Data organized by type. A typical layout:
+Follow [architecture-principles](architecture-principles.md): UI / Domain / Data layering (MVVM), UI organized by feature, Domain/Data organized by type. A typical layout:
 
 ```
 lib/
@@ -28,10 +28,10 @@ lib/
 
 ## Conventions
 
-- File names: `snake_case.dart`. Classes: `PascalCase`. Members/variables: `camelCase`. Constants: `camelCase` (or `SCREAMING_SNAKE_CASE` only if the team already uses that style consistently) — never inline literals, per [[01-mobile/flutter/coding-standards|coding-standards]].
+- File names: `snake_case.dart`. Classes: `PascalCase`. Members/variables: `camelCase`. Constants: `camelCase` (or `SCREAMING_SNAKE_CASE` only if the team already uses that style consistently) — never inline literals, per [coding-standards](coding-standards.md).
 - Widgets: prefer small, composable widgets over large `build()` methods. Extract a widget when a subtree has its own responsibility or is reused.
 - Null-safety is mandatory; avoid `!` (force-unwrap) except where nullability has already been exhaustively proven earlier in the same scope.
-- Enums: use Dart `enum`s for closed sets of values (never raw strings/ints), and when serializing use `.name`, never `.index` — see [[01-mobile/flutter/coding-standards|coding-standards]].
+- Enums: use Dart `enum`s for closed sets of values (never raw strings/ints), and when serializing use `.name`, never `.index` — see [coding-standards](coding-standards.md).
 
 ## Styling
 
@@ -41,7 +41,7 @@ lib/
 
 - **Bloc** (`flutter_bloc`) for screens/features with genuinely complex state (multiple events, transitions, side effects worth modeling explicitly).
 - **Cubit** for simple state (a handful of straightforward state changes, no need for full event-driven modeling). Don't reach for full Bloc when a Cubit says the same thing with less ceremony.
-- Both act as the ViewModel for a feature, living in `ui/<feature_name>/view_models/` — see [[01-mobile/flutter/architecture-principles|architecture-principles]]. States and events are modeled as sealed classes/unions, never raw strings/bools/enum-index checks, per [[01-mobile/flutter/coding-standards|coding-standards]].
+- Both act as the ViewModel for a feature, living in `ui/<feature_name>/view_models/` — see [architecture-principles](architecture-principles.md). States and events are modeled as sealed classes/unions, never raw strings/bools/enum-index checks, per [coding-standards](coding-standards.md).
 
 ## Dependency injection
 
@@ -59,11 +59,11 @@ lib/
 
 - **Before starting a new Flutter project (or a significant new app within one), the agent must explicitly ask whether the app needs to support multiple languages.** Never assume either way — don't silently build it in "just in case", and don't silently hardcode strings assuming it'll never be needed.
 - **If yes**: use Flutter's official stack — `flutter_localizations` + `intl`, with ARB files (`lib/l10n/*.arb`) as the source of truth, code-generated via `flutter gen-l10n`. Route all user-facing strings through it from the start, even for a single-language initial release — retrofitting i18n later means touching every widget again.
-- **If no**: plain UI strings are fine (still the one exception to English-only in [[01-mobile/flutter/coding-standards|coding-standards]]), but keep them out of widget bodies — a single `strings.dart` (or similar) constants file avoids the same string being duplicated across widgets, per DRY.
+- **If no**: plain UI strings are fine (still the one exception to English-only in [coding-standards](coding-standards.md)), but keep them out of widget bodies — a single `strings.dart` (or similar) constants file avoids the same string being duplicated across widgets, per DRY.
 
 ## Responsiveness
 
-- Use `LayoutBuilder` / `MediaQuery` (or a breakpoints abstraction built on top of them) to adapt layout between phone and tablet form factors and to handle orientation changes — never hardcode pixel/logical-pixel dimensions that assume one specific device. See [[01-mobile/flutter/responsive-design|responsive-design]].
+- Use `LayoutBuilder` / `MediaQuery` (or a breakpoints abstraction built on top of them) to adapt layout between phone and tablet form factors and to handle orientation changes — never hardcode pixel/logical-pixel dimensions that assume one specific device. See [responsive-design](responsive-design.md).
 
 ## Logging
 
@@ -71,10 +71,7 @@ lib/
 
 ## Static analysis
 
-Mandatory before considering any task done — see [[01-mobile/flutter/coding-standards|coding-standards]].
+Mandatory before considering any task done — see [coding-standards](coding-standards.md).
 
 - `flutter analyze` (or `dart analyze`) — must pass clean, no new errors/warnings/lints introduced by the change.
 
-## See also
-
-- [[01-mobile/flutter/coding-standards|coding-standards]], [[01-mobile/flutter/architecture-principles|architecture-principles]], [[01-mobile/flutter/code-review|code-review]], [[01-mobile/flutter/responsive-design|responsive-design]], [[01-mobile/flutter/sources|sources]]

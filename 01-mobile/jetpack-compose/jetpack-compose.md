@@ -4,11 +4,11 @@ tags: [mobile, android, jetpack-compose, kotlin]
 
 # Android Jetpack Compose
 
-Android-native UI toolkit. Use instead of [[01-mobile/flutter/flutter|flutter]] when the project is Android-only and benefits from deep platform integration — see [[00-global/tech-stack-map|tech-stack-map]].
+Android-native UI toolkit. Use instead of [flutter](../flutter/flutter.md) when the project is Android-only and benefits from deep platform integration — see [tech-stack-map](../../00-global/tech-stack-map.md).
 
 ## Architecture pattern: MVVM
 
-The UI layer always follows **MVVM**, regardless of project size — see [[01-mobile/jetpack-compose/architecture-principles|architecture-principles]] for the full UI/Domain/Data layering, UDF, and SSOT this sits inside:
+The UI layer always follows **MVVM**, regardless of project size — see [architecture-principles](architecture-principles.md) for the full UI/Domain/Data layering, UDF, and SSOT this sits inside:
 
 - **View** — the Composable. Pure function of state, no business logic, no direct data access. Renders UI state and forwards user events upward.
 - **ViewModel** — one per screen (or per cohesive feature). Owns the UI state, exposes it as a single immutable `StateFlow`/`State` (never multiple loosely-related mutable fields), and handles the events the View forwards to it.
@@ -18,7 +18,7 @@ This is not optional per-project — it's the default for every Compose project.
 
 ## Project structure
 
-Follow [[01-mobile/jetpack-compose/architecture-principles|architecture-principles]]'s UI/Domain/Data layering, packaged per feature. A typical layout:
+Follow [architecture-principles](architecture-principles.md)'s UI/Domain/Data layering, packaged per feature. A typical layout:
 
 ```
 app/
@@ -29,13 +29,13 @@ app/
     presentation/        # Composables (View), ViewModels, UI state — MVVM as above
 ```
 
-- Composables are pure functions of state where possible: state flows down, events flow up to the ViewModel — the UDF cycle from [[01-mobile/jetpack-compose/architecture-principles|architecture-principles]].
+- Composables are pure functions of state where possible: state flows down, events flow up to the ViewModel — the UDF cycle from [architecture-principles](architecture-principles.md).
 
 ## Conventions
 
 - File/class names: `PascalCase.kt`. Functions/properties: `camelCase`. Composable functions: `PascalCase` (they're treated as UI declarations, not regular functions).
-- Constants: `companion object` `const val`, never inline literals — see [[01-mobile/jetpack-compose/coding-standards|coding-standards]].
-- Enums: Kotlin `enum class` for closed sets; when serializing use the enum's `.name`, never `.ordinal` — see [[01-mobile/jetpack-compose/coding-standards|coding-standards]].
+- Constants: `companion object` `const val`, never inline literals — see [coding-standards](coding-standards.md).
+- Enums: Kotlin `enum class` for closed sets; when serializing use the enum's `.name`, never `.ordinal` — see [coding-standards](coding-standards.md).
 - Avoid business logic inside Composables — keep them declarative; logic lives in the ViewModel/domain layer.
 
 ## Styling
@@ -48,7 +48,7 @@ Strict rule, no exceptions: a Composable never contains a literal UI string or a
 
 - **All user-facing strings** go in `res/values/strings.xml`, referenced via `stringResource(R.string.xxx)` — never a string literal inside a Composable's `Text()`, `contentDescription`, etc. Since strings already live in `strings.xml`, adding i18n later (`values-es/strings.xml`, etc.) is just adding resource files, not a rewrite — so still confirm with the user upfront whether multi-language support is needed, since that affects how `strings.xml` is organized (keys, pluralization via `plurals`, etc.) from the start.
 - **All dimensions** (padding, spacing, sizes, corner radii, elevations) go in `res/values/dimens.xml`, referenced via `dimensionResource(R.dimen.xxx)` — never a literal `.dp`/`.sp` value inline in a Composable.
-- This is a stricter, Android-native alternative to "constants in code" for these two categories specifically — it's not optional even though [[01-mobile/jetpack-compose/coding-standards|coding-standards]]'s general no-magic-values rule would technically be satisfied by a Kotlin `const val` instead. Use the XML resources.
+- This is a stricter, Android-native alternative to "constants in code" for these two categories specifically — it's not optional even though [coding-standards](coding-standards.md)'s general no-magic-values rule would technically be satisfied by a Kotlin `const val` instead. Use the XML resources.
 
 ## Dependency injection
 
@@ -68,7 +68,7 @@ Strict rule, no exceptions: a Composable never contains a literal UI string or a
 
 ## Responsiveness
 
-- Use Material 3's `WindowSizeClass` (adaptive layouts) and `BoxWithConstraints` to adapt layout across Android's phone/tablet/foldable range — never a fixed `dp` layout that assumes one screen size. See [[01-mobile/jetpack-compose/responsive-design|responsive-design]] for the full principle.
+- Use Material 3's `WindowSizeClass` (adaptive layouts) and `BoxWithConstraints` to adapt layout across Android's phone/tablet/foldable range — never a fixed `dp` layout that assumes one screen size. See [responsive-design](responsive-design.md) for the full principle.
 
 ## Logging
 
@@ -76,12 +76,8 @@ Strict rule, no exceptions: a Composable never contains a literal UI string or a
 
 ## Static analysis
 
-Mandatory before considering any task done — see [[01-mobile/jetpack-compose/coding-standards|coding-standards]].
+Mandatory before considering any task done — see [coding-standards](coding-standards.md).
 
 - `./gradlew lint` — Android Lint, catches Android-specific issues (resource misuse, manifest problems, performance/API-level warnings).
 - `./gradlew detekt` — Kotlin static analysis (complexity, style, common bug patterns), the de facto standard for Kotlin projects. Both must pass clean.
 
-## See also
-
-- [[01-mobile/jetpack-compose/coding-standards|coding-standards]], [[01-mobile/jetpack-compose/architecture-principles|architecture-principles]], [[01-mobile/jetpack-compose/responsive-design|responsive-design]]
-- [[01-mobile/flutter/flutter|flutter]]

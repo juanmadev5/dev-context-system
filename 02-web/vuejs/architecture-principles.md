@@ -64,8 +64,3 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
   ```
 - **Consistency within a project beats a "better" pattern mid-stream**: don't mix Clean Architecture in one feature and Vertical Slice in another within the same codebase without a deliberate, documented reason.
 
-## See also
-
-- [[02-web/vuejs/vuejs|vuejs]]
-- [[02-web/vuejs/coding-standards|coding-standards]]
-- [[02-web/vuejs/code-review|code-review]]

@@ -4,7 +4,7 @@ tags: [web, css, tailwind]
 
 # Tailwind CSS
 
-Used for styling on **every** web project regardless of framework — [[02-web/angular/angular|angular]], [[02-web/vuejs/vuejs|vuejs]], [[02-web/react/react|react]] — see [[00-global/tech-stack-map|tech-stack-map]].
+Used for styling on **every** web project regardless of framework — [angular](angular/angular.md), [vuejs](vuejs/vuejs.md), [react](react/react.md) — see [tech-stack-map](../00-global/tech-stack-map.md).
 
 ## Conventions
 
@@ -26,6 +26,3 @@ Used for styling on **every** web project regardless of framework — [[02-web/a
 - Naming is by **role**, not by hue: `primary`/`danger`, never `blue`/`red` — a token named after a color breaks the moment the actual color changes (e.g. rebranding `primary` from blue to purple shouldn't leave a token called `blue` pointing at purple).
 - Payoff: rebranding, per-client white-labeling, or adding dark mode becomes a change to the token definitions in one place, never a project-wide find-and-replace across components.
 
-## See also
-
-- [[02-web/angular/angular|angular]], [[02-web/vuejs/vuejs|vuejs]], [[02-web/react/react|react]]

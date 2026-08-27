@@ -4,38 +4,36 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repository is
 
-This is **not** a software project — it's an Obsidian vault of plain Markdown notes: the single
+This is **not** a software project — it's a repository of plain Markdown notes: the single
 source of truth for how this developer wants AI coding agents to write code across *all* of their
 projects (architecture, naming, git hygiene, per-stack conventions). Other projects' `CLAUDE.md`
 files pull rules from here at session start via Claude Code's `@path` import syntax, so a change
-made in this vault applies to every project that imports it — no build, export, or sync step.
+made in this repository applies to every project that imports it — no build, export, or sync step.
 
 There is no application code, no dependency manifest, and no build/lint/test tooling in this repo.
 "Development" here means editing Markdown notes accurately and keeping them internally consistent.
 
-## Working in this vault
+## Working in this repository
 
 - **Every note reflects a decision the developer has actually made and stands behind** — never add
   a "generic best practice" that isn't already implied by existing notes. If a rule is missing,
   that's a question for the developer, not something to infer or fill in.
-- **Frontmatter + cross-links**: each note opens with `--- tags: [...] ---` and ends with a
-  `## See also` section linking related notes via Obsidian wikilinks written with the full
-  relative path and a display alias — `[[00-global/git-conventions|git-conventions]]`, not
-  `[[git-conventions]]`. This keeps Obsidian's graph view/backlinks working while letting an
-  agent reading the raw Markdown resolve the reference with a direct `Read`, no search needed.
-  Follow this pattern for new notes; update the `## See also` list (in both directions) when a
-  note gains a new relevant neighbor. **Exception: `04-infra/` notes are deliberately
-  self-contained** — no wikilinks, no `## See also`, and no naming of specific stacks (e.g. no
-  "ASP.NET Core" or "Spring Boot" mentions). An agent working on infra shouldn't be pulled toward
-  a particular stack or another infra piece it doesn't need; each `04-infra/` note stands alone.
-- **`Index.md`** is the map of the vault — any new note or renamed file needs a corresponding entry
-  there, and in `README.md`'s "What it covers" section if it's a new top-level category.
+- **Frontmatter + cross-links**: each note opens with `--- tags: [...] ---`. Related notes are
+  referenced inline, where the reference is actually relevant, via plain relative Markdown links
+  with a display alias — `[git-conventions](00-global/git-conventions.md)` — resolved relative to
+  the file containing the link, letting an agent reading the raw Markdown resolve the reference
+  with a direct `Read`, no search needed. **Exception: `04-infra/` notes are deliberately
+  self-contained** — no cross-links, and no naming of specific stacks (e.g. no "ASP.NET Core" or
+  "Spring Boot" mentions). An agent working on infra shouldn't be pulled toward a particular stack
+  or another infra piece it doesn't need; each `04-infra/` note stands alone.
+- **`Index.md`** is the map of the repository — any new note or renamed file needs a corresponding
+  entry there, and in `README.md`'s "What it covers" section if it's a new top-level category.
 - **No empty scaffolding**: don't create a new folder or stub note "for later." A folder/note is
-  added at the moment it has real content, per the vault's own rule in `coding-standards.md`
+  added at the moment it has real content, per this repository's own rule in `coding-standards.md`
   applied reflexively to itself.
 - **Single source of truth, no duplication — except the deliberate per-stack duplication described
   below.** Outside of that one exception, a rule lives in exactly one note; if two notes seem to
-  need the same rule, one should link to the other via `[[wikilink]]`, not restate it.
+  need the same rule, one should link to the other via a relative Markdown link, not restate it.
 
 ## Structure
 
@@ -59,8 +57,8 @@ There is no application code, no dependency manifest, and no build/lint/test too
 
 `architecture-principles.md`, `coding-standards.md`, `code-review.md`, and `responsive-design.md`
 used to live once in `00-global/` and get imported by every project. In practice they weren't
-stack-agnostic — they carried code examples in one language (C#) and wikilinks naming every other
-stack in the vault, so importing them pulled an agent's attention toward stacks that project never
+stack-agnostic — they carried code examples in one language (C#) and cross-links naming every other
+stack in the repository, so importing them pulled an agent's attention toward stacks that project never
 uses. They're now duplicated into each stack's own folder instead, adapted to that stack (native
 code examples, zero mentions of other stacks) — deliberately trading single-source-of-truth for
 isolation. This means a change to one of these rules has to be applied by hand to every stack folder
@@ -75,14 +73,14 @@ Key points that affect how notes must be written:
 - `@path` (forward slashes) inlines a file's full content into an importing project's `CLAUDE.md`
   at session start. Import chains go up to 4 hops. Relative paths resolve relative to the file
   containing the import, not to the working directory — a project's `CLAUDE.md` still needs an
-  absolute, machine-specific path to reach into this vault (project repo and vault are different
-  directories on disk), but imports *within* the vault should be relative so they don't hardcode
-  one machine's path.
-- Vault notes never `@import` each other, with one deliberate exception: each stack folder's
-  `INDEX.md` uses `@path` (relative, e.g. `@architecture-principles.md`) to pull in that stack's own
-  architecture/coding-standards/code-review/(responsive-design)/sources notes plus the stack note
-  itself. Every other cross-reference in the vault stays a `[[wikilink]]`. A project's CLAUDE.md →
-  stack `INDEX.md` → that stack's own notes is 2 hops, well under the limit.
+  absolute, machine-specific path to reach into this repository (the project repo and this one are
+  different directories on disk), but imports *within* this repository should be relative so they
+  don't hardcode one machine's path.
+- Notes in this repository never `@import` each other, with one deliberate exception: each stack
+  folder's `INDEX.md` uses `@path` (relative, e.g. `@architecture-principles.md`) to pull in that
+  stack's own architecture/coding-standards/code-review/(responsive-design)/sources notes plus the
+  stack note itself. Every other cross-reference in the repository stays a relative Markdown link.
+  A project's CLAUDE.md → stack `INDEX.md` → that stack's own notes is 2 hops, well under the limit.
 - `@path` only expands as plain text — **never inside a fenced code block or inline code span**.
   Any note that shows example import lines must keep them outside triple-backtick fences.
 - Imported content is inlined in full, unsummarized — keep individual notes focused so importing
@@ -93,5 +91,5 @@ Key points that affect how notes must be written:
 This repo itself is worked directly on `main` with plain, imperative Conventional Commits
 (`docs: …` for nearly everything, since content here is documentation) — it does not follow the
 two-branch (`main`/`dev`) workflow that `00-global/git-conventions.md` prescribes for the projects
-*consuming* this vault. Match the existing commit style (`git log`) rather than the prescriptive
+*consuming* this repository. Match the existing commit style (`git log`) rather than the prescriptive
 policy in that note when committing to this repo.

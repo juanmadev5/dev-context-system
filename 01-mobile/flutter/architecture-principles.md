@@ -131,8 +131,3 @@ lib/
   ```
 - **Consistency within a project beats a "better" pattern mid-stream**: every feature follows the same UI/Domain/Data split. Add a Domain layer for one feature only when that feature's logic actually warrants a Use-Case — not as an inconsistent house-style variation applied to some features and not others.
 
-## See also
-
-- [[01-mobile/flutter/flutter|flutter]]
-- [[01-mobile/flutter/coding-standards|coding-standards]]
-- [[01-mobile/flutter/code-review|code-review]]

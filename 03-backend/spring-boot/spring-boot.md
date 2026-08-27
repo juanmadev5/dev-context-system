@@ -4,7 +4,7 @@ tags: [backend, spring-boot, java, maven]
 
 # Spring Boot
 
-Alternative default backend to [[03-backend/aspnet-core/aspnet-core|aspnet-core]] for any project that needs a dedicated backend — see [[00-global/tech-stack-map|tech-stack-map]]. Pick whichever of the two matches the team/project's existing language ecosystem; neither is a "smaller" or "bigger" choice than the other, they're equivalent defaults in different languages.
+Alternative default backend to [aspnet-core](../aspnet-core/aspnet-core.md) for any project that needs a dedicated backend — see [tech-stack-map](../../00-global/tech-stack-map.md). Pick whichever of the two matches the team/project's existing language ecosystem; neither is a "smaller" or "bigger" choice than the other, they're equivalent defaults in different languages.
 
 ## Build tool
 
@@ -14,13 +14,13 @@ Alternative default backend to [[03-backend/aspnet-core/aspnet-core|aspnet-core]
 
 ## API style
 
-There's no Minimal-API-style alternative in mainstream Spring — **every** endpoint is a `@RestController`. Every project uses [[03-backend/spring-boot/architecture-principles|architecture-principles]]'s Clean Architecture module split — not a per-project choice, and it doesn't change the routing style, only the package layout underneath.
+There's no Minimal-API-style alternative in mainstream Spring — **every** endpoint is a `@RestController`. Every project uses [architecture-principles](architecture-principles.md)'s Clean Architecture module split — not a per-project choice, and it doesn't change the routing style, only the package layout underneath.
 
 ## Project structure
 
-Every Spring Boot project follows [[03-backend/spring-boot/architecture-principles|architecture-principles]]'s Clean Architecture layering. Controllers throughout.
+Every Spring Boot project follows [architecture-principles](architecture-principles.md)'s Clean Architecture layering. Controllers throughout.
 
-- **Mandatory: one Maven module per layer, not packages inside a single module.** A multi-module project (one parent `pom.xml`, four child modules, wired via `<dependency>` between them) enforces [[03-backend/spring-boot/architecture-principles|architecture-principles]]'s dependency-direction rule physically, not just by convention: if `domain`'s `pom.xml` declares no dependency on `infrastructure`, code in `domain` cannot import anything from it — the build fails, it isn't a code-review catch. `domain`/`application` end up with zero Spring/JPA dependency in their classpath, so they're unit-testable with nothing spun up at all.
+- **Mandatory: one Maven module per layer, not packages inside a single module.** A multi-module project (one parent `pom.xml`, four child modules, wired via `<dependency>` between them) enforces [architecture-principles](architecture-principles.md)'s dependency-direction rule physically, not just by convention: if `domain`'s `pom.xml` declares no dependency on `infrastructure`, code in `domain` cannot import anything from it — the build fails, it isn't a code-review catch. `domain`/`application` end up with zero Spring/JPA dependency in their classpath, so they're unit-testable with nothing spun up at all.
 
 ```
 alquilapy-backend/
@@ -40,16 +40,16 @@ alquilapy-backend/
 
 ## Configuration & secrets
 
-- `application.yml` (or `.properties`) plus environment-specific variants (`application-dev.yml`, `application-prod.yml`) hold **real, environment-specific values** — they are never committed with those values in place (see [[00-global/git-conventions|git-conventions]]). Add them to `.gitignore`.
-- Instead, the backend project root has a **`README.md` documenting a template** for the expected config shape — every key the app expects, with placeholder values — so a new developer (or agent) can copy it and fill in real local values without guessing. See [[00-global/readme-conventions|readme-conventions]] for when a per-service README like this one is warranted.
+- `application.yml` (or `.properties`) plus environment-specific variants (`application-dev.yml`, `application-prod.yml`) hold **real, environment-specific values** — they are never committed with those values in place (see [git-conventions](../../00-global/git-conventions.md)). Add them to `.gitignore`.
+- Instead, the backend project root has a **`README.md` documenting a template** for the expected config shape — every key the app expects, with placeholder values — so a new developer (or agent) can copy it and fill in real local values without guessing. See [readme-conventions](../../00-global/readme-conventions.md) for when a per-service README like this one is warranted.
 - Typed config via `@ConfigurationProperties`-annotated classes bound to a config prefix, never `Environment.getProperty("some.key")` scattered through the codebase.
 
 ## Conventions
 
-- Endpoint routes, config keys, claim types, cache keys: constants, never magic strings — see [[03-backend/spring-boot/coding-standards|coding-standards]].
+- Endpoint routes, config keys, claim types, cache keys: constants, never magic strings — see [coding-standards](coding-standards.md).
 - Enums serialized by name: Jackson does this by default (`Enum.name()`), so no extra configuration is needed here — just never override it to serialize by ordinal.
 - DTOs (`record`s, typically) are explicit and separate from JPA `@Entity` classes — never expose an entity directly through the API.
-- **Every endpoint must be explicitly and clearly identifiable, no exceptions** — every `@GetMapping`/`@PostMapping`/`@PutMapping`/`@DeleteMapping` gets its own explicit path (e.g. `@GetMapping("/{id}")`), never left bare relying only on the class-level `@RequestMapping` to carry the whole path. Naming clarity (see [[03-backend/spring-boot/coding-standards|coding-standards]]) applies to the controller method name too — match it to what it does (`getCustomerById`, not `get2` or `handle`).
+- **Every endpoint must be explicitly and clearly identifiable, no exceptions** — every `@GetMapping`/`@PostMapping`/`@PutMapping`/`@DeleteMapping` gets its own explicit path (e.g. `@GetMapping("/{id}")`), never left bare relying only on the class-level `@RequestMapping` to carry the whole path. Naming clarity (see [coding-standards](coding-standards.md)) applies to the controller method name too — match it to what it does (`getCustomerById`, not `get2` or `handle`).
 - Build response location URIs (e.g. after a `POST`) via `ServletUriComponentsBuilder` or a named route helper, not hand-concatenated strings.
 
 ## API documentation
@@ -67,14 +67,14 @@ alquilapy-backend/
   @PostMapping
   public ResponseEntity<PropertyDto> create(@Valid @RequestBody CreatePropertyRequest request) { ... }
   ```
-- Add `@Schema(description = "...")` to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every field, same restraint as [[03-backend/spring-boot/coding-standards|coding-standards]]'s comment guidance.
+- Add `@Schema(description = "...")` to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every field, same restraint as [coding-standards](coding-standards.md)'s comment guidance.
 - Not optional polish: the generated spec is what a frontend/mobile consumer or an API client generator actually reads — an undocumented endpoint is a broken contract, not a cosmetic gap.
 
 ## API versioning
 
 **Every endpoint is versioned via the URL path (`/api/v1/...`) — no exceptions.** A "v1 for now, we'll version later if we need to" mindset is how a breaking change ends up shipped straight to every existing client instead of landing behind a new version segment.
 
-- Spring has no equivalent to `Asp.Versioning` as an official/standard library — URI path versioning is done directly: the version prefix is baked into the class-level `@RequestMapping("/api/v1/orders")` (or a shared constant, per [[03-backend/spring-boot/coding-standards|coding-standards]]'s magic-string rule), not added via a third-party versioning framework. The Java ecosystem doesn't converge on one versioning library the way some other ecosystems do, so this direct approach is the idiomatic default here, not a workaround.
+- Spring has no equivalent to `Asp.Versioning` as an official/standard library — URI path versioning is done directly: the version prefix is baked into the class-level `@RequestMapping("/api/v1/orders")` (or a shared constant, per [coding-standards](coding-standards.md)'s magic-string rule), not added via a third-party versioning framework. The Java ecosystem doesn't converge on one versioning library the way some other ecosystems do, so this direct approach is the idiomatic default here, not a workaround.
 - When a breaking change forces a `v2`, it's a **new controller class** (`OrdersV2Controller` mapped to `/api/v2/orders`), not a version parameter branching inside the same controller — keeps each version's logic independently readable and removable once the old version is retired.
 - URL path segment only — never a query-string or header-based scheme as the primary mechanism; the version needs to be visible in the URL a developer pastes into a browser or shares in a bug report, not hidden in a header.
 - Bump the major segment (`v1` → `v2`) only for a breaking change (removed/renamed field, changed status code, changed semantics) — additive, backward-compatible changes (new optional field, new endpoint) ship on the existing version.
@@ -83,7 +83,7 @@ alquilapy-backend/
 
 **Every endpoint that returns a collection must be paginated. No exceptions** — a list that "currently" returns few items is still a list, and unpaginated collections are a scaling and abuse liability from day one, not something to retrofit later.
 
-- Spring Data's own `Pageable`/`Page<T>` are the natural source of pagination (`page`, `size` query params map onto them directly via `@PageableDefault`) — but **map `Page<T>` into the same envelope shape used across every stack in this vault**, not Spring's native `Page` JSON structure, so the API contract stays identical regardless of which backend a given project uses:
+- Spring Data's own `Pageable`/`Page<T>` are the natural source of pagination (`page`, `size` query params map onto them directly via `@PageableDefault`) — but **map `Page<T>` into the same envelope shape used across every stack in this repository**, not Spring's native `Page` JSON structure, so the API contract stays identical regardless of which backend a given project uses:
 
   ```json
   {
@@ -97,11 +97,11 @@ alquilapy-backend/
 
 - Query param names: `page` (1-based — convert to Spring's 0-based `Pageable` internally, don't leak the 0-based convention into the API surface), `pageSize` (project-defined default and hard max, e.g. default `20`, max `100`, never unbounded).
 - Filters are query params named after the field they filter (e.g. `GET /orders?status=Active&createdAfter=2026-01-01`), translated into a Spring Data `Specification`/`Predicate` or a derived query method — applied server-side before pagination, never a single opaque "filter" blob param unless the filtering surface is genuinely generic/dynamic.
-- The envelope DTO, default/max page size constants, and query-param names are defined once (in `application`, per the module layout above) and reused by every paginated endpoint — never redefined per feature, per [[03-backend/spring-boot/coding-standards|coding-standards]]'s DRY rule.
+- The envelope DTO, default/max page size constants, and query-param names are defined once (in `application`, per the module layout above) and reused by every paginated endpoint — never redefined per feature, per [coding-standards](coding-standards.md)'s DRY rule.
 
 ## Static analysis
 
-Mandatory before considering any task done — see [[03-backend/spring-boot/coding-standards|coding-standards]].
+Mandatory before considering any task done — see [coding-standards](coding-standards.md).
 
 - `mvn compile` — must be clean, no new compiler warnings introduced by the change.
 - **Checkstyle** (`mvn checkstyle:check`, via the `maven-checkstyle-plugin`) — style/convention enforcement, the Java equivalent of `dotnet format --verify-no-changes`. Must pass clean.
@@ -109,16 +109,16 @@ Mandatory before considering any task done — see [[03-backend/spring-boot/codi
 
 ## Pairs with
 
-- Database: [[04-infra/postgresql|postgresql]] via Spring Data JPA / Hibernate.
-- Auth: [[04-infra/keycloak-auth|keycloak-auth]] — an especially natural pairing (Keycloak integrates directly with Spring Security via `spring-boot-starter-oauth2-resource-server`).
-- Cache: [[04-infra/redis|redis]] via Spring Data Redis / `spring-boot-starter-cache`.
-- Storage: [[04-infra/aws-s3-storage|aws-s3-storage]] via the AWS SDK for Java v2.
-- Containerized in Docker for both dev and prod — see [[04-infra/docker|docker]].
+- Database: [postgresql](../../04-infra/postgresql.md) via Spring Data JPA / Hibernate.
+- Auth: [keycloak-auth](../../04-infra/keycloak-auth.md) — an especially natural pairing (Keycloak integrates directly with Spring Security via `spring-boot-starter-oauth2-resource-server`).
+- Cache: [redis](../../04-infra/redis.md) via Spring Data Redis / `spring-boot-starter-cache`.
+- Storage: [aws-s3-storage](../../04-infra/aws-s3-storage.md) via the AWS SDK for Java v2.
+- Containerized in Docker for both dev and prod — see [docker](../../04-infra/docker.md).
 
 ## Data access
 
 - **Spring Data JPA** (repository interfaces extending `JpaRepository`) with Hibernate as the underlying provider.
-- **JPA annotations directly on entity classes** (`@Entity`, `@Table`, `@Column`) are the idiomatic default here and are fine to use — externalized ORM mapping (`.hbm.xml`) is legacy/unusual in modern Spring, so annotating entities directly is the current, actively-maintained idiom, not a shortcut. Table/column naming still follows [[04-infra/postgresql|postgresql]]'s `snake_case` convention (set a `PhysicalNamingStrategy`/`spring.jpa.hibernate.naming.physical-strategy` if the default doesn't already produce it, rather than annotating every single column).
+- **JPA annotations directly on entity classes** (`@Entity`, `@Table`, `@Column`) are the idiomatic default here and are fine to use — externalized ORM mapping (`.hbm.xml`) is legacy/unusual in modern Spring, so annotating entities directly is the current, actively-maintained idiom, not a shortcut. Table/column naming still follows [postgresql](../../04-infra/postgresql.md)'s `snake_case` convention (set a `PhysicalNamingStrategy`/`spring.jpa.hibernate.naming.physical-strategy` if the default doesn't already produce it, rather than annotating every single column).
 - **Schema changes never go through Hibernate auto-DDL.** `spring.jpa.hibernate.ddl-auto` is always `validate` (or `none`) in every environment, including local dev — Hibernate must never create or update the schema itself. Every SQL database backend uses **Flyway** with hand-written, versioned SQL scripts instead — this is mandatory, not a per-project choice:
   - Scripts live in `db/migration/` under `src/main/resources/` of the **`api` module** (Flyway needs them on the classpath of whichever module actually boots the app), named `V{number}__{description}.sql` (e.g. `V1__schema.sql`, `V2__performance_indexes.sql`), strictly sequential. Once a script has shipped (merged, let alone deployed), it's never edited — a schema change after the fact is a new script, same as an immutable migration in any system.
   - `flyway-core` (plus `org.flywaydb:flyway-database-postgresql` for Postgres) as a dependency is all that's needed — Spring Boot auto-configures Flyway to run pending migrations at startup, gated behind `spring.flyway.enabled` so it can be disabled for a given environment/replica when needed.
@@ -146,10 +146,5 @@ Mandatory before considering any task done — see [[03-backend/spring-boot/codi
 
 ## Testing
 
-- **JUnit 5 + Mockito** is the idiomatic default when tests are warranted — see [[03-backend/spring-boot/coding-standards|coding-standards]]'s Testing section for when they're actually mandatory (backend testing stack, if any, is chosen per-project). `spring-boot-starter-test` bundles both plus AssertJ.
+- **JUnit 5 + Mockito** is the idiomatic default when tests are warranted — see [coding-standards](coding-standards.md)'s Testing section for when they're actually mandatory (backend testing stack, if any, is chosen per-project). `spring-boot-starter-test` bundles both plus AssertJ.
 
-## See also
-
-- [[03-backend/spring-boot/coding-standards|coding-standards]], [[03-backend/spring-boot/architecture-principles|architecture-principles]], [[00-global/readme-conventions|readme-conventions]]
-- [[04-infra/postgresql|postgresql]], [[04-infra/keycloak-auth|keycloak-auth]], [[04-infra/redis|redis]], [[04-infra/aws-s3-storage|aws-s3-storage]], [[04-infra/docker|docker]]
-- [[03-backend/aspnet-core/aspnet-core|aspnet-core]] (equivalent backend in the .NET ecosystem)

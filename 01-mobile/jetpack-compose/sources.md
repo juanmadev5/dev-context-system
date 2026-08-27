@@ -68,10 +68,10 @@ Curated index of this stack's own official documentation — the vetted entry po
 
 ## If a source isn't listed here
 
-This index covers the libraries/topics this vault's conventions actually name — it isn't exhaustive. If a task needs an official documentation source that isn't listed above:
+This index covers the libraries/topics this repository's conventions actually name — it isn't exhaustive. If a task needs an official documentation source that isn't listed above:
 
 - Look it up directly — same rule applies: only the vendor/maintainer's own official docs, never a blog/tutorial/Stack Overflow/AI-summary site.
-- Record it in that project's own `docs/SOURCES.md` (created the first time it's actually needed, per [[01-mobile/jetpack-compose/coding-standards|coding-standards]]'s "no empty folders" reasoning applied to documentation), grouped by library under a `##` heading, one bullet per source:
+- Record it in that project's own `docs/SOURCES.md` (created the first time it's actually needed, per [coding-standards](coding-standards.md)'s "no empty folders" reasoning applied to documentation), grouped by library under a `##` heading, one bullet per source:
 
   ```markdown
   ## some_new_library
@@ -79,7 +79,3 @@ This index covers the libraries/topics this vault's conventions actually name �
   - What the page covers: https://...
   ```
 
-## See also
-
-- [[01-mobile/jetpack-compose/coding-standards|coding-standards]]
-- [[00-global/readme-conventions|readme-conventions]]

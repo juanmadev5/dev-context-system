@@ -6,7 +6,7 @@ tags: [aspnet-core, architecture]
 
 ## Clean Architecture vs. Vertical Slice
 
-Both are acceptable defaults for backends with real logic, and both pair with **Controllers** — see [[03-backend/aspnet-core/aspnet-core|aspnet-core.md]]'s API style section for why. The choice between them depends on project size and how much business logic it carries — not on personal preference.
+Both are acceptable defaults for backends with real logic, and both pair with **Controllers** — see [aspnet-core.md](aspnet-core.md)'s API style section for why. The choice between them depends on project size and how much business logic it carries — not on personal preference.
 
 - **Clean Architecture** (layered: domain / application / infrastructure / presentation, dependencies pointing inward) — default for backends with substantial, long-lived business logic, or any project expected to grow, be maintained by more than one person, or live for years.
 - **Vertical Slice Architecture** (organized by feature/use case, each slice owning its own request→response path) — default for medium-sized backends where a full layered split would add more ceremony than value but the app still has enough logic to not be a script.
@@ -78,8 +78,3 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
   ```
 - **Consistency within a project beats a "better" pattern mid-stream**: don't mix Clean Architecture in one module and Vertical Slice in another within the same codebase without a deliberate, documented reason.
 
-## See also
-
-- [[03-backend/aspnet-core/aspnet-core|aspnet-core]]
-- [[03-backend/aspnet-core/coding-standards|coding-standards]]
-- [[03-backend/aspnet-core/code-review|code-review]]

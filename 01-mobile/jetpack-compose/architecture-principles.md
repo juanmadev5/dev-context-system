@@ -101,8 +101,3 @@ class UserProfileViewModel(
   ```
 - **Consistency within a project beats a "better" pattern mid-stream**: every feature follows the same UI/Domain/Data split. Add a Domain layer for one feature only when that feature's logic actually warrants a UseCase — not as an inconsistent house-style variation applied to some features and not others.
 
-## See also
-
-- [[01-mobile/jetpack-compose/jetpack-compose|jetpack-compose]]
-- [[01-mobile/jetpack-compose/coding-standards|coding-standards]]
-- [[01-mobile/jetpack-compose/code-review|code-review]]

@@ -4,7 +4,7 @@ tags: [infra, auth, keycloak]
 
 # Keycloak Auth
 
-Auth provider for every project — see [[00-global/tech-stack-map|tech-stack-map]].
+Auth provider for every project.
 
 ## Local setup
 

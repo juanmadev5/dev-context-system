@@ -9,7 +9,7 @@ tags: [react, architecture]
 Both are acceptable defaults. The choice depends on project size and how much business logic it carries — not on personal preference.
 
 - **Clean Architecture** (layered: domain / application / infrastructure / presentation, dependencies pointing inward) — default for apps with complex business logic and long-lived state, or any project expected to grow, be maintained by more than one person, or live for years.
-- **Vertical Slice** (organized by feature/use case, each slice owning its own request→response path) — default for medium-sized apps where features are largely independent of each other. This is React's most common fit — see [[02-web/react/react|react.md]]'s project structure.
+- **Vertical Slice** (organized by feature/use case, each slice owning its own request→response path) — default for medium-sized apps where features are largely independent of each other. This is React's most common fit — see [react.md](react.md)'s project structure.
 - **Neither / plain structure** — for small, low-logic apps. Don't force an architecture pattern where there's no complexity to manage.
 
 When in doubt, pick the simpler option. Escalate to a heavier pattern only when the current structure is visibly causing friction (duplicated logic, tangled dependencies, hard-to-test business rules) — not preemptively.
@@ -67,8 +67,3 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
   ```
 - **Consistency within a project beats a "better" pattern mid-stream**: don't mix Clean Architecture in one feature and Vertical Slice in another within the same codebase without a deliberate, documented reason.
 
-## See also
-
-- [[02-web/react/react|react]]
-- [[02-web/react/coding-standards|coding-standards]]
-- [[02-web/react/code-review|code-review]]

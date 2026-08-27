@@ -4,7 +4,7 @@ tags: [web, react, typescript, vite]
 
 # React
 
-Alternative default to [[02-web/vuejs/vuejs|vuejs]] for medium/small web apps — see [[00-global/tech-stack-map|tech-stack-map]]. Pick whichever of the two matches the team/project's existing preference; neither is a "smaller" or "bigger" choice than the other.
+Alternative default to [vuejs](../vuejs/vuejs.md) for medium/small web apps — see [tech-stack-map](../../00-global/tech-stack-map.md). Pick whichever of the two matches the team/project's existing preference; neither is a "smaller" or "bigger" choice than the other.
 
 ## Scaffolding
 
@@ -12,7 +12,7 @@ Alternative default to [[02-web/vuejs/vuejs|vuejs]] for medium/small web apps �
 
 ## Project structure
 
-Pairs with **Vertical Slice** or a plain feature-first structure (see [[02-web/react/architecture-principles|architecture-principles]]).
+Pairs with **Vertical Slice** or a plain feature-first structure (see [architecture-principles](architecture-principles.md)).
 
 ```
 src/
@@ -32,12 +32,12 @@ src/
 
 - File names: `PascalCase.tsx` for components, `camelCase.ts` for hooks/utils/services (`useThing.ts`).
 - Props typed via an explicit `interface`/`type`, no implicit `any`. No `React.FC` (its implicit `children` typing is imprecise) — type props directly on the function signature.
-- Constants and enums per [[02-web/react/coding-standards|coding-standards]].
-- **Package manager: pnpm**, never `npm`/`yarn` — see [[00-global/tech-stack-map|tech-stack-map]].
+- Constants and enums per [coding-standards](coding-standards.md).
+- **Package manager: pnpm**, never `npm`/`yarn` — see [tech-stack-map](../../00-global/tech-stack-map.md).
 
 ## Styling
 
-- [[02-web/tailwind-css|tailwind-css]] — no separate CSS Modules/styled-components unless Tailwind genuinely can't express something (rare).
+- [tailwind-css](../tailwind-css.md) — no separate CSS Modules/styled-components unless Tailwind genuinely can't express something (rare).
 
 ## State management
 
@@ -60,16 +60,12 @@ src/
 
 - **Before starting a new React project (or a significant new app within one), the agent must explicitly ask whether the app needs to support multiple languages** — never assume either way.
 - **If yes**: use **react-i18next**, the de facto standard for the ecosystem. Translation keys in per-locale JSON files, lazy-loaded per feature where the project is large enough for that to matter. No literal UI strings in JSX — every user-facing string goes through a translation key from the start, even for a single-language initial release.
-- **If no**: UI strings stay hardcoded (the one exception to English-only in [[02-web/react/coding-standards|coding-standards]]), but centralized in a shared constants file (or one per feature) instead of duplicated across components, per DRY.
+- **If no**: UI strings stay hardcoded (the one exception to English-only in [coding-standards](coding-standards.md)), but centralized in a shared constants file (or one per feature) instead of duplicated across components, per DRY.
 
 ## Static analysis
 
-Mandatory before considering any task done — see [[02-web/react/coding-standards|coding-standards]].
+Mandatory before considering any task done — see [coding-standards](coding-standards.md).
 
 - `tsc --noEmit` — type-checking; plain `tsc` parses `.tsx` directly, no wrapper tool needed.
 - `eslint .` (with `eslint-plugin-react-hooks`) — must pass clean.
 
-## See also
-
-- [[02-web/react/coding-standards|coding-standards]], [[02-web/react/architecture-principles|architecture-principles]], [[02-web/tailwind-css|tailwind-css]], [[02-web/react/responsive-design|responsive-design]]
-- [[02-web/vuejs/vuejs|vuejs]] (equivalent frontend, pick by team preference)

@@ -41,7 +41,3 @@ tags: [global, git]
 
 See the project's stack folder for its `code-review.md` note (e.g. `02-web/react/code-review.md`) — review pass order, severity classification, and the security checklist are documented there, adapted to that stack.
 
-## See also
-
-- [[00-global/readme-conventions|readme-conventions]]
-- [[00-global/tech-stack-map|tech-stack-map]]

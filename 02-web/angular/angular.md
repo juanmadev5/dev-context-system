@@ -4,7 +4,7 @@ tags: [web, angular, typescript]
 
 # Angular
 
-Default for complex web apps with heavy business logic — see [[00-global/tech-stack-map|tech-stack-map]]. Pairs with **Clean Architecture** (see [[02-web/angular/architecture-principles|architecture-principles]]): Angular's DI system and module boundaries map naturally onto layered architecture.
+Default for complex web apps with heavy business logic — see [tech-stack-map](../../00-global/tech-stack-map.md). Pairs with **Clean Architecture** (see [architecture-principles](architecture-principles.md)): Angular's DI system and module boundaries map naturally onto layered architecture.
 
 ## Project structure
 
@@ -27,12 +27,12 @@ src/app/
 - File names: `kebab-case`, Angular's standard suffixes (`.component.ts`, `.service.ts`, `.guard.ts`, etc.).
 - Strong typing everywhere — avoid `any`; prefer `unknown` + narrowing when the type genuinely isn't known yet.
 - Reactive state (RxJS `Observable`s / signals) over imperative subscription juggling; always unsubscribe or use `async` pipe / `takeUntilDestroyed()`.
-- Constants and enums per [[02-web/angular/coding-standards|coding-standards]] — no magic strings for route paths, HTTP header names, storage keys, etc.
-- **Package manager: pnpm**, never `npm`/`yarn` — see [[00-global/tech-stack-map|tech-stack-map]].
+- Constants and enums per [coding-standards](coding-standards.md) — no magic strings for route paths, HTTP header names, storage keys, etc.
+- **Package manager: pnpm**, never `npm`/`yarn` — see [tech-stack-map](../../00-global/tech-stack-map.md).
 
 ## Styling
 
-- [[02-web/tailwind-css|tailwind-css]] — no separate component-scoped CSS files unless Tailwind genuinely can't express something (rare).
+- [tailwind-css](../tailwind-css.md) — no separate component-scoped CSS files unless Tailwind genuinely can't express something (rare).
 
 ## State management
 
@@ -44,7 +44,7 @@ src/app/
 
 ## Forms
 
-- **Reactive Forms** with custom validators written as plain functions (`ValidatorFn`/`AsyncValidatorFn`), reused across forms via [[02-web/angular/coding-standards|coding-standards]]'s DRY rule. No third-party form libraries unless a project has a specific need (e.g. many backend-driven dynamic forms) that justifies the added dependency.
+- **Reactive Forms** with custom validators written as plain functions (`ValidatorFn`/`AsyncValidatorFn`), reused across forms via [coding-standards](coding-standards.md)'s DRY rule. No third-party form libraries unless a project has a specific need (e.g. many backend-driven dynamic forms) that justifies the added dependency.
 
 ## Testing
 
@@ -54,15 +54,12 @@ src/app/
 
 - **Before starting a new Angular project (or a significant new app within one), the agent must explicitly ask whether the app needs to support multiple languages** — never assume either way.
 - **If yes**: use **Transloco**, not Angular's built-in extraction-based i18n (which requires a separate build per locale) and not ngx-translate. Translation keys live in per-locale JSON files, lazy-loaded per feature module where the project is large enough for that to matter. No literal UI strings in templates — every user-facing string goes through a translation key from the start, even for a single-language initial release.
-- **If no**: UI strings stay hardcoded (the one exception to English-only in [[02-web/angular/coding-standards|coding-standards]]), but centralized — a shared constants file (or one per feature, per [[02-web/angular/architecture-principles|architecture-principles]]'s layout) instead of the same literal duplicated across components, per DRY.
+- **If no**: UI strings stay hardcoded (the one exception to English-only in [coding-standards](coding-standards.md)), but centralized — a shared constants file (or one per feature, per [architecture-principles](architecture-principles.md)'s layout) instead of the same literal duplicated across components, per DRY.
 
 ## Static analysis
 
-Mandatory before considering any task done — see [[02-web/angular/coding-standards|coding-standards]].
+Mandatory before considering any task done — see [coding-standards](coding-standards.md).
 
 - `tsc --noEmit` — type-checking. `ng build` also catches type errors, but `tsc --noEmit` is faster when a full build isn't needed.
 - `eslint .` (via `ng lint` if `@angular-eslint` is set up in the project) — must pass clean.
 
-## See also
-
-- [[02-web/angular/coding-standards|coding-standards]], [[02-web/angular/architecture-principles|architecture-principles]], [[02-web/tailwind-css|tailwind-css]], [[02-web/angular/responsive-design|responsive-design]]

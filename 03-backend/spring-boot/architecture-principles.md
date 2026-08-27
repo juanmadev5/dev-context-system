@@ -77,8 +77,3 @@ Every Spring Boot project uses **Clean Architecture** — layered: domain / appl
   ```
 - **Consistency within a project beats a "better" pattern mid-stream**: every module respects the same domain/application/infrastructure boundaries — don't let one module skip a layer "because it's simple" while the rest keep the full split.
 
-## See also
-
-- [[03-backend/spring-boot/spring-boot|spring-boot]]
-- [[03-backend/spring-boot/coding-standards|coding-standards]]
-- [[03-backend/spring-boot/code-review|code-review]]

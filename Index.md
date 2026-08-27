@@ -4,20 +4,20 @@ tags: [index, home]
 
 # Dev Context System — Index
 
-This vault is the single source of truth for how AI coding agents (Claude Code and others) should work across every software project. Notes here are written to be imported directly into a project's `CLAUDE.md` via Claude Code's `@path` import syntax — not just read by a human.
+This repository is the single source of truth for how AI coding agents (Claude Code and others) should work across every software project. Notes here are written to be imported directly into a project's `CLAUDE.md` via Claude Code's `@path` import syntax — not just read by a human.
 
 ## Start here
 
-- **New project?** → [[00-global/tech-stack-map|tech-stack-map]] to pick the stack, then compose that project's `CLAUDE.md` by importing the chosen stack's `INDEX.md` (see `CLAUDE.md`'s "The `@path` import mechanism" section in this repo).
+- **New project?** → [tech-stack-map](00-global/tech-stack-map.md) to pick the stack, then compose that project's `CLAUDE.md` by importing the chosen stack's `INDEX.md` (see `CLAUDE.md`'s "The `@path` import mechanism" section in this repo).
 - **Changing a rule?** Edit the note here, once. Every project that imports it picks up the change automatically at its next Claude Code session — no export/sync step is needed.
 
 ## Structure
 
-- `00-global/` — the notes that stay genuinely stack-agnostic: [[00-global/git-conventions|git-conventions]], [[00-global/readme-conventions|readme-conventions]], [[00-global/tech-stack-map|tech-stack-map]] (decision map, used once at setup time).
-- `01-mobile/` — [[01-mobile/flutter/INDEX|flutter]], [[01-mobile/jetpack-compose/INDEX|jetpack-compose]]. Each stack folder bundles its own architecture, coding-standards, code-review, responsive-design, and sources notes behind a single `INDEX.md` a project imports.
-- `02-web/` — [[02-web/angular/INDEX|angular]], [[02-web/vuejs/INDEX|vuejs]], [[02-web/react/INDEX|react]], plus the shared [[02-web/tailwind-css|tailwind-css]] (not a stack of its own — imported alongside whichever web stack is chosen).
-- `03-backend/` — [[03-backend/aspnet-core/INDEX|aspnet-core]], [[03-backend/spring-boot/INDEX|spring-boot]].
-- `04-infra/` — [[04-infra/docker|docker]], [[04-infra/postgresql|postgresql]], [[04-infra/redis|redis]], [[04-infra/keycloak-auth|keycloak-auth]], [[04-infra/aws-s3-storage|aws-s3-storage]], [[04-infra/local-infrastructure|local-infrastructure]].
+- `00-global/` — the notes that stay genuinely stack-agnostic: [git-conventions](00-global/git-conventions.md), [readme-conventions](00-global/readme-conventions.md), [tech-stack-map](00-global/tech-stack-map.md) (decision map, used once at setup time).
+- `01-mobile/` — [flutter](01-mobile/flutter/INDEX.md), [jetpack-compose](01-mobile/jetpack-compose/INDEX.md). Each stack folder bundles its own architecture, coding-standards, code-review, responsive-design, and sources notes behind a single `INDEX.md` a project imports.
+- `02-web/` — [angular](02-web/angular/INDEX.md), [vuejs](02-web/vuejs/INDEX.md), [react](02-web/react/INDEX.md), plus the shared [tailwind-css](02-web/tailwind-css.md) (not a stack of its own — imported alongside whichever web stack is chosen).
+- `03-backend/` — [aspnet-core](03-backend/aspnet-core/INDEX.md), [spring-boot](03-backend/spring-boot/INDEX.md).
+- `04-infra/` — [docker](04-infra/docker.md), [postgresql](04-infra/postgresql.md), [redis](04-infra/redis.md), [keycloak-auth](04-infra/keycloak-auth.md), [aws-s3-storage](04-infra/aws-s3-storage.md), [local-infrastructure](04-infra/local-infrastructure.md).
 
 ## Status
 

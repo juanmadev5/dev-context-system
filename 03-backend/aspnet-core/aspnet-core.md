@@ -4,23 +4,23 @@ tags: [backend, aspnet-core, dotnet, csharp]
 
 # ASP.NET Core
 
-Default backend for any project that needs a dedicated backend — see [[00-global/tech-stack-map|tech-stack-map]].
+Default backend for any project that needs a dedicated backend — see [tech-stack-map](../../00-global/tech-stack-map.md).
 
 ## API style — Minimal APIs vs Controllers
 
-Same size/complexity threshold as [[03-backend/aspnet-core/architecture-principles|architecture-principles]]'s three-tier split — this isn't a separate decision, it's the same one applied to routing style.
+Same size/complexity threshold as [architecture-principles](architecture-principles.md)'s three-tier split — this isn't a separate decision, it's the same one applied to routing style.
 
 - **Minimal APIs** — small, low-logic projects only, pairs with **"Neither / plain structure"** — no architecture pattern. Low ceremony, fits a handful of endpoints with no real business logic to layer.
 - **Controllers** (`[ApiController]` + attribute routing) — everything past that: pairs with **Vertical Slice** (medium projects) just as much as with **Clean Architecture** (large, substantial, long-lived business logic). Once a project has enough logic to warrant a real architecture pattern, Minimal APIs stop being worth it too — the built-in model binding/validation conventions, filters, API versioning, action-based grouping, and richer OpenAPI generation via `[ProducesResponseType]` pay for themselves at that point.
-- Don't mix styles within the same API — pick one per [[03-backend/aspnet-core/architecture-principles|architecture-principles]]'s criteria and stay consistent.
+- Don't mix styles within the same API — pick one per [architecture-principles](architecture-principles.md)'s criteria and stay consistent.
 
 ## Project structure
 
-Follow [[03-backend/aspnet-core/architecture-principles|architecture-principles]] to pick the right layout below.
+Follow [architecture-principles](architecture-principles.md) to pick the right layout below.
 
 **Clean Architecture** (default for large apps with real, long-lived business logic):
 
-- **Mandatory: one `.csproj` per layer, not folders inside a single project.** Physical project separation, wired together via `ProjectReference`, is what actually enforces [[03-backend/aspnet-core/architecture-principles|architecture-principles]]'s dependency-direction rule — with folders alone, nothing stops a file under `Domain/` from importing something from `Infrastructure/` except code review catching it; with separate projects, it doesn't compile. This also means `Domain`/`Application` carry zero reference to ASP.NET Core/EF Core, so they're unit-testable with no framework/database spun up at all.
+- **Mandatory: one `.csproj` per layer, not folders inside a single project.** Physical project separation, wired together via `ProjectReference`, is what actually enforces [architecture-principles](architecture-principles.md)'s dependency-direction rule — with folders alone, nothing stops a file under `Domain/` from importing something from `Infrastructure/` except code review catching it; with separate projects, it doesn't compile. This also means `Domain`/`Application` carry zero reference to ASP.NET Core/EF Core, so they're unit-testable with no framework/database spun up at all.
 
 ```
 src/
@@ -45,22 +45,22 @@ src/
   Common/                      # cross-cutting: error handling, auth policies, pagination/filtering primitives, shared infrastructure
 ```
 
-**Minimal APIs / plain structure** (small, low-logic projects — [[03-backend/aspnet-core/architecture-principles|architecture-principles]]'s "Neither" tier): no fixed layout to follow — a handful of endpoint files grouped by feature, or endpoints mapped directly in `Program.cs`, whatever fits the project's actual size. Don't scaffold `Features/`/`Common/` folders for a project this small.
+**Minimal APIs / plain structure** (small, low-logic projects — [architecture-principles](architecture-principles.md)'s "Neither" tier): no fixed layout to follow — a handful of endpoint files grouped by feature, or endpoints mapped directly in `Program.cs`, whatever fits the project's actual size. Don't scaffold `Features/`/`Common/` folders for a project this small.
 
 ## Configuration & secrets
 
-- `appsettings.json`, `appsettings.Development.json`, and any other environment-specific variant hold **real, environment-specific values** (connection strings, credentials, API keys) — they are never committed with those values in place, same as `.env` on the frontend (see [[00-global/git-conventions|git-conventions]]). Add them to `.gitignore`.
-- Instead, the backend project root has a **`README.md` documenting a template** for both `appsettings.json` and `appsettings.Development.json` — every key the app expects, with placeholder values (e.g. `"Default": "Host=localhost;Port=5432;Database=<db_name>;Username=<user>;Password=<password>"`) — so a new developer (or agent) can copy the template and fill in real local values without guessing the config's shape. See [[00-global/readme-conventions|readme-conventions]] for when a per-service README like this one is warranted.
+- `appsettings.json`, `appsettings.Development.json`, and any other environment-specific variant hold **real, environment-specific values** (connection strings, credentials, API keys) — they are never committed with those values in place, same as `.env` on the frontend (see [git-conventions](../../00-global/git-conventions.md)). Add them to `.gitignore`.
+- Instead, the backend project root has a **`README.md` documenting a template** for both `appsettings.json` and `appsettings.Development.json` — every key the app expects, with placeholder values (e.g. `"Default": "Host=localhost;Port=5432;Database=<db_name>;Username=<user>;Password=<password>"`) — so a new developer (or agent) can copy the template and fill in real local values without guessing the config's shape. See [readme-conventions](../../00-global/readme-conventions.md) for when a per-service README like this one is warranted.
 - This is the ASP.NET Core equivalent of the `.env`/`.env.example` pattern, adapted because JSON config here is layered across two files rather than one — a README is what documents the combined shape, since there isn't a single `.example` file that covers both.
 
 ## Conventions
 
-- Endpoint routes, config keys, claim types, cache keys: constants, never magic strings — see [[03-backend/aspnet-core/coding-standards|coding-standards]].
+- Endpoint routes, config keys, claim types, cache keys: constants, never magic strings — see [coding-standards](coding-standards.md).
 - Enums serialized as strings (`.name` equivalent — `JsonStringEnumConverter`), never as raw ints, across any API boundary.
 - DTOs are explicit and separate from domain entities — never expose EF Core entities directly through the API.
 - Use `IOptions<T>` (or equivalent) for configuration, never `IConfiguration["Some:Key"]` scattered through the codebase.
 - **Every endpoint must be explicitly and clearly identifiable, no exceptions — the exact mechanism depends on the API style:**
-  - **Minimal APIs**: `.WithName("...")` on every endpoint. Naming clarity (see [[03-backend/aspnet-core/coding-standards|coding-standards]]) doesn't stop at variables/lambdas — an endpoint is an identifier too, and `app.MapGetTasks()` alone in `Program.cs` isn't enough: the name is what shows up in Swagger/OpenAPI as the operation ID, what typed-client generators (NSwag, openapi-typescript, etc.) key off of, what `Results.CreatedAtRoute`/`LinkGenerator` reference by, and what identifies the request in OpenTelemetry traces instead of a raw route template. Match the name to the request/query/command it dispatches (e.g. `GetTasksEndpoint` → `.WithName("GetTasks")`), not a generic or abbreviated label.
+  - **Minimal APIs**: `.WithName("...")` on every endpoint. Naming clarity (see [coding-standards](coding-standards.md)) doesn't stop at variables/lambdas — an endpoint is an identifier too, and `app.MapGetTasks()` alone in `Program.cs` isn't enough: the name is what shows up in Swagger/OpenAPI as the operation ID, what typed-client generators (NSwag, openapi-typescript, etc.) key off of, what `Results.CreatedAtRoute`/`LinkGenerator` reference by, and what identifies the request in OpenTelemetry traces instead of a raw route template. Match the name to the request/query/command it dispatches (e.g. `GetTasksEndpoint` → `.WithName("GetTasks")`), not a generic or abbreviated label.
   - **Controllers**: every `[HttpGet]`/`[HttpPost]`/`[HttpPut]`/`[HttpDelete]` gets an explicit route template — never left bare relying only on the class-level `[Route("api/[controller]")]` to carry the whole path (e.g. `[HttpGet("{id}")]`, not a parameterless `[HttpGet]` on a method that clearly needs `{id}`). Reference actions via `nameof()` (`CreatedAtAction(nameof(GetById), ...)`), which is compiler-checked, rather than magic strings; add an explicit `Name = "..."` only when using `CreatedAtRoute`/`LinkGenerator` instead of `CreatedAtAction`.
 
 ## API documentation
@@ -82,7 +82,7 @@ src/
     ```
 
     Set `<GenerateDocumentationFile>true</GenerateDocumentationFile>` in the `.csproj` so XML comments actually flow into the generated OpenAPI document.
-- Add XML doc comments to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every property, same restraint as [[03-backend/aspnet-core/coding-standards|coding-standards]]'s comment guidance.
+- Add XML doc comments to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every property, same restraint as [coding-standards](coding-standards.md)'s comment guidance.
 - Not optional polish: the generated spec is what a frontend/mobile consumer or an API client generator (NSwag, openapi-typescript) actually reads — an undocumented endpoint is a broken contract, not a cosmetic gap.
 
 ## API versioning
@@ -114,11 +114,11 @@ src/
   ```
 
 - When the resource supports filtering, filters are query params named after the field they filter (e.g. `GET /orders?status=Active&createdAfter=2026-01-01`), applied server-side before pagination — never a single opaque "filter" blob param unless the filtering surface is generic/dynamic enough to genuinely need one.
-- The pagination request/response types, the default/max page size constants, and the query-param names are defined once (in `Common`, per the Vertical Slice layout above, or in `Application`/shared kernel for Clean Architecture) and reused by every paginated endpoint — never redefined per feature, per [[03-backend/aspnet-core/coding-standards|coding-standards]]'s DRY rule.
+- The pagination request/response types, the default/max page size constants, and the query-param names are defined once (in `Common`, per the Vertical Slice layout above, or in `Application`/shared kernel for Clean Architecture) and reused by every paginated endpoint — never redefined per feature, per [coding-standards](coding-standards.md)'s DRY rule.
 
 ## Static analysis
 
-Mandatory before considering any task done — see [[03-backend/aspnet-core/coding-standards|coding-standards]].
+Mandatory before considering any task done — see [coding-standards](coding-standards.md).
 
 - `dotnet build` — Roslyn analyzers (`Microsoft.CodeAnalysis.NetAnalyzers`) are enabled by default in SDK-style projects and run on every build; must be clean, no new warnings.
 - `dotnet format --verify-no-changes` — validates style/`.editorconfig` compliance without modifying files; fails if anything would need reformatting.
@@ -126,15 +126,15 @@ Mandatory before considering any task done — see [[03-backend/aspnet-core/codi
 
 ## Pairs with
 
-- Database: [[04-infra/postgresql|postgresql]] via EF Core.
-- Auth: [[04-infra/keycloak-auth|keycloak-auth]].
-- Cache: [[04-infra/redis|redis]].
-- Storage: [[04-infra/aws-s3-storage|aws-s3-storage]].
-- Containerized in Docker for both dev and prod — see [[04-infra/docker|docker]].
+- Database: [postgresql](../../04-infra/postgresql.md) via EF Core.
+- Auth: [keycloak-auth](../../04-infra/keycloak-auth.md).
+- Cache: [redis](../../04-infra/redis.md).
+- Storage: [aws-s3-storage](../../04-infra/aws-s3-storage.md).
+- Containerized in Docker for both dev and prod — see [docker](../../04-infra/docker.md).
 
 ## Data access
 
-- **EF Core** is the ORM/query layer only — entity configuration via **Fluent API** (`IEntityTypeConfiguration<T>` per entity), not data annotations, keeps mapping concerns out of the domain/entity classes. Table/column naming follows [[04-infra/postgresql|postgresql]]'s `snake_case` convention, configured explicitly rather than relying on a default naming convention that might drift.
+- **EF Core** is the ORM/query layer only — entity configuration via **Fluent API** (`IEntityTypeConfiguration<T>` per entity), not data annotations, keeps mapping concerns out of the domain/entity classes. Table/column naming follows [postgresql](../../04-infra/postgresql.md)'s `snake_case` convention, configured explicitly rather than relying on a default naming convention that might drift.
 - **Schema changes never go through `dotnet ef migrations` / EF Core Migrations.** Every SQL database backend uses **DbUp** (`dbup-postgresql`) with hand-written, versioned SQL scripts instead — this is mandatory, not a per-project choice:
   - Scripts live in `db/migration/` **in the `Infrastructure` project** (that's where the DB-access concern already lives), named `V{number}__{description}.sql` (e.g. `V001__schema.sql`, `V002__performance_indexes.sql`), zero-padded and strictly sequential. Once a script has shipped (merged, let alone deployed), it's never edited — a schema change after the fact is a new script, same as an immutable migration in any system.
   - Scripts are embedded as assembly resources (`<EmbeddedResource Include="db\migration\**\*.sql" />` in `Infrastructure.csproj`), not read from disk at runtime — `WithScriptsEmbeddedInAssembly` points at the `Infrastructure` assembly, and `Api` triggers the run at startup without needing to know where the scripts physically live.
@@ -162,9 +162,5 @@ Mandatory before considering any task done — see [[03-backend/aspnet-core/codi
 
 ## Testing
 
-- **xUnit + Moq** is the idiomatic default when tests are warranted — see [[03-backend/aspnet-core/coding-standards|coding-standards]]'s Testing section for when they're actually mandatory (backend testing stack, if any, is chosen per-project).
+- **xUnit + Moq** is the idiomatic default when tests are warranted — see [coding-standards](coding-standards.md)'s Testing section for when they're actually mandatory (backend testing stack, if any, is chosen per-project).
 
-## See also
-
-- [[03-backend/aspnet-core/coding-standards|coding-standards]], [[03-backend/aspnet-core/architecture-principles|architecture-principles]], [[00-global/readme-conventions|readme-conventions]]
-- [[04-infra/postgresql|postgresql]], [[04-infra/keycloak-auth|keycloak-auth]], [[04-infra/redis|redis]], [[04-infra/aws-s3-storage|aws-s3-storage]], [[04-infra/docker|docker]]
