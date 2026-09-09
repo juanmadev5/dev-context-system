@@ -35,6 +35,34 @@ Universal rules that apply to every Spring Boot project. [spring-boot.md](spring
 ```
 
 - The one broadly accepted exception is a raw numeric index in a tight loop (`for (int i = 0; ...)`). Everything else — including nested lambda parameters shadowing an outer one — gets a real, descriptive name.
+- Avoid generic, content-free names (`data`, `result`, `item`, `obj`, `temp`) for any variable or parameter whenever a name that describes what the value actually represents is available — `pendingOrder`, not `order`, once there's more than one order-shaped value in scope. A generic name forces the reader to trace the code back to figure out what it holds; a descriptive one says it up front.
+
+## Control flow
+
+- Prefer **guard clauses** over nested conditionals: check failure/exit conditions first and return or throw immediately, so the method body isn't wrapped in an ever-deepening `if`. The main logic should read top-to-bottom with no more than one level of nesting for the happy path.
+
+```java
+  // Bad — main logic buried inside nested conditions
+  public Order processOrder(Order order) {
+      if (order != null) {
+          if (!order.getItems().isEmpty()) {
+              if (order.getStatus() == OrderStatus.PENDING) {
+                  return repository.save(order);
+              }
+          }
+      }
+      throw new IllegalStateException("Cannot process order");
+  }
+
+  // Good — guard clauses exit early, main logic is flat and visible
+  public Order processOrder(Order order) {
+      if (order == null) throw new IllegalArgumentException("order must not be null");
+      if (order.getItems().isEmpty()) throw new IllegalStateException("Order has no items");
+      if (order.getStatus() != OrderStatus.PENDING) throw new IllegalStateException("Order is not pending");
+
+      return repository.save(order);
+  }
+```
 
 ## No magic values
 
@@ -80,6 +108,8 @@ Apply these pragmatically: they're a guide for keeping code changeable, not a ch
 
 - Validate and handle errors at system boundaries (user input, external API responses, I/O). Don't add defensive checks for states that are impossible given internal invariants already enforced by the type system or Bean Validation.
 - Fail loudly in development; degrade gracefully (with proper logging) in production paths that face end users.
+- Any error surfaced to a caller (API response, exception message reaching a client or log) carries a stable, predictable code (e.g. `ORDER_NOT_FOUND`, never a raw exception message) plus a human-readable message with relevant context (which order, which field) — never a generic "something went wrong".
+- Never include sensitive data (passwords, tokens, secrets, full card numbers) in an error message, log entry, or exception payload — not even at debug level.
 
 ## Definition of done
 

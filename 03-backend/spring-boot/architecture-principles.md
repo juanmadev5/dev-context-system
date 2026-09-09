@@ -82,3 +82,47 @@ Every Spring Boot project uses **Clean Architecture** — layered: domain / appl
 ```
 
 - **Consistency within a project beats a "better" pattern mid-stream**: every module respects the same domain/application/infrastructure boundaries — don't let one module skip a layer "because it's simple" while the rest keep the full split.
+
+- **Wrap external systems behind a boundary**: never let an external API's, payment gateway's, or third-party SDK's own field names, shapes, or error codes leak past the layer that talks to it. Define a model this app owns and convert at the edge — if the external service changes its contract, only the conversion code changes, not every consumer across the app.
+
+```java
+  // Bad — the payment provider's response shape leaks into application code
+  @Service
+  public class OrderService {
+      public void confirmPayment(UUID orderId) {
+          var response = stripeClient.getPaymentIntent(orderId.toString());
+          if ("succeeded".equals(response.getStatus())) { /* ... */ } // provider's own field/values
+      }
+  }
+
+  // Good — a boundary converts the provider's shape into a type this app owns
+  public interface PaymentGateway {
+      PaymentResult getPaymentResult(UUID orderId);
+  }
+
+  @Service
+  public class StripePaymentGateway implements PaymentGateway {
+      public PaymentResult getPaymentResult(UUID orderId) {
+          var response = stripeClient.getPaymentIntent(orderId.toString());
+          return switch (response.getStatus()) {
+              case "succeeded" -> PaymentResult.SUCCEEDED;
+              case "requires_payment_method" -> PaymentResult.FAILED;
+              default -> PaymentResult.PENDING;
+          };
+      }
+  }
+```
+
+- **Make invalid states unrepresentable**: design types so a value that shouldn't exist can't be constructed, instead of relying on runtime checks scattered across the app. If a field is only meaningful once an order is paid, model a dedicated `PaidOrder` where that field is non-optional, instead of a nullable field on `Order` that every consumer has to null-check and guess about.
+
+```java
+  // Bad — paidAt is nullable on every Order, every consumer must guess/null-check
+  public class Order {
+      private OrderStatus status;
+      private Instant paidAt; // null until paid
+  }
+
+  // Good — a paid order is its own type where paidAt is guaranteed to exist
+  public record PendingOrder(UUID id, List<OrderItem> items) {}
+  public record PaidOrder(UUID id, List<OrderItem> items, Instant paidAt) {}
+```

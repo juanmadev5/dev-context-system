@@ -4,15 +4,15 @@ tags: [vuejs, index]
 
 # Vue.js — Index
 
-Single entry point for a Vue project's `CLAUDE.md`. Importing this one file (via `@path`) pulls in every rule this stack needs — architecture, coding standards, code review, responsive design, and how to record consulted documentation — with nothing from any other stack in this repository.
+Copy manifest for a Vue project. Once Vue is the chosen stack (see [tech-stack-map](../../00-global/tech-stack-map.md)), copy every file listed below into that project's own `/docs/` folder — this is everything the stack needs: architecture, coding standards, code review, responsive design, and how to record consulted documentation. Nothing from any other stack in this repository is needed.
 
-A Vue project's `CLAUDE.md` should import this file plus [git-conventions](../../00-global/git-conventions.md) (genuinely stack-agnostic, stays global), [tailwind-css](../tailwind-css.md), and whichever [infra notes](../../04-infra/local-infrastructure.md) the project actually pairs with (database, auth, storage, deployment).
+Also copy [git-conventions](../../00-global/git-conventions.md) (genuinely stack-agnostic, stays global), [tailwind-css](../tailwind-css.md), and whichever [infra notes](../../04-infra/local-infrastructure.md) the project actually pairs with (database, auth, storage, deployment). The project's own `CLAUDE.md` then points at `/docs/` instead of at this repository.
 
-Content imports (in order):
+Files to copy (read in this order):
 
-@architecture-principles.md
-@coding-standards.md
-@code-review.md
-@responsive-design.md
-@sources.md
-@vuejs.md
+1. architecture-principles.md
+2. coding-standards.md
+3. code-review.md
+4. responsive-design.md
+5. sources.md
+6. vuejs.md
