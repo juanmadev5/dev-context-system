@@ -124,14 +124,6 @@ Mandatory before considering any task done — see [coding-standards](coding-sta
 - `dotnet format --verify-no-changes` — validates style/`.editorconfig` compliance without modifying files; fails if anything would need reformatting.
 - For deeper checks on large/Clean-Architecture projects, add `Roslynator` or `SonarAnalyzer.CSharp` as analyzer packages — optional, not a substitute for the two commands above.
 
-## Pairs with
-
-- Database: [postgresql](../../04-infra/postgresql.md) via EF Core.
-- Auth: [keycloak-auth](../../04-infra/keycloak-auth.md).
-- Cache: [redis](../../04-infra/redis.md).
-- Storage: [aws-s3-storage](../../04-infra/aws-s3-storage.md).
-- Containerized in Docker for both dev and prod — see [docker](../../04-infra/docker.md).
-
 ## Data access
 
 - **EF Core** is the ORM/query layer only — entity configuration via **Fluent API** (`IEntityTypeConfiguration<T>` per entity), not data annotations, keeps mapping concerns out of the domain/entity classes. Table/column naming follows [postgresql](../../04-infra/postgresql.md)'s `snake_case` convention, configured explicitly rather than relying on a default naming convention that might drift.

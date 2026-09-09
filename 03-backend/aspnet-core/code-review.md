@@ -35,8 +35,6 @@ At minimum, check for:
 - Missing input validation at system boundaries (see [coding-standards](coding-standards.md)'s error-handling section).
 - CSRF/CORS misconfiguration, where applicable.
 
-Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the project uses it.
-
 ## Anti-patterns to always flag
 
 - God classes/functions doing more than one thing (violates Single Responsibility, see [coding-standards](coding-standards.md)).

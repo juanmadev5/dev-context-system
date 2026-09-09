@@ -34,8 +34,6 @@ At minimum, check for:
 - Missing input validation at system boundaries (see [coding-standards](coding-standards.md)'s error-handling section).
 - Unsafe HTML binding — `[innerHTML]` or `bypassSecurityTrust*` used on anything not already sanitized, opening the door to XSS.
 
-Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the project uses it.
-
 ## Anti-patterns to always flag
 
 - God components/services doing more than one thing (violates Single Responsibility, see [coding-standards](coding-standards.md)).

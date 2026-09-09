@@ -108,14 +108,6 @@ Mandatory before considering any task done — see [coding-standards](coding-sta
 - **Checkstyle** (`mvn checkstyle:check`, via the `maven-checkstyle-plugin`) — style/convention enforcement, the Java equivalent of `dotnet format --verify-no-changes`. Must pass clean.
 - For deeper checks on large projects, add **SpotBugs** or **PMD** as additional Maven plugins — optional, not a substitute for the two commands above.
 
-## Pairs with
-
-- Database: [postgresql](../../04-infra/postgresql.md) via Spring Data JPA / Hibernate.
-- Auth: [keycloak-auth](../../04-infra/keycloak-auth.md) — an especially natural pairing (Keycloak integrates directly with Spring Security via `spring-boot-starter-oauth2-resource-server`).
-- Cache: [redis](../../04-infra/redis.md) via Spring Data Redis / `spring-boot-starter-cache`.
-- Storage: [aws-s3-storage](../../04-infra/aws-s3-storage.md) via the AWS SDK for Java v2.
-- Containerized in Docker for both dev and prod — see [docker](../../04-infra/docker.md).
-
 ## Data access
 
 - **Spring Data JPA** (repository interfaces extending `JpaRepository`) with Hibernate as the underlying provider.

@@ -34,8 +34,6 @@ At minimum, check for:
 - Missing input validation at system boundaries (see [coding-standards](coding-standards.md)'s error-handling section).
 - Insecure network calls — no certificate pinning/TLS validation bypass, no secrets embedded in request URLs.
 
-Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the project uses it.
-
 ## Anti-patterns to always flag
 
 - God widgets/functions doing more than one thing (violates Single Responsibility, see [coding-standards](coding-standards.md)).

@@ -35,8 +35,6 @@ At minimum, check for:
 - Missing input validation at system boundaries (see [coding-standards](coding-standards.md)'s error-handling section) — a request DTO without Bean Validation annotations.
 - CORS misconfiguration on the Spring Security filter chain.
 
-Cross-reference [keycloak-auth](../../04-infra/keycloak-auth.md) when the project uses it.
-
 ## Anti-patterns to always flag
 
 - God classes/methods doing more than one thing (violates Single Responsibility, see [coding-standards](coding-standards.md)).

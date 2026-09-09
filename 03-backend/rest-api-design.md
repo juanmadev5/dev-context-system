@@ -4,7 +4,7 @@ tags: [backend, api, rest]
 
 # REST API Design
 
-Used on every backend project that exposes a REST API — [aspnet-core](aspnet-core/aspnet-core.md), [spring-boot](spring-boot/spring-boot.md) — see [tech-stack-map](../00-global/tech-stack-map.md). Not a stack of its own: a project imports this note directly, alongside whichever backend stack's `INDEX.md` it uses.
+Used on every backend project that exposes a REST API — [aspnet-core](aspnet-core/aspnet-core.md), [spring-boot](spring-boot/spring-boot.md) — see [tech-stack-map](../00-global/tech-stack-map.md). Not a stack of its own: a project copies this note directly, alongside whichever backend stack's own folder it uses.
 
 ## Resources, not actions
 

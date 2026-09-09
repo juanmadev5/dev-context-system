@@ -12,7 +12,7 @@ Every note reflects a decision I've actually made and stand behind — never a g
 
 1. **Give the agent read access to this directory.** It doesn't get imported live into a project — it's a library an agent consults once, at project-definition time.
 2. **During a new project's Spec-Driven Development phase**, once the project's shape and stack are understood, use [tech-stack-map](00-global/tech-stack-map.md) to confirm (or pick) the stack.
-3. **Copy the files that stack needs into the project's own `/docs/` folder.** Each stack folder's `INDEX.md` is a copy manifest — a plain list of exactly which files to copy and in what order to read them (architecture, coding standards, code review, responsive design where applicable, sources, the stack note itself). Also copy:
+3. **List that stack's folder** (e.g. `ls 01-mobile/flutter/`) and copy every file in it into the project's own `/docs/` folder. Every stack folder follows the same reading order: `architecture-principles.md`, `coding-standards.md`, `code-review.md`, `responsive-design.md` (frontend/mobile only), `sources.md`, then the stack's own note (e.g. `flutter.md`). Also copy:
    - [git-conventions](00-global/git-conventions.md) — every project needs it.
    - [tailwind-css](02-web/tailwind-css.md) — every web project.
    - [rest-api-design](03-backend/rest-api-design.md) — every backend project that exposes a REST API.
@@ -24,9 +24,9 @@ This deliberately replaces an earlier version of this system that used Claude Co
 ## Structure
 
 - `00-global/` — the notes that stay genuinely stack-agnostic: [git-conventions](00-global/git-conventions.md), [readme-conventions](00-global/readme-conventions.md), [tech-stack-map](00-global/tech-stack-map.md) (the decision map, read once per project — not copied into a project's `/docs/`).
-- `01-mobile/` — [flutter](01-mobile/flutter/INDEX.md), [jetpack-compose](01-mobile/jetpack-compose/INDEX.md).
-- `02-web/` — [angular](02-web/angular/INDEX.md), [vuejs](02-web/vuejs/INDEX.md), [react](02-web/react/INDEX.md), plus the shared [tailwind-css](02-web/tailwind-css.md) (not a stack of its own — copied alongside whichever web stack is chosen).
-- `03-backend/` — [aspnet-core](03-backend/aspnet-core/INDEX.md), [spring-boot](03-backend/spring-boot/INDEX.md), plus the shared [rest-api-design](03-backend/rest-api-design.md) (not a stack of its own — copied alongside whichever backend stack exposes a REST API).
+- `01-mobile/` — [flutter](01-mobile/flutter/flutter.md), [jetpack-compose](01-mobile/jetpack-compose/jetpack-compose.md).
+- `02-web/` — [angular](02-web/angular/angular.md), [vuejs](02-web/vuejs/vuejs.md), [react](02-web/react/react.md), plus the shared [tailwind-css](02-web/tailwind-css.md) (not a stack of its own — copied alongside whichever web stack is chosen).
+- `03-backend/` — [aspnet-core](03-backend/aspnet-core/aspnet-core.md), [spring-boot](03-backend/spring-boot/spring-boot.md), plus the shared [rest-api-design](03-backend/rest-api-design.md) (not a stack of its own — copied alongside whichever backend stack exposes a REST API).
 - `04-infra/` — one self-contained note per infrastructure piece: [docker](04-infra/docker.md), [postgresql](04-infra/postgresql.md), [redis](04-infra/redis.md), [keycloak-auth](04-infra/keycloak-auth.md), [aws-s3-storage](04-infra/aws-s3-storage.md), [local-infrastructure](04-infra/local-infrastructure.md).
 
 Each mobile/web/backend stack folder bundles its own `architecture-principles.md`, `coding-standards.md`, `code-review.md`, `responsive-design.md` (frontend/mobile only), `sources.md`, and the stack note itself — see "Why the global rules are duplicated per stack" below.
