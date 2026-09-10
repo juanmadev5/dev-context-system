@@ -35,6 +35,8 @@ At minimum, check for:
 - Missing input validation at system boundaries (see [coding-standards](coding-standards.md)'s error-handling section).
 - CSRF/CORS misconfiguration, where applicable.
 
+See also [security-practices](../../04-infra/security-practices.md) for the standing infra-level conventions (secrets, rate limiting, dependency hygiene) this checklist assumes are already in place.
+
 ## Anti-patterns to always flag
 
 - God classes/functions doing more than one thing (violates Single Responsibility, see [coding-standards](coding-standards.md)).

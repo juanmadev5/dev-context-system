@@ -53,7 +53,7 @@ lib/
 
 ## Testing
 
-- `flutter_test` + **mocktail** for unit/widget tests. Since state management is Bloc/Cubit, pair with `bloc_test` for testing state transitions instead of driving them manually through mocktail alone.
+See [testing.md](testing.md) for the testing stack, structure, and mocking conventions.
 
 ## Internationalization (i18n)
 
@@ -65,9 +65,9 @@ lib/
 
 - Use `LayoutBuilder` / `MediaQuery` (or a breakpoints abstraction built on top of them) to adapt layout between phone and tablet form factors and to handle orientation changes — never hardcode pixel/logical-pixel dimensions that assume one specific device. See [responsive-design](responsive-design.md).
 
-## Logging
+## Error handling & logging
 
-- **`logger`** package for all logging — leveled output (debug/info/warning/error) with readable formatting, instead of scattering `print()`/`debugPrint()` calls through the codebase.
+See [error-handling.md](error-handling.md) for exception mapping, the global error boundary, and structured logging.
 
 ## Static analysis
 

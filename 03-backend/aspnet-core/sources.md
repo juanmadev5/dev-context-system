@@ -52,6 +52,15 @@ Curated index of this stack's own official documentation — the vetted entry po
 - Official repository (devlooped/moq, the actively maintained fork): <https://github.com/devlooped/moq>
 - Quickstart wiki (setup, argument matching, verification): <https://github.com/devlooped/moq/wiki/Quickstart>
 
+## FluentAssertions
+
+- Official documentation home: <https://fluentassertions.com/introduction>
+
+## Testcontainers for .NET
+
+- Official documentation home: <https://dotnet.testcontainers.org/>
+- PostgreSQL module: <https://dotnet.testcontainers.org/modules/postgres/>
+
 ## DbUp
 
 - Official documentation home: <https://dbup.readthedocs.io/en/latest/>

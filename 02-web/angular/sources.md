@@ -34,6 +34,18 @@ Curated index of this stack's own official documentation — the vetted entry po
 
 - Getting started guide: <https://jestjs.io/docs/getting-started>
 
+## Angular Testing Library
+
+- Official README (testing-library/angular-testing-library): <https://github.com/testing-library/angular-testing-library>
+
+## HttpClientTestingModule
+
+- Testing HTTP requests guide (`HttpTestingController`): <https://angular.dev/guide/http/testing>
+
+## loglevel
+
+- Official README (pimterry/loglevel): <https://github.com/pimterry/loglevel>
+
 ## Playwright
 
 - Documentation homepage: <https://playwright.dev/>

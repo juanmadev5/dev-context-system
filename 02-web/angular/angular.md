@@ -38,17 +38,17 @@ src/app/
 
 - **Signals-only**: `signal`/`computed`/`effect` exposed from injectable services for shared/global state, component-local `signal`s for local state. No NgRx — it adds more ceremony than these projects need. If a specific feature's state truly becomes Redux-shaped (many interdependent actions, need for time-travel debugging), that's a deliberate, documented exception, not the default.
 
-## HTTP & error handling
-
-- A central `HttpInterceptor` catches HTTP errors and normalizes them into a common error type (e.g. `AppError`) before they reach feature services/components. Features consume the normalized type, never raw `HttpErrorResponse` deep in component code.
-
 ## Forms
 
 - **Reactive Forms** with custom validators written as plain functions (`ValidatorFn`/`AsyncValidatorFn`), reused across forms via [coding-standards](coding-standards.md)'s DRY rule. No third-party form libraries unless a project has a specific need (e.g. many backend-driven dynamic forms) that justifies the added dependency.
 
 ## Testing
 
-- **Jest** for unit tests, **Playwright** for e2e — not the Angular CLI's Jasmine/Karma/Cypress defaults.
+See [testing.md](testing.md) for the testing stack, structure, and mocking conventions.
+
+## Error handling & logging
+
+See [error-handling.md](error-handling.md) for the HTTP interceptor's error normalization, the global error handler, and structured logging.
 
 ## Internationalization (i18n)
 

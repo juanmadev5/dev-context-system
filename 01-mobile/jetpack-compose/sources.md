@@ -58,6 +58,10 @@ Curated index of this stack's own official documentation — the vetted entry po
 
 - Official README (cashapp/turbine): <https://github.com/cashapp/turbine>
 
+## MockK
+
+- Official documentation site: <https://mockk.io/>
+
 ## detekt
 
 - Official docs site: <https://detekt.dev/>

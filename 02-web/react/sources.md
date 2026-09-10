@@ -54,6 +54,14 @@ Curated index of this stack's own official documentation — the vetted entry po
 
 - Introduction / docs: <https://testing-library.com/docs/react-testing-library/intro/>
 
+## MSW (Mock Service Worker)
+
+- Official documentation home: <https://mswjs.io/>
+
+## loglevel
+
+- Official README (pimterry/loglevel): <https://github.com/pimterry/loglevel>
+
 ## Playwright
 
 - Documentation homepage: <https://playwright.dev/>

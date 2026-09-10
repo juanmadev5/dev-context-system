@@ -142,16 +142,10 @@ Mandatory before considering any task done — see [coding-standards](coding-sta
 
 - No mediator library is used. Endpoints (Minimal API) and Controllers inject `Application` services directly via constructor injection (ASP.NET Core's own DI container — no external library needed here) — the idiomatic pattern for this stack, keeping the codebase approachable.
 
-## Error handling
+## Error handling & logging
 
-- **Mandatory**: a single **`IExceptionHandler`** implementation (or one per exception category if that's cleaner), registered via `AddExceptionHandler<T>()` + `app.UseExceptionHandler()` — one place exceptions map to HTTP responses. Never try/catch scattered per endpoint/controller action.
-- Responses follow **RFC 7807 `ProblemDetails`** (`AddProblemDetails()`, `Results.Problem(...)`) — a consistent shape, not an ad-hoc JSON shape per exception.
-- Domain/application exceptions are specific types, never a generic `Exception` caught and stringly-typed — the handler is what maps each specific type to the right HTTP status.
-
-## Logging & observability
-
-- **Serilog** for structured logging (configurable sinks), **OpenTelemetry** for tracing/metrics. Every service should be able to answer "what happened to this request" without attaching a debugger.
+See [error-handling.md](error-handling.md) for the global exception-handling mechanism, structured logging, and correlation ID propagation.
 
 ## Testing
 
-- **xUnit + Moq** is the idiomatic default when tests are warranted — see [coding-standards](coding-standards.md)'s Testing section for when they're actually mandatory (backend testing stack, if any, is chosen per-project).
+See [testing.md](testing.md) for the testing stack, structure, and mocking conventions.

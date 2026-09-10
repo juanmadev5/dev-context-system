@@ -38,7 +38,12 @@ Decision map: given a project's shape, which technology to reach for. This is th
 | Local dev services (Postgres, Redis, Keycloak) | [local-infrastructure](../04-infra/local-infrastructure.md) |
 | Containerization | [docker](../04-infra/docker.md) — local dev always; backend in production too. |
 | Deployment | [docker](../04-infra/docker.md) — see its "Production" section |
+| Security practices | [security-practices](../04-infra/security-practices.md) — always, for every project. |
+
+## Dependencies
+
+Every project also copies [dependency-management](dependency-management.md), regardless of stack — how a dependency is vetted, versioned, and kept current.
 
 ## Composing a project's context
 
-Once the stack for a given project is picked from the tables above, list that stack's own folder (e.g. `01-mobile/flutter/`) and copy every file in it into that project's own `/docs/` folder, plus [git-conventions](git-conventions.md) and whichever infra notes the project pairs with. Each stack's architecture, coding-standards, code-review, responsive-design (where applicable), and sources conventions live inside that stack's own folder, not as separate global notes. The project's own `CLAUDE.md` then points at `/docs/` instead of at this repository — see the root [README](../README.md)'s "How an agent should use this repository".
+Once the stack for a given project is picked from the tables above, list that stack's own folder (e.g. `01-mobile/flutter/`) and copy every file in it into that project's own `/docs/` folder, plus [git-conventions](git-conventions.md), [dependency-management](dependency-management.md), and whichever infra notes the project pairs with. Each stack's architecture, coding-standards, code-review, testing, error-handling, responsive-design (where applicable), and sources conventions live inside that stack's own folder, not as separate global notes. The project's own `CLAUDE.md` then points at `/docs/` instead of at this repository — see the root [README](../README.md)'s "How an agent should use this repository".

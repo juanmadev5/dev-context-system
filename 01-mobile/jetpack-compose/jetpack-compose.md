@@ -64,15 +64,15 @@ Strict rule, no exceptions: a Composable never contains a literal UI string or a
 
 ## Testing
 
-- **JUnit** for logic/ViewModel tests, **Compose UI Testing** for Composables, **Turbine** for asserting on `Flow` emissions instead of manual `collect` boilerplate in tests.
+See [testing.md](testing.md) for the testing stack, structure, and mocking conventions.
 
 ## Responsiveness
 
 - Use Material 3's `WindowSizeClass` (adaptive layouts) and `BoxWithConstraints` to adapt layout across Android's phone/tablet/foldable range — never a fixed `dp` layout that assumes one screen size. See [responsive-design](responsive-design.md) for the full principle.
 
-## Logging
+## Error handling & logging
 
-- **Timber** for all logging, not the raw `android.util.Log` — it drops the manual tag boilerplate (auto-derives the tag from the calling class) and makes it trivial to plant a no-op tree in release builds instead of shipping debug logs to production.
+See [error-handling.md](error-handling.md) for exception mapping, the global error boundary, and structured logging.
 
 ## Static analysis
 

@@ -51,6 +51,15 @@ Curated index of this stack's own official documentation — the vetted entry po
 
 - Official Mockito site: <https://site.mockito.org/>
 
+## AssertJ
+
+- Official documentation home: <https://assertj.github.io/doc/>
+
+## Testcontainers for Java
+
+- Official documentation home: <https://testcontainers.com/>
+- Postgres module: <https://java.testcontainers.org/modules/databases/postgres/>
+
 ## SLF4J + Logback
 
 - SLF4J user manual: <https://www.slf4j.org/manual.html>

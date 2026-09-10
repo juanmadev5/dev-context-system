@@ -41,6 +41,14 @@ Curated index of this stack's own official documentation — the vetted entry po
 
 - Official documentation homepage: <https://test-utils.vuejs.org/>
 
+## MSW (Mock Service Worker)
+
+- Official documentation home: <https://mswjs.io/>
+
+## loglevel
+
+- Official README (pimterry/loglevel): <https://github.com/pimterry/loglevel>
+
 ## Playwright
 
 - Installation / getting started: <https://playwright.dev/docs/intro>

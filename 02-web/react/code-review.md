@@ -34,6 +34,8 @@ At minimum, check for:
 - Missing input validation at system boundaries (see [coding-standards](coding-standards.md)'s error-handling section).
 - XSS — unescaped user content rendered via `dangerouslySetInnerHTML`, or untrusted URLs passed straight into `href`/`src`.
 
+See also [security-practices](../../04-infra/security-practices.md) for the standing infra-level conventions (secrets, dependency hygiene) this checklist assumes are already in place.
+
 ## Anti-patterns to always flag
 
 - God components/functions doing more than one thing (violates Single Responsibility, see [coding-standards](coding-standards.md)).

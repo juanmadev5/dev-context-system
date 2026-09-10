@@ -43,7 +43,11 @@ src/
 
 ## Testing
 
-- **Vitest** + **Vue Test Utils** for unit/component tests. Add Playwright for e2e when a project needs it.
+See [testing.md](testing.md) for the testing stack, structure, and mocking conventions.
+
+## Error handling & logging
+
+See [error-handling.md](error-handling.md) for the API client's error normalization, the global error handler, and structured logging.
 
 ## Internationalization (i18n)
 

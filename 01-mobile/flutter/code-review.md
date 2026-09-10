@@ -34,6 +34,8 @@ At minimum, check for:
 - Missing input validation at system boundaries (see [coding-standards](coding-standards.md)'s error-handling section).
 - Insecure network calls — no certificate pinning/TLS validation bypass, no secrets embedded in request URLs.
 
+See also [security-practices](../../04-infra/security-practices.md) for the standing infra-level conventions (secrets, dependency hygiene) this checklist assumes are already in place.
+
 ## Anti-patterns to always flag
 
 - God widgets/functions doing more than one thing (violates Single Responsibility, see [coding-standards](coding-standards.md)).

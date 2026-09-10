@@ -127,16 +127,10 @@ Mandatory before considering any task done — see [coding-standards](coding-sta
 
 - No MediatR-equivalent is mandated. `@RestController` classes inject `@Service` beans directly via constructor injection (Spring's own DI container — no external DI library needed here) — this is the idiomatic Spring pattern and keeps the codebase approachable; introducing a mediator library would add ceremony without a corresponding ecosystem convention behind it.
 
-## Error handling
+## Error handling & logging
 
-- **Mandatory**: a single **`@RestControllerAdvice`** class (one per application, or per bounded context in a large Clean-Architecture project) with `@ExceptionHandler` methods per exception type — this is the one place exceptions get mapped to HTTP responses. Never a try/catch scattered per controller method.
-- Responses follow **RFC 7807 `ProblemDetails`** (Spring's `ProblemDetail`/`ResponseEntityExceptionHandler` support) — a consistent shape (`type`, `title`, `status`, `detail`, `instance`) across every error response, not an ad-hoc JSON shape per exception.
-- Domain/application exceptions are specific types (`CustomerNotFoundException`, `InsufficientBalanceException`, etc.), never a generic `RuntimeException` caught and stringly-typed — the advice class is what maps each specific type to the right HTTP status.
-
-## Logging & observability
-
-- **SLF4J + Logback** (Spring Boot's default) for structured logging, **OpenTelemetry** (Java agent or SDK) for tracing/metrics — every service should be able to answer "what happened to this request" without attaching a debugger.
+See [error-handling.md](error-handling.md) for the global exception-handling mechanism, structured logging, and correlation ID propagation.
 
 ## Testing
 
-- **JUnit 5 + Mockito** is the idiomatic default when tests are warranted — see [coding-standards](coding-standards.md)'s Testing section for when they're actually mandatory (backend testing stack, if any, is chosen per-project). `spring-boot-starter-test` bundles both plus AssertJ.
+See [testing.md](testing.md) for the testing stack, structure, and mocking conventions.

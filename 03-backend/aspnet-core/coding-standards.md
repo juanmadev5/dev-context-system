@@ -113,15 +113,14 @@ Apply these pragmatically: they're a guide for keeping code changeable, not a ch
 
 - Validate and handle errors at system boundaries (user input, external API responses, I/O). Don't add defensive checks for states that are impossible given internal invariants already enforced by the type system or framework.
 - Fail loudly in development; degrade gracefully (with proper logging) in production paths that face end users.
-- Any error surfaced to a caller (API response, exception message reaching a client or log) carries a stable, predictable code (e.g. `ORDER_NOT_FOUND`, never a raw exception message) plus a human-readable message with relevant context (which order, which field) — never a generic "something went wrong".
-- Never include sensitive data (passwords, tokens, secrets, full card numbers) in an error message, log entry, or exception payload — not even at debug level.
+- See [error-handling](error-handling.md) for the global exception-handling mechanism, structured logging, and correlation ID propagation.
 
 ## Definition of done
 
 A task is never "done" just because it behaves correctly or compiles. Code can look fine and still be silently broken, scoped wrong, or undocumented — before considering any task/feature finished, every applicable item below must be checked, not just a feeling that it's "probably fine":
 
 - **Static analysis** — `dotnet build` (Roslyn analyzers) and `dotnet format --verify-no-changes` pass clean (no new errors or warnings introduced by the change) — see [aspnet-core.md](aspnet-core.md)'s `## Static analysis` section. Never skip this assuming "it looks fine" or because the change was small.
-- **Tests** — pass locally; if the change touches logic covered by this note's [Testing](#testing) criteria, new tests were written for it.
+- **Tests** — pass locally; if the change touches logic covered by this note's [Testing](#testing) criteria, new tests were written for it (see [testing](testing.md) for how).
 - **Self-review** — the full diff was read start to finish before calling the task done, per [code-review](code-review.md)'s self-review section.
 - **Docs** — the project's README was updated if the change affects it ([readme-conventions](../../00-global/readme-conventions.md)); `docs/SOURCES.md` was updated if a source not already covered by [sources](sources.md) was consulted.
 - **Scope check** — the change matches exactly what was asked, with no unrelated edits left in (see [Scope discipline](#scope-discipline) below).
@@ -132,7 +131,7 @@ A task is never "done" just because it behaves correctly or compiles. Code can l
 - Tests are **not a blanket requirement for every project or every piece of logic.** Writing tests for a trivial CRUD wrapper or low-stakes glue code is its own form of over-engineering — see Scope discipline below.
 - Tests **are mandatory** for business logic that's genuinely delicate and error-prone: money/billing calculations, complex state transitions, permission/authorization logic, concurrency-sensitive code, or anything where a silent bug would corrupt data or cause a real incident rather than just a cosmetic glitch.
 - The judgment call: "if this breaks silently, how bad is it?" — if the honest answer involves someone getting paid wrong, a user seeing another user's data, or a state machine landing in an invalid state, it needs tests. If the worst case is "a list renders in the wrong order," it probably doesn't.
-- Backend testing stack is chosen per-project — [aspnet-core.md](aspnet-core.md) does not mandate one, though its `## Testing` section names xUnit + Moq as the idiomatic default when tests are warranted.
+- See [testing](testing.md) for the testing stack, structure, and mocking conventions used once tests are warranted.
 
 ## Scope discipline
 
