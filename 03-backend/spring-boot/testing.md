@@ -4,7 +4,7 @@ tags: [spring-boot, testing]
 
 # Testing — Spring Boot
 
-Universal testing rules for every Spring Boot project. [coding-standards](coding-standards.md)'s `## Testing` section decides *when* a test is mandatory; this note covers *how* one is written once it's warranted.
+Stack-specific additions to [testing-principles](../../00-global/testing-principles.md) — read that first; this note only adds Spring Boot's own libraries, naming format, and mocking mechanics and never contradicts it.
 
 ## Stack
 
@@ -14,7 +14,6 @@ Universal testing rules for every Spring Boot project. [coding-standards](coding
 ## Structure — Given-When-Then
 
 - Test method names read as `given<Context>_when<Action>_then<Outcome>` (e.g. `given_orderHasNoItems_when_processing_then_throwsIllegalStateException`).
-- The body is split into three comment blocks in the same order, replacing the generic Arrange/Act/Assert labels:
 
 ```java
 @Test
@@ -31,18 +30,6 @@ void given_orderHasNoItems_when_processing_then_throwsIllegalStateException() {
 }
 ```
 
-- One `@Test` per scenario — don't cram multiple Given/When combinations and several unrelated asserts into a single test.
+## Mocking
 
-## Mocking policy
-
-- **Mock every injected dependency in a unit test** — repositories, external clients, clock/time providers, everything the class under test receives via constructor injection (`@Mock` + `@InjectMocks`, or `Mockito.mock(...)`). A unit test never touches a real database, network call, or filesystem.
-- Integration tests are the ones that exercise real infrastructure (via Testcontainers above, typically with `@SpringBootTest`) — they trade the isolation of mocks for confidence that the actual Spring Data JPA mapping and Flyway-applied schema behave correctly against real Postgres. Don't mix the two styles in the same test class.
-
-## What to test
-
-- Same judgment call as [coding-standards](coding-standards.md)'s `## Testing` section: not a blanket requirement, mandatory for delicate business logic (money, permissions, state transitions, concurrency).
-- Prefer testing through the public API of a class/use case, not its private implementation details — a test that breaks every time an internal helper is renamed, without the observable behavior changing, is testing the wrong thing.
-
-## Sources
-
-Record any testing-library API verified against official docs in `docs/SOURCES.md` per [sources](sources.md).
+- Constructor-injected dependencies are mocked with `@Mock` + `@InjectMocks`, or `Mockito.mock(...)`. Integration tests (Testcontainers above, typically with `@SpringBootTest`) verify the actual Spring Data JPA mapping and Flyway-applied schema against real Postgres.

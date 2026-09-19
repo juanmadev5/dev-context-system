@@ -10,7 +10,7 @@ Applies to every project, regardless of stack — how a dependency is chosen, ve
 
 - **Check an existing dependency doesn't already solve it.** Adding a second library for something already covered by one already installed is duplication at the dependency level, not just the code level.
 - **Maintenance is active.** Recent commits/releases, issues actually getting responses — not a project that's gone quiet for a year or more.
-- **License is not commercial/paid.** Open-source licenses (MIT, Apache-2.0, BSD, MPL) are fine by default. A dependency that requires a commercial license or per-seat/per-usage fee is never added without explicit approval first — this is a business decision, not an engineering one.
+- **No commercial or paid licenses, ever.** Never add a library, package, tool, or image that requires a commercial license or a per-seat/per-usage fee — including one that was free in an earlier version and went paid in a later one (check the license of the exact version being added, not just the project's reputation). If the only good option is commercial, find an alternative or write the code; don't ask for an exception.
 - If a dependency fails any of these, it's a question for the developer, not a judgment call to make silently.
 
 ## Versioning

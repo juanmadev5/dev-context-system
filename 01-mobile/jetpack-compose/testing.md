@@ -4,7 +4,7 @@ tags: [jetpack-compose, testing]
 
 # Testing — Jetpack Compose
 
-Universal testing rules for every Jetpack Compose project. [coding-standards](coding-standards.md)'s `## Testing` section decides *when* a test is mandatory; this note covers *how* one is written once it's warranted.
+Stack-specific additions to [testing-principles](../../00-global/testing-principles.md) — read that first; this note only adds Jetpack Compose's own libraries, naming format, and mocking mechanics and never contradicts it.
 
 ## Stack
 
@@ -30,18 +30,7 @@ fun `given order has no items, when processing, then throws IllegalStateExceptio
 }
 ```
 
-- One `@Test` per scenario — don't cram multiple Given/When combinations and several unrelated assertions into a single test.
+## Mocking
 
-## Mocking policy
-
-- **Mock every injected dependency in a unit test** — repositories, use cases, clock/time providers, anything the ViewModel receives via Hilt constructor injection. A ViewModel unit test never touches a real network call or database.
-- Composable tests (`createComposeRule`) supply a fake/mocked `StateFlow` of UI state directly — they verify what the Composable renders for a given state, not the ViewModel's own logic (that's the ViewModel's separate unit test).
-
-## What to test
-
-- Same judgment call as [coding-standards](coding-standards.md)'s `## Testing` section: not a blanket requirement, mandatory for delicate business logic (money, permissions, state transitions, concurrency).
-- Prefer testing through the public API of a class/use case, not its private implementation details — a test that breaks every time an internal helper is renamed, without the observable behavior changing, is testing the wrong thing.
-
-## Sources
-
-Record any testing-library API verified against official docs in `docs/SOURCES.md` per [sources](sources.md).
+- ViewModel dependencies arrive via Hilt constructor injection.
+- Composable tests (`createComposeRule`) supply a fake/mocked `StateFlow` of UI state directly; the ViewModel's own logic has its separate unit test.

@@ -28,10 +28,10 @@ lib/
 
 ## Conventions
 
-- File names: `snake_case.dart`. Classes: `PascalCase`. Members/variables: `camelCase`. Constants: `camelCase` (or `SCREAMING_SNAKE_CASE` only if the team already uses that style consistently) — never inline literals, per [coding-standards](coding-standards.md).
+- File names: `snake_case.dart`. Classes: `PascalCase`. Members/variables: `camelCase`. Constants: `camelCase` (or `SCREAMING_SNAKE_CASE` only if the team already uses that style consistently) — never inline literals, per [engineering-principles](../../00-global/engineering-principles.md).
 - Widgets: prefer small, composable widgets over large `build()` methods. Extract a widget when a subtree has its own responsibility or is reused.
 - Null-safety is mandatory; avoid `!` (force-unwrap) except where nullability has already been exhaustively proven earlier in the same scope.
-- Enums: use Dart `enum`s for closed sets of values (never raw strings/ints), and when serializing use `.name`, never `.index` — see [coding-standards](coding-standards.md).
+- Enums: use Dart `enum`s for closed sets of values (never raw strings/ints), and when serializing use `.name`, never `.index` — see [engineering-principles](../../00-global/engineering-principles.md).
 
 ## Styling
 
@@ -41,7 +41,7 @@ lib/
 
 - **Bloc** (`flutter_bloc`) for screens/features with genuinely complex state (multiple events, transitions, side effects worth modeling explicitly).
 - **Cubit** for simple state (a handful of straightforward state changes, no need for full event-driven modeling). Don't reach for full Bloc when a Cubit says the same thing with less ceremony.
-- Both act as the ViewModel for a feature, living in `ui/<feature_name>/view_models/` — see [architecture-principles](architecture-principles.md). States and events are modeled as sealed classes/unions, never raw strings/bools/enum-index checks, per [coding-standards](coding-standards.md).
+- Both act as the ViewModel for a feature, living in `ui/<feature_name>/view_models/` — see [architecture-principles](architecture-principles.md). States and events are modeled as sealed classes/unions, never raw strings/bools/enum-index checks, per [engineering-principles](../../00-global/engineering-principles.md).
 
 ## Dependency injection
 
@@ -59,11 +59,11 @@ See [testing.md](testing.md) for the testing stack, structure, and mocking conve
 
 - **Before starting a new Flutter project (or a significant new app within one), the agent must explicitly ask whether the app needs to support multiple languages.** Never assume either way — don't silently build it in "just in case", and don't silently hardcode strings assuming it'll never be needed.
 - **If yes**: use Flutter's official stack — `flutter_localizations` + `intl`, with ARB files (`lib/l10n/*.arb`) as the source of truth, code-generated via `flutter gen-l10n`. Route all user-facing strings through it from the start, even for a single-language initial release — retrofitting i18n later means touching every widget again.
-- **If no**: plain UI strings are fine (still the one exception to English-only in [coding-standards](coding-standards.md)), but keep them out of widget bodies — a single `strings.dart` (or similar) constants file avoids the same string being duplicated across widgets, per DRY.
+- **If no**: plain UI strings are fine (still the one exception to English-only in [engineering-principles](../../00-global/engineering-principles.md)), but keep them out of widget bodies — a single `strings.dart` (or similar) constants file avoids the same string being duplicated across widgets, per DRY.
 
 ## Responsiveness
 
-- Use `LayoutBuilder` / `MediaQuery` (or a breakpoints abstraction built on top of them) to adapt layout between phone and tablet form factors and to handle orientation changes — never hardcode pixel/logical-pixel dimensions that assume one specific device. See [responsive-design](responsive-design.md).
+- Use `LayoutBuilder` / `MediaQuery` (or a breakpoints abstraction built on top of them) to adapt layout between phone and tablet form factors and to handle orientation changes — never hardcode pixel/logical-pixel dimensions that assume one specific device. See [responsive-design](../../00-global/responsive-design.md).
 
 ## Error handling & logging
 
@@ -71,6 +71,6 @@ See [error-handling.md](error-handling.md) for exception mapping, the global err
 
 ## Static analysis
 
-Mandatory before considering any task done — see [coding-standards](coding-standards.md).
+Mandatory before considering any task done — see [engineering-principles](../../00-global/engineering-principles.md).
 
 - `flutter analyze` (or `dart analyze`) — must pass clean, no new errors/warnings/lints introduced by the change.

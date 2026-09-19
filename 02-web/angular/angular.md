@@ -27,7 +27,7 @@ src/app/
 - File names: `kebab-case`, Angular's standard suffixes (`.component.ts`, `.service.ts`, `.guard.ts`, etc.).
 - Strong typing everywhere — avoid `any`; prefer `unknown` + narrowing when the type genuinely isn't known yet.
 - Reactive state (RxJS `Observable`s / signals) over imperative subscription juggling; always unsubscribe or use `async` pipe / `takeUntilDestroyed()`.
-- Constants and enums per [coding-standards](coding-standards.md) — no magic strings for route paths, HTTP header names, storage keys, etc.
+- Constants and enums per [engineering-principles](../../00-global/engineering-principles.md) — no magic strings for route paths, HTTP header names, storage keys, etc.
 - **Package manager: pnpm**, never `npm`/`yarn` — see [tech-stack-map](../../00-global/tech-stack-map.md).
 
 ## Styling
@@ -40,7 +40,7 @@ src/app/
 
 ## Forms
 
-- **Reactive Forms** with custom validators written as plain functions (`ValidatorFn`/`AsyncValidatorFn`), reused across forms via [coding-standards](coding-standards.md)'s DRY rule. No third-party form libraries unless a project has a specific need (e.g. many backend-driven dynamic forms) that justifies the added dependency.
+- **Reactive Forms** with custom validators written as plain functions (`ValidatorFn`/`AsyncValidatorFn`), reused across forms via [engineering-principles](../../00-global/engineering-principles.md)'s DRY rule. No third-party form libraries unless a project has a specific need (e.g. many backend-driven dynamic forms) that justifies the added dependency.
 
 ## Testing
 
@@ -54,11 +54,11 @@ See [error-handling.md](error-handling.md) for the HTTP interceptor's error norm
 
 - **Before starting a new Angular project (or a significant new app within one), the agent must explicitly ask whether the app needs to support multiple languages** — never assume either way.
 - **If yes**: use **Transloco**, not Angular's built-in extraction-based i18n (which requires a separate build per locale) and not ngx-translate. Translation keys live in per-locale JSON files, lazy-loaded per feature module where the project is large enough for that to matter. No literal UI strings in templates — every user-facing string goes through a translation key from the start, even for a single-language initial release.
-- **If no**: UI strings stay hardcoded (the one exception to English-only in [coding-standards](coding-standards.md)), but centralized — a shared constants file (or one per feature, per [architecture-principles](architecture-principles.md)'s layout) instead of the same literal duplicated across components, per DRY.
+- **If no**: UI strings stay hardcoded (the one exception to English-only in [engineering-principles](../../00-global/engineering-principles.md)), but centralized — a shared constants file (or one per feature, per [architecture-principles](architecture-principles.md)'s layout) instead of the same literal duplicated across components, per DRY.
 
 ## Static analysis
 
-Mandatory before considering any task done — see [coding-standards](coding-standards.md).
+Mandatory before considering any task done — see [engineering-principles](../../00-global/engineering-principles.md).
 
 - `tsc --noEmit` — type-checking. `ng build` also catches type errors, but `tsc --noEmit` is faster when a full build isn't needed.
 - `eslint .` (via `ng lint` if `@angular-eslint` is set up in the project) — must pass clean.

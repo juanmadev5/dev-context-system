@@ -55,12 +55,12 @@ src/
 
 ## Conventions
 
-- Endpoint routes, config keys, claim types, cache keys: constants, never magic strings — see [coding-standards](coding-standards.md).
+- Endpoint routes, config keys, claim types, cache keys: constants, never magic strings — see [engineering-principles](../../00-global/engineering-principles.md).
 - Enums serialized as strings (`.name` equivalent — `JsonStringEnumConverter`), never as raw ints, across any API boundary.
 - DTOs are explicit and separate from domain entities — never expose EF Core entities directly through the API.
 - Use `IOptions<T>` (or equivalent) for configuration, never `IConfiguration["Some:Key"]` scattered through the codebase.
 - **Every endpoint must be explicitly and clearly identifiable, no exceptions — the exact mechanism depends on the API style:**
-  - **Minimal APIs**: `.WithName("...")` on every endpoint. Naming clarity (see [coding-standards](coding-standards.md)) doesn't stop at variables/lambdas — an endpoint is an identifier too, and `app.MapGetTasks()` alone in `Program.cs` isn't enough: the name is what shows up in Swagger/OpenAPI as the operation ID, what typed-client generators (NSwag, openapi-typescript, etc.) key off of, what `Results.CreatedAtRoute`/`LinkGenerator` reference by, and what identifies the request in OpenTelemetry traces instead of a raw route template. Match the name to the request/query/command it dispatches (e.g. `GetTasksEndpoint` → `.WithName("GetTasks")`), not a generic or abbreviated label.
+  - **Minimal APIs**: `.WithName("...")` on every endpoint. Naming clarity (see [engineering-principles](../../00-global/engineering-principles.md)) doesn't stop at variables/lambdas — an endpoint is an identifier too, and `app.MapGetTasks()` alone in `Program.cs` isn't enough: the name is what shows up in Swagger/OpenAPI as the operation ID, what typed-client generators (NSwag, openapi-typescript, etc.) key off of, what `Results.CreatedAtRoute`/`LinkGenerator` reference by, and what identifies the request in OpenTelemetry traces instead of a raw route template. Match the name to the request/query/command it dispatches (e.g. `GetTasksEndpoint` → `.WithName("GetTasks")`), not a generic or abbreviated label.
   - **Controllers**: every `[HttpGet]`/`[HttpPost]`/`[HttpPut]`/`[HttpDelete]` gets an explicit route template — never left bare relying only on the class-level `[Route("api/[controller]")]` to carry the whole path (e.g. `[HttpGet("{id}")]`, not a parameterless `[HttpGet]` on a method that clearly needs `{id}`). Reference actions via `nameof()` (`CreatedAtAction(nameof(GetById), ...)`), which is compiler-checked, rather than magic strings; add an explicit `Name = "..."` only when using `CreatedAtRoute`/`LinkGenerator` instead of `CreatedAtAction`.
 
 ## API documentation
@@ -82,7 +82,7 @@ src/
     ```
 
     Set `<GenerateDocumentationFile>true</GenerateDocumentationFile>` in the `.csproj` so XML comments actually flow into the generated OpenAPI document.
-- Add XML doc comments to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every property, same restraint as [coding-standards](coding-standards.md)'s comment guidance.
+- Add XML doc comments to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every property, same restraint as [engineering-principles](../../00-global/engineering-principles.md)'s comment guidance.
 - Not optional polish: the generated spec is what a frontend/mobile consumer or an API client generator (NSwag, openapi-typescript) actually reads — an undocumented endpoint is a broken contract, not a cosmetic gap.
 
 ## API versioning
@@ -114,11 +114,11 @@ src/
   ```
 
 - When the resource supports filtering, filters are query params named after the field they filter (e.g. `GET /orders?status=Active&createdAfter=2026-01-01`), applied server-side before pagination — never a single opaque "filter" blob param unless the filtering surface is generic/dynamic enough to genuinely need one.
-- The pagination request/response types, the default/max page size constants, and the query-param names are defined once (in `Common`, per the Vertical Slice layout above, or in `Application`/shared kernel for Clean Architecture) and reused by every paginated endpoint — never redefined per feature, per [coding-standards](coding-standards.md)'s DRY rule.
+- The pagination request/response types, the default/max page size constants, and the query-param names are defined once (in `Common`, per the Vertical Slice layout above, or in `Application`/shared kernel for Clean Architecture) and reused by every paginated endpoint — never redefined per feature, per [engineering-principles](../../00-global/engineering-principles.md)'s DRY rule.
 
 ## Static analysis
 
-Mandatory before considering any task done — see [coding-standards](coding-standards.md).
+Mandatory before considering any task done — see [engineering-principles](../../00-global/engineering-principles.md).
 
 - `dotnet build` — Roslyn analyzers (`Microsoft.CodeAnalysis.NetAnalyzers`) are enabled by default in SDK-style projects and run on every build; must be clean, no new warnings.
 - `dotnet format --verify-no-changes` — validates style/`.editorconfig` compliance without modifying files; fails if anything would need reformatting.

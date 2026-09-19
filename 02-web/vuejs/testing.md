@@ -4,7 +4,7 @@ tags: [vuejs, testing]
 
 # Testing — Vue.js
 
-Universal testing rules for every Vue project. [coding-standards](coding-standards.md)'s `## Testing` section decides *when* a test is mandatory; this note covers *how* one is written once it's warranted.
+Stack-specific additions to [testing-principles](../../00-global/testing-principles.md) — read that first; this note only adds Vue.js's own libraries, naming format, and mocking mechanics and never contradicts it.
 
 ## Stack
 
@@ -12,7 +12,7 @@ Universal testing rules for every Vue project. [coding-standards](coding-standar
 
 ## Structure — Given-When-Then
 
-- Tests are nested by scenario using `describe`, read top-to-bottom as Given → When → Then, with the actual expectation in the innermost `it`:
+- Nested with `describe`, the expectation in the innermost `it`:
 
 ```typescript
 describe("given an order with no items", () => {
@@ -31,18 +31,6 @@ describe("given an order with no items", () => {
 });
 ```
 
-- One `it` per scenario — don't cram multiple Given/When combinations and several unrelated assertions into a single test.
+## Mocking
 
-## Mocking policy
-
-- **Mock every injected dependency in a unit test** — a composable's own dependencies (API client, other composables it calls) via `vi.mock(...)`, and any HTTP call via MSW handlers. A unit/component test never hits a real backend.
-- Component tests assert on what the user actually sees (rendered text, roles, accessible labels) — never on implementation details (a composable's internal ref, a component's private state) that a refactor could change without changing behavior.
-
-## What to test
-
-- Same judgment call as [coding-standards](coding-standards.md)'s `## Testing` section: not a blanket requirement, mandatory for delicate business logic (money, permissions, state transitions, concurrency).
-- Prefer testing through the public API of a component/composable, not its private implementation details — a test that breaks every time an internal helper is renamed, without the observable behavior changing, is testing the wrong thing.
-
-## Sources
-
-Record any testing-library API verified against official docs in `docs/SOURCES.md` per [sources](sources.md).
+- A composable's own dependencies (API client, other composables it calls) are mocked via `vi.mock(...)`, and any HTTP call via MSW handlers.

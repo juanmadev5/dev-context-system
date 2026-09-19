@@ -4,12 +4,10 @@ tags: [jetpack-compose, documentation, sources]
 
 # Sources — Jetpack Compose
 
-Curated index of this stack's own official documentation — the vetted entry points to consult first, instead of rediscovering them from scratch on every project. Every link below points to the vendor/maintainer's own official docs.
+Curated index of this stack's own official documentation — the vetted entry points to consult first, instead of rediscovering them from scratch on every project. Every link below points to the vendor/maintainer's own official docs. What counts as a source, and how to add one that isn't listed here: [sources-policy](../../00-global/sources-policy.md).
 
-## Official documentation only
+## Official domains
 
-- **Only the source's own official documentation** — the vendor/maintainer's docs site, the package's own repo (README, wiki, official guide), or a relevant standard/spec.
-- **Never** blogs, Medium/dev.to posts, Stack Overflow, random tutorials, or AI-generated summary/aggregator sites — even if one of those turns up first in a search.
 - For this stack, official means: `developer.android.com` (Jetpack Compose, Android platform APIs) and `kotlinlang.org` (Kotlin language, coroutines, standard library) — plus a library's own repo README when it has no separate docs site (e.g. Timber, Turbine).
 
 ## Android app architecture
@@ -69,16 +67,3 @@ Curated index of this stack's own official documentation — the vetted entry po
 ## Android Lint
 
 - Improve your code with lint checks: <https://developer.android.com/studio/write/lint>
-
-## If a source isn't listed here
-
-This index covers the libraries/topics this repository's conventions actually name — it isn't exhaustive. If a task needs an official documentation source that isn't listed above:
-
-- Look it up directly — same rule applies: only the vendor/maintainer's own official docs, never a blog/tutorial/Stack Overflow/AI-summary site.
-- Record it in that project's own `docs/SOURCES.md` (created the first time it's actually needed, per [coding-standards](coding-standards.md)'s "no empty folders" reasoning applied to documentation), grouped by library under a `##` heading, one bullet per source:
-
-```markdown
-  ## some_new_library
-
-  - What the page covers: https://...
-```

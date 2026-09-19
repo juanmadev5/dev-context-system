@@ -46,10 +46,10 @@ alquilapy-backend/
 
 ## Conventions
 
-- Endpoint routes, config keys, claim types, cache keys: constants, never magic strings — see [coding-standards](coding-standards.md).
+- Endpoint routes, config keys, claim types, cache keys: constants, never magic strings — see [engineering-principles](../../00-global/engineering-principles.md).
 - Enums serialized by name: Jackson does this by default (`Enum.name()`), so no extra configuration is needed here — just never override it to serialize by ordinal.
 - DTOs (`record`s, typically) are explicit and separate from JPA `@Entity` classes — never expose an entity directly through the API.
-- **Every endpoint must be explicitly and clearly identifiable, no exceptions** — every `@GetMapping`/`@PostMapping`/`@PutMapping`/`@DeleteMapping` gets its own explicit path (e.g. `@GetMapping("/{id}")`), never left bare relying only on the class-level `@RequestMapping` to carry the whole path. Naming clarity (see [coding-standards](coding-standards.md)) applies to the controller method name too — match it to what it does (`getCustomerById`, not `get2` or `handle`).
+- **Every endpoint must be explicitly and clearly identifiable, no exceptions** — every `@GetMapping`/`@PostMapping`/`@PutMapping`/`@DeleteMapping` gets its own explicit path (e.g. `@GetMapping("/{id}")`), never left bare relying only on the class-level `@RequestMapping` to carry the whole path. Naming clarity (see [engineering-principles](../../00-global/engineering-principles.md)) applies to the controller method name too — match it to what it does (`getCustomerById`, not `get2` or `handle`).
 - Build response location URIs (e.g. after a `POST`) via `ServletUriComponentsBuilder` or a named route helper, not hand-concatenated strings.
 
 ## API documentation
@@ -68,14 +68,14 @@ alquilapy-backend/
   public ResponseEntity<PropertyDto> create(@Valid @RequestBody CreatePropertyRequest request) { ... }
 ```
 
-- Add `@Schema(description = "...")` to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every field, same restraint as [coding-standards](coding-standards.md)'s comment guidance.
+- Add `@Schema(description = "...")` to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every field, same restraint as [engineering-principles](../../00-global/engineering-principles.md)'s comment guidance.
 - Not optional polish: the generated spec is what a frontend/mobile consumer or an API client generator actually reads — an undocumented endpoint is a broken contract, not a cosmetic gap.
 
 ## API versioning
 
 **Every endpoint is versioned via the URL path (`/api/v1/...`) — no exceptions.** A "v1 for now, we'll version later if we need to" mindset is how a breaking change ends up shipped straight to every existing client instead of landing behind a new version segment.
 
-- Spring has no equivalent to `Asp.Versioning` as an official/standard library — URI path versioning is done directly: the version prefix is baked into the class-level `@RequestMapping("/api/v1/orders")` (or a shared constant, per [coding-standards](coding-standards.md)'s magic-string rule), not added via a third-party versioning framework. The Java ecosystem doesn't converge on one versioning library the way some other ecosystems do, so this direct approach is the idiomatic default here, not a workaround.
+- Spring has no equivalent to `Asp.Versioning` as an official/standard library — URI path versioning is done directly: the version prefix is baked into the class-level `@RequestMapping("/api/v1/orders")` (or a shared constant, per [engineering-principles](../../00-global/engineering-principles.md)'s magic-string rule), not added via a third-party versioning framework. The Java ecosystem doesn't converge on one versioning library the way some other ecosystems do, so this direct approach is the idiomatic default here, not a workaround.
 - When a breaking change forces a `v2`, it's a **new controller class** (`OrdersV2Controller` mapped to `/api/v2/orders`), not a version parameter branching inside the same controller — keeps each version's logic independently readable and removable once the old version is retired.
 - URL path segment only — never a query-string or header-based scheme as the primary mechanism; the version needs to be visible in the URL a developer pastes into a browser or shares in a bug report, not hidden in a header.
 - Bump the major segment (`v1` → `v2`) only for a breaking change (removed/renamed field, changed status code, changed semantics) — additive, backward-compatible changes (new optional field, new endpoint) ship on the existing version.
@@ -98,11 +98,11 @@ alquilapy-backend/
 
 - Query param names: `page` (1-based — convert to Spring's 0-based `Pageable` internally, don't leak the 0-based convention into the API surface), `pageSize` (project-defined default and hard max, e.g. default `20`, max `100`, never unbounded).
 - Filters are query params named after the field they filter (e.g. `GET /orders?status=Active&createdAfter=2026-01-01`), translated into a Spring Data `Specification`/`Predicate` or a derived query method — applied server-side before pagination, never a single opaque "filter" blob param unless the filtering surface is genuinely generic/dynamic.
-- The envelope DTO, default/max page size constants, and query-param names are defined once (in `application`, per the module layout above) and reused by every paginated endpoint — never redefined per feature, per [coding-standards](coding-standards.md)'s DRY rule.
+- The envelope DTO, default/max page size constants, and query-param names are defined once (in `application`, per the module layout above) and reused by every paginated endpoint — never redefined per feature, per [engineering-principles](../../00-global/engineering-principles.md)'s DRY rule.
 
 ## Static analysis
 
-Mandatory before considering any task done — see [coding-standards](coding-standards.md).
+Mandatory before considering any task done — see [engineering-principles](../../00-global/engineering-principles.md).
 
 - `mvn compile` — must be clean, no new compiler warnings introduced by the change.
 - **Checkstyle** (`mvn checkstyle:check`, via the `maven-checkstyle-plugin`) — style/convention enforcement, the Java equivalent of `dotnet format --verify-no-changes`. Must pass clean.

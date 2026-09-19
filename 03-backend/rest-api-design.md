@@ -54,7 +54,7 @@ Used on every backend project that exposes a REST API — [aspnet-core](aspnet-c
 }
 ```
 
-- Same principle as the stack's own coding-standards error-handling rule (see [aspnet-core's coding-standards](aspnet-core/coding-standards.md) or [spring-boot's coding-standards](spring-boot/coding-standards.md)), applied to the wire format: a predictable shape lets a client branch on `code` instead of parsing `message`.
+- Same principle as the error-handling rule in [engineering-principles](../00-global/engineering-principles.md), applied to the wire format: a predictable shape lets a client branch on `code` instead of parsing `message`.
 
 ## Query parameters, not path segments, for anything optional
 

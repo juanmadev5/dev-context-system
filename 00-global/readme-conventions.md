@@ -20,6 +20,6 @@ Deployment steps and license are deliberately **not** part of the minimum — ad
 
 ## Per-service README (`backend/README.md`, `frontend/README.md`, etc.)
 
-- Created **only when that service has something specific to document that would clutter the root README** — never by default, same reasoning as the "no empty folders" rule every stack's coding-standards note carries, applied to documentation: don't create a file with nothing to say.
+- Created **only when that service has something specific to document that would clutter the root README** — never by default, same reasoning as the "no empty folders" rule in [engineering-principles](engineering-principles.md), applied to documentation: don't create a file with nothing to say.
 - The canonical example: a backend service's own config-with-secrets template (e.g. `appsettings.json`/`appsettings.Development.json`, `application.yml`/`application-dev.yml` — see that project's stack note for the exact convention) — that's genuinely backend-specific and would be noise at the root.
 - If a service has nothing specific beyond what the root README already covers, it doesn't get its own README.

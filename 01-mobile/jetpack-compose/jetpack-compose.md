@@ -34,8 +34,8 @@ app/
 ## Conventions
 
 - File/class names: `PascalCase.kt`. Functions/properties: `camelCase`. Composable functions: `PascalCase` (they're treated as UI declarations, not regular functions).
-- Constants: `companion object` `const val`, never inline literals — see [coding-standards](coding-standards.md).
-- Enums: Kotlin `enum class` for closed sets; when serializing use the enum's `.name`, never `.ordinal` — see [coding-standards](coding-standards.md).
+- Constants: `companion object` `const val`, never inline literals — see [engineering-principles](../../00-global/engineering-principles.md).
+- Enums: Kotlin `enum class` for closed sets; when serializing use the enum's `.name`, never `.ordinal` — see [engineering-principles](../../00-global/engineering-principles.md).
 - Avoid business logic inside Composables — keep them declarative; logic lives in the ViewModel/domain layer.
 
 ## Styling
@@ -48,7 +48,7 @@ Strict rule, no exceptions: a Composable never contains a literal UI string or a
 
 - **All user-facing strings** go in `res/values/strings.xml`, referenced via `stringResource(R.string.xxx)` — never a string literal inside a Composable's `Text()`, `contentDescription`, etc. Since strings already live in `strings.xml`, adding i18n later (`values-es/strings.xml`, etc.) is just adding resource files, not a rewrite — so still confirm with the user upfront whether multi-language support is needed, since that affects how `strings.xml` is organized (keys, pluralization via `plurals`, etc.) from the start.
 - **All dimensions** (padding, spacing, sizes, corner radii, elevations) go in `res/values/dimens.xml`, referenced via `dimensionResource(R.dimen.xxx)` — never a literal `.dp`/`.sp` value inline in a Composable.
-- This is a stricter, Android-native alternative to "constants in code" for these two categories specifically — it's not optional even though [coding-standards](coding-standards.md)'s general no-magic-values rule would technically be satisfied by a Kotlin `const val` instead. Use the XML resources.
+- This is a stricter, Android-native alternative to "constants in code" for these two categories specifically — it's not optional even though [engineering-principles](../../00-global/engineering-principles.md)'s general no-magic-values rule would technically be satisfied by a Kotlin `const val` instead. Use the XML resources.
 
 ## Dependency injection
 
@@ -68,7 +68,7 @@ See [testing.md](testing.md) for the testing stack, structure, and mocking conve
 
 ## Responsiveness
 
-- Use Material 3's `WindowSizeClass` (adaptive layouts) and `BoxWithConstraints` to adapt layout across Android's phone/tablet/foldable range — never a fixed `dp` layout that assumes one screen size. See [responsive-design](responsive-design.md) for the full principle.
+- Use Material 3's `WindowSizeClass` (adaptive layouts) and `BoxWithConstraints` to adapt layout across Android's phone/tablet/foldable range — never a fixed `dp` layout that assumes one screen size. See [responsive-design](../../00-global/responsive-design.md) for the full principle.
 
 ## Error handling & logging
 
@@ -76,7 +76,7 @@ See [error-handling.md](error-handling.md) for exception mapping, the global err
 
 ## Static analysis
 
-Mandatory before considering any task done — see [coding-standards](coding-standards.md).
+Mandatory before considering any task done — see [engineering-principles](../../00-global/engineering-principles.md).
 
 - `./gradlew lint` — Android Lint, catches Android-specific issues (resource misuse, manifest problems, performance/API-level warnings).
 - `./gradlew detekt` — Kotlin static analysis (complexity, style, common bug patterns), the de facto standard for Kotlin projects. Both must pass clean.

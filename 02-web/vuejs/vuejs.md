@@ -26,7 +26,7 @@ src/
 
 - File names: `PascalCase.vue` for components, `camelCase.ts` for composables/utils (`useThing.ts`).
 - Props/emits explicitly typed (`defineProps<T>()`, `defineEmits<T>()`), no implicit `any`.
-- Constants and enums per [coding-standards](coding-standards.md).
+- Constants and enums per [engineering-principles](../../00-global/engineering-principles.md).
 - **Package manager: pnpm**, never `npm`/`yarn` — see [tech-stack-map](../../00-global/tech-stack-map.md).
 
 ## Styling
@@ -53,11 +53,11 @@ See [error-handling.md](error-handling.md) for the API client's error normalizat
 
 - **Before starting a new Vue project (or a significant new app within one), the agent must explicitly ask whether the app needs to support multiple languages** — never assume either way.
 - **If yes**: use **vue-i18n**, the de facto standard for the ecosystem. Translation keys in per-locale JSON files, lazy-loaded per feature where the project is large enough for that to matter. No literal UI strings in templates — every user-facing string goes through a translation key from the start, even for a single-language initial release.
-- **If no**: UI strings stay hardcoded (the one exception to English-only in [coding-standards](coding-standards.md)), but centralized in a shared constants file (or one per feature) instead of duplicated across components, per DRY.
+- **If no**: UI strings stay hardcoded (the one exception to English-only in [engineering-principles](../../00-global/engineering-principles.md)), but centralized in a shared constants file (or one per feature) instead of duplicated across components, per DRY.
 
 ## Static analysis
 
-Mandatory before considering any task done — see [coding-standards](coding-standards.md).
+Mandatory before considering any task done — see [engineering-principles](../../00-global/engineering-principles.md).
 
 - `vue-tsc --noEmit` — plain `tsc` can't parse `.vue` Single File Components, so `vue-tsc` is the standard type-checker for Vue+TS projects.
 - `eslint .` (with `eslint-plugin-vue`) — must pass clean.

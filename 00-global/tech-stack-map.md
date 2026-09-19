@@ -42,8 +42,8 @@ Decision map: given a project's shape, which technology to reach for. This is th
 
 ## Dependencies
 
-Every project also copies [dependency-management](dependency-management.md), regardless of stack — how a dependency is vetted, versioned, and kept current.
+Every project also reads [dependency-management](dependency-management.md), regardless of stack — how a dependency is vetted, versioned, and kept current.
 
 ## Composing a project's context
 
-Once the stack for a given project is picked from the tables above, list that stack's own folder (e.g. `01-mobile/flutter/`) and copy every file in it into that project's own `/docs/` folder, plus [git-conventions](git-conventions.md), [dependency-management](dependency-management.md), and whichever infra notes the project pairs with. Each stack's architecture, coding-standards, code-review, testing, error-handling, responsive-design (where applicable), and sources conventions live inside that stack's own folder, not as separate global notes. The project's own `CLAUDE.md` then points at `/docs/` instead of at this repository — see the root [README](../README.md)'s "How an agent should use this repository".
+Once the stack for a given project is picked from the tables above, read the global layer (`00-global/`), that stack's own folder (list it with `ls`, e.g. `01-mobile/flutter/`), and whichever shared and infra notes the project pairs with, in the order the root [README](../README.md)'s "How an agent should use this repository" lays out — that section also covers how the project's own `/docs/` and `CLAUDE.md` get written from them.
