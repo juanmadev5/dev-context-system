@@ -40,6 +40,7 @@ src/
 ## Routing
 
 - **Vue Router**, with auth/permission guards centralized in one place (a single guards module applied to routes via meta fields) rather than duplicated inline per route.
+- Route paths, slugs, parameter names, and route names are **English**, regardless of the UI language — `/orders/:orderId/edit`, never `/pedidos/:idPedido/editar`. See [engineering-principles](../../00-global/engineering-principles.md)'s `## Language`.
 
 ## Testing
 

@@ -10,6 +10,7 @@ Rules that apply to every project, regardless of stack — written once here. Ea
 
 - All code, identifiers, comments, commit messages, and documentation are written in **English**.
 - The only exception is text that is user-facing in the UI (labels, messages, validation text), which follows the project's target language(s).
+- **URLs are not user-facing text.** Route paths, URL slugs, path/query parameter names, route names, and navigation constants are always English, even when the UI is entirely in another language — `/users/:id/edit?page=2`, never `/usuarios/:id/editar?pagina=2`. The only exception is a localized-URL requirement the user explicitly asks for (e.g. per-locale SEO slugs on a public multi-language site); never assume it.
 - If the backend returns semantic codes/keys instead of literal text (e.g. `ERROR_INVALID_CREDENTIALS`) and the client maps them to localized strings, the codes themselves are still English constants — only the mapped UI text is localized.
 
 ## Naming

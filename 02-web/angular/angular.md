@@ -38,6 +38,10 @@ src/app/
 
 - **Signals-only**: `signal`/`computed`/`effect` exposed from injectable services for shared/global state, component-local `signal`s for local state. No NgRx — it adds more ceremony than these projects need. If a specific feature's state truly becomes Redux-shaped (many interdependent actions, need for time-travel debugging), that's a deliberate, documented exception, not the default.
 
+## Routing
+
+- Route paths, slugs, parameter names, and route names are **English**, regardless of the UI language — `/orders/:orderId/edit`, never `/pedidos/:idPedido/editar`. See [engineering-principles](../../00-global/engineering-principles.md)'s `## Language`.
+
 ## Forms
 
 - **Reactive Forms** with custom validators written as plain functions (`ValidatorFn`/`AsyncValidatorFn`), reused across forms via [engineering-principles](../../00-global/engineering-principles.md)'s DRY rule. No third-party form libraries unless a project has a specific need (e.g. many backend-driven dynamic forms) that justifies the added dependency.

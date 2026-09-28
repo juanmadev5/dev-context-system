@@ -53,6 +53,16 @@ See also [security-practices](../../04-infra/security-practices.md) for the stan
   localStorage.setItem('order_status', order.status);
 ```
 
+- Route paths, slugs, or parameter names in a language other than English (the UI language doesn't change this):
+
+```typescript
+  // Bad — route path and params follow the UI language
+  export const ROUTES = { orderEdit: '/pedidos/:idPedido/editar', login: '/iniciar-sesion' };
+
+  // Good — English, whatever language the UI text is in
+  export const ROUTES = { orderEdit: '/orders/:orderId/edit', login: '/login' };
+```
+
 ## Comment format
 
 - Example of a comment that states the fix: "extract this into a shared component" beats "this template is too big."

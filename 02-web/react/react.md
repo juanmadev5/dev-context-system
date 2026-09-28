@@ -47,6 +47,7 @@ src/
 ## Routing
 
 - **React Router**, with auth/permission guards centralized in one place (a loader/wrapper applied at the route level) rather than duplicated inline per component.
+- Route paths, slugs, parameter names, and route names are **English**, regardless of the UI language — `/orders/:orderId/edit`, never `/pedidos/:idPedido/editar`. See [engineering-principles](../../00-global/engineering-principles.md)'s `## Language`.
 
 ## Forms
 
