@@ -25,20 +25,11 @@ Decision map: given a project's shape, which technology to reach for. This is th
 
 | Project shape | Choice | Notes |
 | --- | --- | --- |
-| Every project that needs a backend | [aspnet-core](../03-backend/aspnet-core/aspnet-core.md) or [spring-boot](../03-backend/spring-boot/spring-boot.md) | Equivalent defaults, pick per the team/project's existing language ecosystem (.NET vs Java) — neither is a "smaller" choice. Default even for small APIs. ASP.NET Core still has a size call (Minimal APIs vs. Controllers, Clean Architecture vs. Vertical Slice — see that stack's own note); Spring Boot always uses Clean Architecture. |
+| Every project that needs a backend | [aspnet-core](../03-backend/aspnet-core/aspnet-core.md) or [spring-boot](../03-backend/spring-boot/spring-boot.md) | Equivalent defaults, pick per the team/project's existing language ecosystem (.NET vs Java) — neither is a "smaller" choice. Default even for small APIs. Both always use Clean Architecture and Controllers — no size-based call to make. |
 
-## Data & infra
+## Containerization
 
-| Concern | Choice |
-| --- | --- |
-| Database | [postgresql](../04-infra/postgresql.md) — always, for every project. |
-| Cache | [redis](../04-infra/redis.md) |
-| Auth | [keycloak-auth](../04-infra/keycloak-auth.md) |
-| File storage | [aws-s3-storage](../04-infra/aws-s3-storage.md) |
-| Local dev services (Postgres, Redis, Keycloak) | [local-infrastructure](../04-infra/local-infrastructure.md) |
-| Containerization | [docker](../04-infra/docker.md) — local dev always; backend in production too. |
-| Deployment | [docker](../04-infra/docker.md) — see its "Production" section |
-| Security practices | [security-practices](../04-infra/security-practices.md) — always, for every project. |
+- Dockerfile / docker-compose.yml — see [docker](docker.md) for when to create each.
 
 ## Dependencies
 
@@ -46,4 +37,4 @@ Every project also reads [dependency-management](dependency-management.md), rega
 
 ## Composing a project's context
 
-Once the stack for a given project is picked from the tables above, read the global layer (`00-global/`), that stack's own folder (list it with `ls`, e.g. `01-mobile/flutter/`), and whichever shared and infra notes the project pairs with, in the order the root [README](../README.md)'s "How an agent should use this repository" lays out — that section also covers how the project's own `/docs/` and `CLAUDE.md` get written from them.
+Once the stack for a given project is picked from the tables above, read the global layer (`00-global/`), that stack's own folder (list it with `ls`, e.g. `01-mobile/flutter/`), and whichever shared notes the project pairs with, in the order the root [README](../README.md)'s "How an agent should use this repository" lays out — that section also covers how the project's own `/docs/` and `CLAUDE.md` get written from them.

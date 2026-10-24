@@ -31,6 +31,16 @@ Curated index of this stack's own official documentation — the vetted entry po
 - Navigation Guards guide: <https://router.vuejs.org/guide/advanced/navigation-guards.html>
 - Route Meta Fields guide: <https://router.vuejs.org/guide/advanced/meta.html>
 
+## VeeValidate
+
+- Official documentation homepage: <https://vee-validate.logaretm.com/v4/>
+- Zod schema validation guide: <https://vee-validate.logaretm.com/v4/guide/composition-api/typed-schema/>
+
+## Zod
+
+- Documentation homepage: <https://zod.dev/>
+- API reference (schema definitions): <https://zod.dev/api>
+
 ## Vitest
 
 - Getting Started guide: <https://vitest.dev/guide/>

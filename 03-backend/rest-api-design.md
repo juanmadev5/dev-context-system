@@ -60,15 +60,47 @@ Used on every backend project that exposes a REST API — [aspnet-core](aspnet-c
 
 - The path identifies *which* resource. Filtering, sorting, pagination, and any optional criteria go in query parameters, never encoded into the path.
 - Bad: `/orders/status/pending/sortby/date`
-- Good: `/orders?status=pending&sortBy=date`
+- Good: `/orders?status=pending&sort_by=date`
 
-## Version breaking changes deliberately
+## Pagination and filtering, no exceptions
 
-- Additive changes (new optional field, new endpoint) don't need a version bump.
-- A breaking change (removing/renaming a field, changing a type, changing semantics) needs an explicit versioning strategy — a version segment in the URL (`/v2/orders`) or a version header — with the old version kept alive until clients have migrated. Never silently break an existing endpoint's contract.
+**Every endpoint that returns a collection must be paginated. No exceptions** — a list that "currently" returns few items is still a list, and unpaginated collections are a scaling and abuse liability from day one, not something to retrofit later.
+
+- Query params: `page` (1-based, default `1`) and `page_size` (project-defined default and hard max — e.g. default `20`, max `100` — never unbounded; a client can't request `page_size=999999`).
+- Paginated responses are always wrapped in an envelope, never a bare array, so metadata travels with the data — the same shape across every stack in this repository, regardless of backend:
+
+  ```json
+  {
+    "items": [ ... ],
+    "page": 1,
+    "page_size": 20,
+    "total_count": 137,
+    "total_pages": 7
+  }
+  ```
+
+- Filters are query params named after the field they filter (e.g. `GET /orders?status=Active&created_after=2026-01-01`), applied server-side *before* pagination — never a single opaque "filter" blob param unless the filtering surface is genuinely generic/dynamic enough to need one.
+- The envelope type, default/max page size constants, and query-param names are defined once per project and reused by every paginated endpoint — never redefined per feature, per [engineering-principles](../00-global/engineering-principles.md)'s DRY rule.
+
+## Documented via OpenAPI, no exceptions
+
+**Every endpoint must be documented via OpenAPI — no exceptions.** The generated spec is what a frontend/mobile consumer or an API client generator actually reads — an undocumented endpoint is a broken contract, not a cosmetic gap.
+
+- Every endpoint documents a summary/description and every possible response status it can actually return — success and error alike, not just the happy path.
+- Non-trivial DTO properties (units, format, constraints) get a description too, but not mechanically on every property — same restraint as [engineering-principles](../00-global/engineering-principles.md)'s comment guidance.
+- The concrete mechanism (library, annotations/attributes, UI served) is stack-specific — see that stack's own note.
+
+## Versioned via the URL path, no exceptions
+
+**Every endpoint is versioned via the URL path (`/api/v1/...`) — no exceptions.** A "v1 for now, we'll version later if we need to" mindset is how a breaking change ends up shipped straight to every existing client instead of landing behind a new version segment.
+
+- URL path segment only (`/api/v1/...`) — never a query-string (`?api-version=1`) or header-based (`X-Api-Version`) scheme as the primary mechanism; the version needs to be visible in the URL a developer pastes into a browser or shares in a bug report, not hidden in a header.
+- Additive changes (new optional field, new endpoint) don't need a version bump — they ship on the existing version.
+- Bump the major segment (`v1` → `v2`) only for a breaking change (removed/renamed field, changed status code, changed semantics) — with the old version kept alive until clients have migrated. Never silently break an existing endpoint's contract.
+- The concrete mechanism (versioning library, route template, attribute/annotation) is stack-specific — see that stack's own note.
 
 ## Consistent formats end to end
 
-- One casing convention for JSON field names (`camelCase` or `snake_case`, pick one) used by every endpoint, no exceptions.
+- `snake_case` everywhere on the wire — request body fields, response body fields, and query parameter names alike, on every endpoint, no exceptions. Never `camelCase` or a mix of the two.
 - One date/time format (ISO 8601, UTC) across every endpoint.
 - One response envelope shape (or deliberately none) applied consistently — a client that has learned one endpoint should be able to guess the shape of every other one.

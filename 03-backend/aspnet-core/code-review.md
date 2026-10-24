@@ -19,8 +19,6 @@ On top of the minimum in [code-review](../../00-global/code-review.md)'s securit
 - Sensitive data exposure — secrets, tokens, or credentials hardcoded or logged.
 - CSRF/CORS misconfiguration, where applicable.
 
-See also [security-practices](../../04-infra/security-practices.md) for the standing infra-level conventions (secrets, rate limiting, dependency hygiene) this checklist assumes are already in place.
-
 ## Anti-patterns
 
 - Persistence/API objects leaking into the presentation or API layer:

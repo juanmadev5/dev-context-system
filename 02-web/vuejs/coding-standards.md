@@ -41,5 +41,4 @@ Stack-specific additions to [engineering-principles](../../00-global/engineering
 
 ## Error handling
 
-- System boundaries in this stack: user input, external API responses, I/O. Internal invariants are already enforced by TypeScript's type system, so don't add defensive checks for them.
-- See [error-handling](error-handling.md) for the API client's error normalization, the global error handler, and structured logging.
+See [error-handling](error-handling.md) for the API client's error normalization, the global error handler, and structured logging.

@@ -20,8 +20,6 @@ On top of the minimum in [code-review](../../00-global/code-review.md)'s securit
 - Missing input validation at system boundaries — a request DTO without Bean Validation annotations.
 - CORS misconfiguration on the Spring Security filter chain.
 
-See also [security-practices](../../04-infra/security-practices.md) for the standing infra-level conventions (secrets, rate limiting, dependency hygiene) this checklist assumes are already in place.
-
 ## Anti-patterns
 
 - Persistence/API objects leaking into the presentation or API layer:

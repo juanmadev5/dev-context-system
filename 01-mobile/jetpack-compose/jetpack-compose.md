@@ -4,7 +4,7 @@ tags: [mobile, android, jetpack-compose, kotlin]
 
 # Android Jetpack Compose
 
-Android-native UI toolkit. Use instead of [flutter](../flutter/flutter.md) when the project is Android-only and benefits from deep platform integration — see [tech-stack-map](../../00-global/tech-stack-map.md).
+Android-native UI toolkit — see [tech-stack-map](../../00-global/tech-stack-map.md) for when this is the right choice over the cross-platform default.
 
 ## Architecture pattern: MVVM
 

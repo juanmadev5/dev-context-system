@@ -9,7 +9,7 @@ Stack-specific additions to [testing-principles](../../00-global/testing-princip
 ## Stack
 
 - **JUnit 5 + Mockito** (`spring-boot-starter-test` bundles both, plus AssertJ for readable assertions — `assertThat(result).isEqualTo(...)`).
-- **Testcontainers** (`testcontainers-postgresql`, module for Redis) for integration tests that need a real Postgres/Redis — never the shared local instance from [local-infrastructure](../../04-infra/local-infrastructure.md), which stays reserved for manual/dev use. Each integration test class spins up its own ephemeral container via `@Testcontainers` + `@Container`, so tests stay isolated and reproducible on any machine, CI included, with no state shared between runs.
+- **Testcontainers** for integration tests that need a real Postgres/Redis — never a shared manual-dev instance. Postgres uses the dedicated `testcontainers-postgresql` module; Redis has no dedicated official module, so it's a plain `GenericContainer` pointed at a `redis` image. Each integration test class spins up its own ephemeral container via `@Testcontainers` + `@Container`, so tests stay isolated and reproducible on any machine, CI included, with no state shared between runs.
 
 ## Structure — Given-When-Then
 

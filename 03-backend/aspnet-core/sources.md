@@ -12,9 +12,13 @@ Curated index of this stack's own official documentation — the vetted entry po
 
 ## ASP.NET Core
 
-- Minimal APIs overview and quick reference: <https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis>
 - Controllers / `[ApiController]` overview: <https://learn.microsoft.com/aspnet/core/web-api/>
 - Dependency injection overview: <https://learn.microsoft.com/aspnet/core/fundamentals/dependency-injection>
+
+## Authentication & authorization
+
+- JWT Bearer authentication overview: <https://learn.microsoft.com/aspnet/core/security/authentication/jwt-authn>
+- Policy-based authorization (`[Authorize]`, policies, requirements): <https://learn.microsoft.com/aspnet/core/security/authorization/policies>
 
 ## EF Core
 
@@ -33,7 +37,7 @@ Curated index of this stack's own official documentation — the vetted entry po
 ## Asp.Versioning
 
 - Getting started with `Asp.Versioning.Http`: <https://dotnet.github.io/aspnet-api-versioning/getting-started.html>
-- URL path/segment versioning for Minimal APIs and MVC controllers: <https://dotnet.github.io/aspnet-api-versioning/aspnet-core/how-to/version-by-url.html>
+- URL path/segment versioning for MVC controllers: <https://dotnet.github.io/aspnet-api-versioning/aspnet-core/how-to/version-by-url.html>
 
 ## FluentValidation
 
@@ -50,10 +54,16 @@ Curated index of this stack's own official documentation — the vetted entry po
 - Official repository (devlooped/moq, the actively maintained fork): <https://github.com/devlooped/moq>
 - Quickstart wiki (setup, argument matching, verification): <https://github.com/devlooped/moq/wiki/Quickstart>
 
+## StackExchange.Redis
+
+- Official repository and documentation: <https://github.com/StackExchange/StackExchange.Redis>
+- Distributed caching in ASP.NET Core (`IDistributedCache`, Redis provider): <https://learn.microsoft.com/aspnet/core/performance/caching/distributed>
+
 ## Testcontainers for .NET
 
 - Official documentation home: <https://dotnet.testcontainers.org/>
 - PostgreSQL module: <https://dotnet.testcontainers.org/modules/postgres/>
+- Redis module: <https://dotnet.testcontainers.org/modules/redis/>
 
 ## DbUp
 
@@ -68,6 +78,15 @@ Curated index of this stack's own official documentation — the vetted entry po
 
 - .NET language docs landing page: <https://opentelemetry.io/docs/languages/dotnet/>
 - Getting started guide: <https://opentelemetry.io/docs/languages/dotnet/getting-started/>
+
+## Roslynator
+
+- Official repository and documentation: <https://github.com/dotnet/roslynator>
+
+## SonarAnalyzer.CSharp
+
+- Official repository (sonar-dotnet): <https://github.com/SonarSource/sonar-dotnet>
+- C# rules reference: <https://rules.sonarsource.com/csharp/>
 
 ## RFC 7807
 

@@ -44,5 +44,4 @@ Stack-specific additions to [engineering-principles](../../00-global/engineering
 
 ## Error handling
 
-- System boundaries in this stack: user input, external API responses, platform channels, I/O. Internal invariants are already enforced by Dart's type system or null-safety, so don't add defensive checks for them.
-- See [error-handling](error-handling.md) for the global error boundary, exception mapping, and structured logging.
+See [error-handling](error-handling.md) for the global error boundary, exception mapping, and structured logging.

@@ -15,13 +15,14 @@ Curated index of this stack's own official documentation — the vetted entry po
 - Official reference documentation entry point: <https://docs.spring.io/spring-boot/index.html>
 - Maven plugin reference (packaging, running, build-info generation): <https://docs.spring.io/spring-boot/maven-plugin/>
 
+## Spring Security
+
+- OAuth2 Resource Server reference (JWT/opaque bearer token validation against any OIDC-compliant identity provider): <https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/index.html>
+- Method security reference (`@PreAuthorize`, `@PostAuthorize`): <https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html>
+
 ## Spring Data JPA
 
 - Reference docs for repository interfaces, query methods, and `JpaRepository`: <https://docs.spring.io/spring-data/jpa/reference/>
-
-## Spring Security
-
-- OAuth2 Resource Server reference (JWT/opaque bearer token validation, the Keycloak pairing): <https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/index.html>
 
 ## Spring Data Redis / Caching
 
@@ -71,6 +72,14 @@ Curated index of this stack's own official documentation — the vetted entry po
 
 - Official Checkstyle documentation (checks, configuration, rules): <https://checkstyle.sourceforge.io/>
 - Apache Maven Checkstyle Plugin documentation: <https://maven.apache.org/plugins/maven-checkstyle-plugin/>
+
+## SpotBugs
+
+- Official documentation home: <https://spotbugs.github.io/>
+
+## PMD
+
+- Official documentation home: <https://pmd.github.io/>
 
 ## RFC 7807
 

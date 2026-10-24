@@ -6,6 +6,10 @@ tags: [web, vue, typescript]
 
 Default for medium/small web apps — see [tech-stack-map](../../00-global/tech-stack-map.md). Pairs with **Vertical Slice** or a plain feature-first structure (see [architecture-principles](architecture-principles.md)) — reserved for projects that don't carry the complexity of a heavier, fully layered architecture. Equivalent alternative: [react](../react/react.md) — pick per team/project preference.
 
+## Scaffolding
+
+- **Vite**, always — `pnpm create vue@latest` to scaffold (the official Vue CLI, itself a wrapper around Vite), TypeScript enabled. Never the legacy webpack-based Vue CLI (in maintenance mode).
+
 ## Project structure
 
 ```
@@ -41,6 +45,10 @@ src/
 
 - **Vue Router**, with auth/permission guards centralized in one place (a single guards module applied to routes via meta fields) rather than duplicated inline per route.
 - Route paths, slugs, parameter names, and route names are **English**, regardless of the UI language — `/orders/:orderId/edit`, never `/pedidos/:idPedido/editar`. See [engineering-principles](../../00-global/engineering-principles.md)'s `## Language`.
+
+## Forms
+
+- **VeeValidate** + **Zod** (via `@vee-validate/zod`) for schema-based validation — keeps validation rules declarative and decoupled from the component's render logic, same approach as the other web stacks.
 
 ## Testing
 

@@ -9,7 +9,7 @@ Stack-specific additions to [testing-principles](../../00-global/testing-princip
 ## Stack
 
 - **xUnit** as the test runner, **Moq** for mocking, and xUnit's built-in `Assert` for assertions — no separate assertion library (FluentAssertions v8+ requires a commercial license, see [dependency-management](../../00-global/dependency-management.md)).
-- **Testcontainers** (`Testcontainers.PostgreSql`, `Testcontainers.Redis`) for integration tests that need a real Postgres/Redis — never the shared local instance from [local-infrastructure](../../04-infra/local-infrastructure.md), which stays reserved for manual/dev use. Each integration test class spins up its own ephemeral container, so tests stay isolated and reproducible on any machine, CI included, with no state shared between runs.
+- **Testcontainers** (`Testcontainers.PostgreSql`, `Testcontainers.Redis`) for integration tests that need a real Postgres/Redis — never a shared manual-dev instance. Each integration test class spins up its own ephemeral container, so tests stay isolated and reproducible on any machine, CI included, with no state shared between runs.
 
 ## Structure — Given-When-Then
 

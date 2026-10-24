@@ -6,46 +6,23 @@ tags: [backend, aspnet-core, dotnet, csharp]
 
 Default backend for any project that needs a dedicated backend — see [tech-stack-map](../../00-global/tech-stack-map.md).
 
-## API style — Minimal APIs vs Controllers
+## API style — Controllers
 
-Same size/complexity threshold as [architecture-principles](architecture-principles.md)'s three-tier split — this isn't a separate decision, it's the same one applied to routing style.
-
-- **Minimal APIs** — small, low-logic projects only, pairs with **"Neither / plain structure"** — no architecture pattern. Low ceremony, fits a handful of endpoints with no real business logic to layer.
-- **Controllers** (`[ApiController]` + attribute routing) — everything past that: pairs with **Vertical Slice** (medium projects) just as much as with **Clean Architecture** (large, substantial, long-lived business logic). Once a project has enough logic to warrant a real architecture pattern, Minimal APIs stop being worth it too — the built-in model binding/validation conventions, filters, API versioning, action-based grouping, and richer OpenAPI generation via `[ProducesResponseType]` pay for themselves at that point.
-- Don't mix styles within the same API — pick one per [architecture-principles](architecture-principles.md)'s criteria and stay consistent.
+Every ASP.NET Core project is exposed via **Controllers** (`[ApiController]` + attribute routing) — never Minimal APIs. This is not a per-project choice: the built-in model binding/validation conventions, filters, API versioning, action-based grouping, and richer OpenAPI generation via `[ProducesResponseType]` pay for themselves even on a small API, and pairing one consistent style with [architecture-principles](architecture-principles.md)'s always-Clean-Architecture rule keeps the stack with no secondary "which style" decision to make per project.
 
 ## Project structure
 
-Follow [architecture-principles](architecture-principles.md) to pick the right layout below.
-
-**Clean Architecture** (default for large apps with real, long-lived business logic):
-
-- **Mandatory: one `.csproj` per layer, not folders inside a single project.** Physical project separation, wired together via `ProjectReference`, is what actually enforces [architecture-principles](architecture-principles.md)'s dependency-direction rule — with folders alone, nothing stops a file under `Domain/` from importing something from `Infrastructure/` except code review catching it; with separate projects, it doesn't compile. This also means `Domain`/`Application` carry zero reference to ASP.NET Core/EF Core, so they're unit-testable with no framework/database spun up at all.
+**Mandatory: one `.csproj` per layer, not folders inside a single project.** Physical project separation, wired together via `ProjectReference`, is what actually enforces [architecture-principles](architecture-principles.md)'s dependency-direction rule — with folders alone, nothing stops a file under `Domain/` from importing something from `Infrastructure/` except code review catching it; with separate projects, it doesn't compile. This also means `Domain`/`Application` carry zero reference to ASP.NET Core/EF Core, so they're unit-testable with no framework/database spun up at all.
 
 ``` text
 src/
   Domain/                # .csproj — entities, value objects, domain events, repository interfaces. No project references — zero framework deps.
   Application/            # .csproj — use cases/services, DTOs, validation, interfaces for infrastructure. References: Domain.
-  Infrastructure/         # .csproj — EF Core, repository implementations, external services (S3, Keycloak, Redis). References: Application, Domain.
+  Infrastructure/         # .csproj — EF Core, repository implementations, external services (Redis, a payment gateway, etc.). References: Application, Domain.
   Api/                    # .csproj — Controllers, DI composition root, middleware; the only executable/publishable project. References: Infrastructure, Application, Domain.
 ```
 
-- This is the same shape as the well-known "Clean Architecture" .NET reference templates (Domain/Application/Infrastructure/Web) — not an unusual choice, the standard one.
-
-**Vertical Slice** (default when a full layered split adds more ceremony than value, but there's enough logic to justify real structure — Controllers, not Minimal APIs):
-
-``` text
-src/
-  Features/
-    <Feature>/
-      <Feature>Controller.cs   # [ApiController] route mapping
-      <Feature>Service.cs      # logic for this use case
-      <Feature>Request.cs / Response.cs
-      <Feature>Validator.cs
-  Common/                      # cross-cutting: error handling, auth policies, pagination/filtering primitives, shared infrastructure
-```
-
-**Minimal APIs / plain structure** (small, low-logic projects — [architecture-principles](architecture-principles.md)'s "Neither" tier): no fixed layout to follow — a handful of endpoint files grouped by feature, or endpoints mapped directly in `Program.cs`, whatever fits the project's actual size. Don't scaffold `Features/`/`Common/` folders for a project this small.
+This is the same shape as the well-known "Clean Architecture" .NET reference templates (Domain/Application/Infrastructure/Web) — not an unusual choice, the standard one.
 
 ## Configuration & secrets
 
@@ -56,65 +33,48 @@ src/
 ## Conventions
 
 - Endpoint routes, config keys, claim types, cache keys: constants, never magic strings — see [engineering-principles](../../00-global/engineering-principles.md).
+- **`snake_case` JSON, per [rest-api-design](../rest-api-design.md)** — set `JsonNamingPolicy.SnakeCaseLower` as the global `PropertyNamingPolicy` via `AddControllers().AddJsonOptions(...)`, instead of the framework's camelCase default. DTO properties themselves stay PascalCase (normal C# convention) — the naming policy is what converts them at the wire boundary, not a per-property `[JsonPropertyName]` attribute.
 - Enums serialized as strings (`.name` equivalent — `JsonStringEnumConverter`), never as raw ints, across any API boundary.
 - DTOs are explicit and separate from domain entities — never expose EF Core entities directly through the API.
 - Use `IOptions<T>` (or equivalent) for configuration, never `IConfiguration["Some:Key"]` scattered through the codebase.
-- **Every endpoint must be explicitly and clearly identifiable, no exceptions — the exact mechanism depends on the API style:**
-  - **Minimal APIs**: `.WithName("...")` on every endpoint. Naming clarity (see [engineering-principles](../../00-global/engineering-principles.md)) doesn't stop at variables/lambdas — an endpoint is an identifier too, and `app.MapGetTasks()` alone in `Program.cs` isn't enough: the name is what shows up in Swagger/OpenAPI as the operation ID, what typed-client generators (NSwag, openapi-typescript, etc.) key off of, what `Results.CreatedAtRoute`/`LinkGenerator` reference by, and what identifies the request in OpenTelemetry traces instead of a raw route template. Match the name to the request/query/command it dispatches (e.g. `GetTasksEndpoint` → `.WithName("GetTasks")`), not a generic or abbreviated label.
-  - **Controllers**: every `[HttpGet]`/`[HttpPost]`/`[HttpPut]`/`[HttpDelete]` gets an explicit route template — never left bare relying only on the class-level `[Route("api/[controller]")]` to carry the whole path (e.g. `[HttpGet("{id}")]`, not a parameterless `[HttpGet]` on a method that clearly needs `{id}`). Reference actions via `nameof()` (`CreatedAtAction(nameof(GetById), ...)`), which is compiler-checked, rather than magic strings; add an explicit `Name = "..."` only when using `CreatedAtRoute`/`LinkGenerator` instead of `CreatedAtAction`.
+- **Every endpoint must be explicitly and clearly identifiable, no exceptions**: every `[HttpGet]`/`[HttpPost]`/`[HttpPut]`/`[HttpDelete]` gets an explicit route template — never left bare relying only on the class-level `[Route("api/[controller]")]` to carry the whole path (e.g. `[HttpGet("{id}")]`, not a parameterless `[HttpGet]` on a method that clearly needs `{id}`). Reference actions via `nameof()` (`CreatedAtAction(nameof(GetById), ...)`), which is compiler-checked, rather than magic strings; add an explicit `Name = "..."` only when using `CreatedAtRoute`/`LinkGenerator` instead of `CreatedAtAction`.
+
+## Authentication & authorization
+
+ASP.NET Core's own built-in authentication/authorization middleware (`Microsoft.AspNetCore.Authentication.JwtBearer` for token validation, policy-based `[Authorize]`) is the default — never a custom auth scheme unless there's a specific reason. **Which identity provider issues the tokens (Keycloak, Auth0, Entra ID, a project's own OIDC server, etc.) is a per-project decision, not fixed by this note** — implement whichever provider the developer specifies, pointed at that provider's own OIDC issuer/metadata endpoint.
 
 ## API documentation
 
-**Every endpoint must be documented via OpenAPI — no exceptions.**
+Documented via OpenAPI — see [rest-api-design](../rest-api-design.md) for the mandate and the restraint rule on DTO docs; this note only adds ASP.NET Core's own library and mechanism.
 
 - **`Microsoft.AspNetCore.OpenApi`** (`AddOpenApi()` / `app.MapOpenApi()`, built into the SDK since .NET 9) generates the OpenAPI document — no Swashbuckle needed just for generation.
 - **Scalar** (`Scalar.AspNetCore` package, `app.MapScalarApiReference()`) serves the interactive UI at `/scalar/v1` — the default UI for new projects. Swagger UI (`Swashbuckle.AspNetCore.SwaggerUI`) is an acceptable fallback only if a project has a specific reason to keep it, not the default choice going forward.
-- Every endpoint needs a summary/description, and every non-trivial DTO property needs one too — the exact mechanism depends on API style:
-  - **Minimal APIs**: `.WithSummary("...")`, `.WithDescription("...")`, and `.Produces<T>(statusCode)` per possible response, chained onto every endpoint alongside the `.WithName(...)` already mandated above.
-  - **Controllers**: XML doc comments (`/// <summary>`) on every action, plus `[ProducesResponseType]` for every possible response status the action can actually return — success and error alike, not just the happy path:
+- XML doc comments (`/// <summary>`) on every action, plus `[ProducesResponseType]` for every possible response status the action can actually return:
 
-    ```csharp
-    /// <summary>Creates a property owned by the authenticated user.</summary>
-    [HttpPost("")]
-    [ProducesResponseType(typeof(PropertyDto), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create(CreatePropertyRequest request) { ... }
-    ```
+  ```csharp
+  /// <summary>Creates an order placed by the authenticated user.</summary>
+  [HttpPost("")]
+  [ProducesResponseType(typeof(OrderDto), StatusCodes.Status201Created)]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  public async Task<IActionResult> Create(CreateOrderRequest request) { ... }
+  ```
 
-    Set `<GenerateDocumentationFile>true</GenerateDocumentationFile>` in the `.csproj` so XML comments actually flow into the generated OpenAPI document.
-- Add XML doc comments to request/response DTO properties only where the name alone doesn't say enough (units, format, constraints) — not mechanically on every property, same restraint as [engineering-principles](../../00-global/engineering-principles.md)'s comment guidance.
-- Not optional polish: the generated spec is what a frontend/mobile consumer or an API client generator (NSwag, openapi-typescript) actually reads — an undocumented endpoint is a broken contract, not a cosmetic gap.
+  Set `<GenerateDocumentationFile>true</GenerateDocumentationFile>` in the `.csproj` so XML comments actually flow into the generated OpenAPI document.
+- DTO property docs: XML doc comments, where [rest-api-design](../rest-api-design.md)'s restraint rule calls for one.
 
 ## API versioning
 
-**Every endpoint is versioned via the URL path (`/api/v1/...`) — no exceptions.** A "v1 for now, we'll version later if we need to" mindset is how a breaking change ends up shipped straight to every existing client instead of landing behind a new version segment.
+Versioned via the URL path — see [rest-api-design](../rest-api-design.md) for the mandate; this note only adds ASP.NET Core's own library and mechanism.
 
-- **`Asp.Versioning.Http`** (Minimal APIs) / **`Asp.Versioning.Mvc`** (Controllers) — the maintained successor to the archived `Microsoft.AspNetCore.Mvc.Versioning`, still the standard library for this.
-- **Minimal APIs**: group endpoints under a versioned `ApiVersionSet` (`app.NewApiVersionSet().HasApiVersion(new ApiVersion(1)).Build()`), route template `/api/v{version:apiVersion}/...`, `.MapToApiVersion(1)` per endpoint.
-- **Controllers**: `[ApiVersion("1.0")]` on the controller class, `[Route("api/v{version:apiVersion}/[controller]")]` instead of the bare `api/[controller]` template.
-- URL path segment only (`/api/v1/...`) — never a query-string (`?api-version=1`) or header-based (`X-Api-Version`) scheme as the primary mechanism; the version needs to be visible in the URL a developer pastes into a browser or shares in a bug report, not hidden in a header.
-- Bump the major segment (`v1` → `v2`) only for a breaking change (removed/renamed field, changed status code, changed semantics) — additive, backward-compatible changes (new optional field, new endpoint) ship on the existing version.
-- **`Asp.Versioning.Mvc.ApiExplorer`** is also required — regardless of API style — with `AddApiExplorer(options => options.SubstituteApiVersionInUrl = true)` in `Program.cs`. Without it, `[ApiVersion]`/`.HasApiVersion(...)` still resolve routes correctly at runtime, but the OpenAPI document generated for Scalar keeps the literal `{version}` placeholder in every path instead of the resolved `v1`/`v2` segment — this is what actually makes the versioned routes show up correctly in the docs, not just work in the browser's address bar.
+- **`Asp.Versioning.Mvc`** — the maintained successor to the archived `Microsoft.AspNetCore.Mvc.Versioning`, still the standard library for this.
+- `[ApiVersion("1.0")]` on the controller class, `[Route("api/v{version:apiVersion}/[controller]")]` instead of the bare `api/[controller]` template.
+- **`Asp.Versioning.Mvc.ApiExplorer`** is also required, with `AddApiExplorer(options => options.SubstituteApiVersionInUrl = true)` in `Program.cs`. Without it, `[ApiVersion]`/`.HasApiVersion(...)` still resolve routes correctly at runtime, but the OpenAPI document generated for Scalar keeps the literal `{version}` placeholder in every path instead of the resolved `v1`/`v2` segment — this is what actually makes the versioned routes show up correctly in the docs, not just work in the browser's address bar.
 
 ## API conventions — pagination & filtering
 
-**Every endpoint that returns a collection must be paginated. No exceptions** — a list that "currently" returns few items is still a list, and unpaginated collections are a scaling and abuse liability from day one, not something to retrofit later.
+Paginated and filtered per [rest-api-design](../rest-api-design.md) — this note only adds where the shared types live in ASP.NET Core's own layout.
 
-- Pagination is driven by query params: `page` (1-based, default `1`) and `pageSize` (project-defined default and hard max — e.g. default `20`, max `100` — never unbounded; a client can't request `pageSize=999999`).
-- Paginated responses are always wrapped in an envelope, never a bare array, so metadata travels with the data:
-
-  ```json
-  {
-    "items": [ ... ],
-    "page": 1,
-    "pageSize": 20,
-    "totalCount": 137,
-    "totalPages": 7
-  }
-  ```
-
-- When the resource supports filtering, filters are query params named after the field they filter (e.g. `GET /orders?status=Active&createdAfter=2026-01-01`), applied server-side before pagination — never a single opaque "filter" blob param unless the filtering surface is generic/dynamic enough to genuinely need one.
-- The pagination request/response types, the default/max page size constants, and the query-param names are defined once (in `Common`, per the Vertical Slice layout above, or in `Application`/shared kernel for Clean Architecture) and reused by every paginated endpoint — never redefined per feature, per [engineering-principles](../../00-global/engineering-principles.md)'s DRY rule.
+- The pagination request/response types, the default/max page size constants, and the query-param names are defined once, in `Application` (shared kernel), and reused by every paginated endpoint — never redefined per feature, per [engineering-principles](../../00-global/engineering-principles.md)'s DRY rule.
 
 ## Static analysis
 
@@ -126,7 +86,7 @@ Mandatory before considering any task done — see [engineering-principles](../.
 
 ## Data access
 
-- **EF Core** is the ORM/query layer only — entity configuration via **Fluent API** (`IEntityTypeConfiguration<T>` per entity), not data annotations, keeps mapping concerns out of the domain/entity classes. Table/column naming follows [postgresql](../../04-infra/postgresql.md)'s `snake_case` convention, configured explicitly rather than relying on a default naming convention that might drift.
+- **EF Core** is the ORM/query layer only — entity configuration via **Fluent API** (`IEntityTypeConfiguration<T>` per entity), not data annotations, keeps mapping concerns out of the domain/entity classes. Table/column naming follows Postgres's `snake_case` convention, configured explicitly rather than relying on a default naming convention that might drift.
 - **Schema changes never go through `dotnet ef migrations` / EF Core Migrations.** Every SQL database backend uses **DbUp** (`dbup-postgresql`) with hand-written, versioned SQL scripts instead — this is mandatory, not a per-project choice:
   - Scripts live in `db/migration/` **in the `Infrastructure` project** (that's where the DB-access concern already lives), named `V{number}__{description}.sql` (e.g. `V001__schema.sql`, `V002__performance_indexes.sql`), zero-padded and strictly sequential. Once a script has shipped (merged, let alone deployed), it's never edited — a schema change after the fact is a new script, same as an immutable migration in any system.
   - Scripts are embedded as assembly resources (`<EmbeddedResource Include="db\migration\**\*.sql" />` in `Infrastructure.csproj`), not read from disk at runtime — `WithScriptsEmbeddedInAssembly` points at the `Infrastructure` assembly, and `Api` triggers the run at startup without needing to know where the scripts physically live.
@@ -134,13 +94,20 @@ Mandatory before considering any task done — see [engineering-principles](../.
   - Wrap the upgrade in a Postgres advisory lock (`pg_advisory_lock`/`pg_advisory_unlock` with a stable, arbitrary numeric key) around the DbUp run — this is what makes it safe for multiple replicas to start simultaneously: only one actually runs pending scripts, the rest block on the lock and find nothing pending once they get it.
   - EF Core's `DbContext`/Fluent API configuration must match the schema the SQL scripts already created — the entity mappings describe an existing schema, they never generate one. No `Migrations/` folder, no `dotnet ef database update`.
 
+## Caching
+
+**Redis** — `Microsoft.Extensions.Caching.StackExchangeRedis` (`IDistributedCache`) for straightforward key/value caching, or `StackExchange.Redis` directly when more control is needed (pub/sub, specific data structures).
+
+- Every cached entry has an explicit TTL appropriate to how stale the data is allowed to be — no un-expiring entries unless deliberately intended as a persistent store (which Redis isn't; that's Postgres's job).
+- Redis is a cache, not a system of record — never store data there that doesn't also exist, or can't be rebuilt, in Postgres.
+
 ## Validation
 
 - **FluentValidation**, one validator per request/command, decoupled from the DTO itself.
 
 ## Request flow
 
-- No mediator library is used. Endpoints (Minimal API) and Controllers inject `Application` services directly via constructor injection (ASP.NET Core's own DI container — no external library needed here) — the idiomatic pattern for this stack, keeping the codebase approachable.
+- No mediator library is used. Controllers inject `Application` services directly via constructor injection (ASP.NET Core's own DI container — no external library needed here) — the idiomatic pattern for this stack, keeping the codebase approachable.
 
 ## Error handling & logging
 

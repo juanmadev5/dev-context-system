@@ -4,17 +4,11 @@ tags: [aspnet-core, architecture]
 
 # Architecture Principles — ASP.NET Core
 
-## Clean Architecture vs. Vertical Slice
+## Clean Architecture
 
-Both are acceptable defaults for backends with real logic, and both pair with **Controllers** — see [aspnet-core.md](aspnet-core.md)'s API style section for why. The choice between them depends on project size and how much business logic it carries — not on personal preference.
+Every ASP.NET Core project uses **Clean Architecture** — layered: domain / application / infrastructure / presentation, dependencies pointing inward — regardless of project size. This is not a per-project choice, and it pairs with **Controllers** — see [aspnet-core.md](aspnet-core.md)'s project structure section.
 
-- **Clean Architecture** (layered: domain / application / infrastructure / presentation, dependencies pointing inward) — default for backends with substantial, long-lived business logic, or any project expected to grow, be maintained by more than one person, or live for years.
-- **Vertical Slice Architecture** (organized by feature/use case, each slice owning its own request→response path) — default for medium-sized backends where a full layered split would add more ceremony than value but the app still has enough logic to not be a script.
-- **Neither / plain structure** — for small, low-logic projects, exposed as **Minimal APIs**. Don't force an architecture pattern where there's no complexity to manage.
-
-When in doubt, pick the simpler option. Escalate to a heavier pattern only when the current structure is visibly causing friction (duplicated logic, tangled dependencies, hard-to-test business rules) — not preemptively.
-
-## General principles (apply under either style)
+## General principles
 
 - **Dependency direction**: business/domain logic never depends on frameworks, UI, or infrastructure details. Infrastructure (DB, HTTP clients, storage SDKs) implements interfaces defined by the layer/slice that needs them, not the other way around.
 
@@ -60,7 +54,7 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
   }
 ```
 
-- **Always depend on an interface, from the first implementation — testability alone justifies it.** Don't wait for a second real implementation before introducing the abstraction; needing to substitute a test double when unit-testing a consumer is reason enough on its own. Applies the same way under Clean Architecture and Vertical Slice — no carve-out for "it's simple" or "there's only one implementation today."
+- **Always depend on an interface, from the first implementation — testability alone justifies it.** Don't wait for a second real implementation before introducing the abstraction; needing to substitute a test double when unit-testing a consumer is reason enough on its own. Applies at every layer boundary — no carve-out for "it's simple" or "there's only one implementation today."
 
 ```csharp
   public interface IEmailSender
@@ -82,7 +76,7 @@ When in doubt, pick the simpler option. Escalate to a heavier pattern only when 
   }
 ```
 
-- **Consistency within a project beats a "better" pattern mid-stream**: don't mix Clean Architecture in one module and Vertical Slice in another within the same codebase without a deliberate, documented reason.
+- **Consistency within a project beats a "better" pattern mid-stream**: every module respects the same domain/application/infrastructure boundaries — don't let one module skip a layer "because it's simple" while the rest keep the full split.
 
 - **Wrap external systems behind a boundary**: never let an external API's, payment gateway's, or third-party SDK's own field names, shapes, or error codes leak past the layer that talks to it. Define a model this app owns and convert at the edge — if the external service changes its contract, only the conversion code changes, not every consumer across the app.
 

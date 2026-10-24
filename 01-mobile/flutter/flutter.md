@@ -4,7 +4,7 @@ tags: [mobile, flutter, dart]
 
 # Flutter
 
-Cross-platform mobile. Default choice for mobile projects that need to ship on both iOS and Android from one codebase — see [tech-stack-map](../../00-global/tech-stack-map.md). Use [jetpack-compose](../jetpack-compose/jetpack-compose.md) instead when the project is Android-only and needs deep platform integration.
+Cross-platform mobile. Default choice for mobile projects that need to ship on both iOS and Android from one codebase — see [tech-stack-map](../../00-global/tech-stack-map.md).
 
 ## Project structure
 

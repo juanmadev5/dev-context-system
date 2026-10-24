@@ -18,8 +18,6 @@ On top of the minimum in [code-review](../../00-global/code-review.md)'s securit
 - Sensitive data exposure — secrets, tokens, or credentials hardcoded, logged, or stored in `localStorage`/`sessionStorage` instead of a secure, httpOnly-cookie-backed mechanism.
 - Unsafe HTML binding — `[innerHTML]` or `bypassSecurityTrust*` used on anything not already sanitized, opening the door to XSS.
 
-See also [security-practices](../../04-infra/security-practices.md) for the standing infra-level conventions (secrets, dependency hygiene) this checklist assumes are already in place.
-
 ## Anti-patterns
 
 - Persistence/API objects leaking into the presentation or API layer:

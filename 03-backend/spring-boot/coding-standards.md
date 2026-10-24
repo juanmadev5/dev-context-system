@@ -27,8 +27,6 @@ Stack-specific additions to [engineering-principles](../../00-global/engineering
           Collectors.mapping(validationError -> validationError.getMessage(), Collectors.toList())));
 ```
 
-- Avoid generic, content-free names (`data`, `result`, `item`, `obj`, `temp`) for any variable or parameter whenever a name that describes what the value actually represents is available — `pendingOrder`, not `order`, once there's more than one order-shaped value in scope. A generic name forces the reader to trace the code back to figure out what it holds; a descriptive one says it up front.
-
 ## Control flow
 
 - Prefer **guard clauses** over nested conditionals: check failure/exit conditions first and return or throw immediately, so the method body isn't wrapped in an ever-deepening `if`. The main logic should read top-to-bottom with no more than one level of nesting for the happy path.
@@ -71,5 +69,4 @@ Stack-specific additions to [engineering-principles](../../00-global/engineering
 
 ## Error handling
 
-- System boundaries in this stack: user input, external API responses, I/O. Internal invariants are already enforced by the type system or Bean Validation, so don't add defensive checks for them.
-- See [error-handling](error-handling.md) for the global exception-handling mechanism, structured logging, and correlation ID propagation.
+See [error-handling](error-handling.md) for the global exception-handling mechanism, structured logging, and correlation ID propagation.

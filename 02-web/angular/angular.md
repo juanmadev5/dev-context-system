@@ -6,6 +6,10 @@ tags: [web, angular, typescript]
 
 Default for complex web apps with heavy business logic — see [tech-stack-map](../../00-global/tech-stack-map.md). Pairs with **Clean Architecture** (see [architecture-principles](architecture-principles.md)): Angular's DI system and module boundaries map naturally onto layered architecture.
 
+## Scaffolding
+
+- **Angular CLI** (`ng new`), always. No server-side rendering unless the project specifically needs SSR (`ng new --ssr`).
+
 ## Project structure
 
 ``` text

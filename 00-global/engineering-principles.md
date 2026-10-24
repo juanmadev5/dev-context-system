@@ -18,6 +18,7 @@ Rules that apply to every project, regardless of stack — written once here. Ea
 - Every identifier must be understandable **at first glance**, with no need to trace back through the code to figure out what it represents. This includes variables, parameters, and — just as strictly — **callback/lambda parameters** in collection, stream, and reactive chains (`map`/`filter`/`reduce`/`fold`-style).
 - Never name a callback parameter after a generic placeholder letter (`e`, `x`, `el`, `arr`) when a descriptive name is one keystroke away.
 - The one broadly accepted exception is a raw numeric index in a tight loop (`i`). Everything else — including nested callback parameters shadowing an outer one — gets a real, descriptive name.
+- Avoid generic, content-free names (`data`, `result`, `item`, `obj`, `temp`) for any variable or parameter whenever a name that describes what the value actually represents is available — `pendingOrder`, not `order`, once there's more than one order-shaped value in scope. A generic name forces the reader to trace the code back to figure out what it holds; a descriptive one says it up front.
 - The stack's `coding-standards.md` shows a bad/good example in its own language.
 
 ## No magic values
