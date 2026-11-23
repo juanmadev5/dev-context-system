@@ -60,6 +60,13 @@ Apply these pragmatically: they're a guide for keeping code changeable, not a ch
   - Generic/abstract code (complex generics, reflection, metaprogramming, Strategy/Visitor-style patterns where intent isn't clear without seeing how it's used).
   - Rule of thumb: if describing what the function does in one sentence would require walking through more than 2-3 chained steps, or the function's name doesn't communicate *how* it achieves its result, it qualifies.
   - Format: the stack's doc-comment syntax above the declaration — 1-3 lines, summarizing purpose and approach, not a line-by-line narration. Comments inside the function body are still off the table for this case.
+- **Never point a comment at a project document** — no `// see docs/auth-flow.md`, `// per the PRD section 2`, `// per RFC-123`, ticket/issue IDs, or any other pointer to a README, spec, ADR, or ticket. Docs and tickets get renamed, moved, or closed; the reference rots silently and the reader can't tell. If a decision needs more context than a short why-comment captures, that context belongs in the PR description or commit message, never a pointer baked into the source.
+
+## Conditional expressions
+
+- Avoid the ternary operator except for the simplest case: a single, short condition assigning or returning one of two plain values or variables, with no nested ternary and no compound boolean logic embedded in the condition.
+- Once a ternary would embed a compound condition (`&&`/`||`), return something other than a plain literal/variable (a function call, a new object, a side effect), or chain/nest another ternary inside either branch, rewrite it as if/else (or the stack's equivalent) even though it's longer — the goal is a reader following the logic at a glance, not minimizing line count.
+- Never nest ternaries. A nested ternary is always rewritten as if/else-if/else, a switch/match, or extracted into a small, well-named function.
 
 ## Error handling
 

@@ -42,6 +42,8 @@ The stack's `code-review.md` adds the checks specific to it (injection, XSS, ins
 - Premature abstraction — extra internal splitting or indirection introduced with no real boundary or reason to change. This does **not** include interfaces/abstractions on injected dependencies — those are mandatory from the first implementation; never flag a DI interface as premature just because there's only one concrete implementation today.
 - Non-descriptive callback/lambda parameter names ([engineering-principles](engineering-principles.md)'s naming rules).
 - Enums persisted or transmitted by ordinal/index/numeric value instead of name ([engineering-principles](engineering-principles.md)). The stack's `code-review.md` shows the bad/good example.
+- A ternary with compound/boolean logic in the condition, a non-literal result, or nesting — should be an if/else instead ([engineering-principles](engineering-principles.md)'s Conditional expressions rule).
+- A comment pointing at a README, spec, ADR, or ticket/issue ID instead of standing on its own ([engineering-principles](engineering-principles.md)'s Comments rule).
 
 ## Comment format
 
